@@ -1,103 +1,168 @@
 class_name Arbol
 var raiz: Nodo = null
 
+# Parámetros configurables
+var longitud_minima = 4  
+var longitud_maxima = 7  
+var cantidad_ramas = 6
 
-func generar_arbol_aleatorio(cantidad: int) -> void:
-	if cantidad <= 0:
-		return
+# Generador global con semilla opcional
+var rng := RandomNumberGenerator.new()
 
+func generar_arbol_controlado(semilla: int = -1) -> void:
+	# Si no se pasa semilla, se randomiza
+	
+	if semilla == -1:
+		rng.randomize()
+		print("Semilla:", rng.seed)
+	else:
+		rng.seed = semilla
+
+	# 1. Generar el camino principal con longitud aleatoria
 	raiz = Nodo.new(1)
-	
-	# Early return for single node tree
-	if cantidad == 1:
-		return
+	var actual = raiz
+	var longitud = rng.randi_range(longitud_minima, longitud_maxima)
 
-	var nodos = [raiz]
-	var contador = 2
-	var rng = RandomNumberGenerator.new()
-	rng.randomize()
-
-	# Pre-filter nodes that can accept children for better performance
-	while contador <= cantidad:
-		var nodos_validos = _obtener_nodos_con_espacio(nodos)
-		
-		if nodos_validos.is_empty():
-			# Safety check - should not happen with proper tree growth
-			push_warning("No se pueden agregar más nodos. Ábol incompleto.")
-			break
-		
-		var padre = nodos_validos[rng.randi_range(0, nodos_validos.size() - 1)]
+	for i in range(1, longitud):
 		var nuevo = Nodo.new(0)
-		
-		# Assign to available child position
-		if padre.izquierdo == null:
-			padre.izquierdo = nuevo
+		if rng.randf() < 0.5:
+			actual.izquierdo = nuevo
 		else:
-			padre.derecho = nuevo
-		
-		nodos.append(nuevo)
-		contador += 1
+			actual.derecho = nuevo
+		actual = nuevo
 
-	# Mark leaves with specific values in one optimized pass
-	_marcar_hojas_especiales([3, 2, 2])
+	# 2. Generar ramas falsas
+	for i in range(cantidad_ramas):
+		_agregar_ramas(i)
 
-
-func _obtener_nodos_con_espacio(nodos: Array) -> Array:
-	var nodos_validos = []
-	for nodo in nodos:
-		if nodo.izquierdo == null or nodo.derecho == null:
-			nodos_validos.append(nodo)
-	return nodos_validos
+	# 3. Colocar el nodo 3 en la hoja más profunda
+	var hoja_profunda = _obtener_hoja_mas_profunda()
+	if hoja_profunda != null:
+		hoja_profunda.dato = 3
+	# 4. Colocar pistas en otras ramas falsas
+	_colocar_pistas()
 
 
-func _marcar_hojas_especiales(valores: Array) -> void:
-	# Collect all valid leaf nodes once
-	var hojas_validas = _obtener_hojas_validas()
-	
-	if hojas_validas.size() < valores.size():
-		push_warning("No hay suficientes hojas para marcar todos los valores. Hojas: %d, Valores: %d" % [hojas_validas.size(), valores.size()])
+func _agregar_ramas(i: int) -> void:
+	var camino = obtener_nodos_preorden()
+	if camino.size() <= 1:
+		return
+
+	var padre: Nodo
+
+	# Elegir candidato inicial
+	if i != 0:
+		padre = camino[rng.randi_range(0, camino.size() - 1)]
+	else:
+		padre = camino[0]
+
+	# 🔹 Si el padre es una hoja, buscar otro que no lo sea
+	var intentos = 0
+	while _es_hoja(padre) and intentos < 10:
+		padre = camino[rng.randi_range(0, camino.size() - 1)]
+		intentos += 1
+
+	if padre == null or (padre.izquierdo != null and padre.derecho != null):
+		return
+
+	# Crear nodo raíz de la rama falsa
+	var nuevo = Nodo.new(0)
+	if padre.derecho == null:
+		padre.derecho = nuevo
+	elif padre.izquierdo == null:
+		padre.izquierdo = nuevo
+	else:
+		return
+
+	# 🔹 Extender la rama con profundidad aleatoria
+	var profundidad = rng.randi_range(1, 3)
+	var actual = nuevo
+	for j in range(profundidad):
+		var hijo = Nodo.new(0)
+		if rng.randf() < 0.5:
+			actual.izquierdo = hijo
+		else:
+			actual.derecho = hijo
+		actual = hijo
+
+
+func _es_hoja(nodo: Nodo) -> bool:
+	if nodo == null:
+		return false
+	return nodo.izquierdo == null and nodo.derecho == null
+
+
+func _colocar_pistas() -> void:
+	var hojas = _obtener_hojas_validas()
+	if hojas.is_empty():
+		return
+
+	var max_pistas = min(2, hojas.size())
+	_mezclar_array(hojas)
+
+	for i in range(max_pistas):
+		hojas[i].dato = 2
+
+func _obtener_hoja_mas_profunda() -> Nodo:
+	var result = _buscar_hoja_profunda(raiz, 0)
+	return result.hoja
+
+
+func _buscar_hoja_profunda(nodo: Nodo, depth: int) -> Dictionary:
+	if nodo == null:
+		return {"hoja": null, "prof": -1}
+
+	if nodo.izquierdo == null and nodo.derecho == null:
+		return {"hoja": nodo, "prof": depth}
+
+	var left = _buscar_hoja_profunda(nodo.izquierdo, depth + 1)
+	var right = _buscar_hoja_profunda(nodo.derecho, depth + 1)
+
+	if left.prof > right.prof:
+		return left
+	else:
+		return right
+
+# Utilidades previas
+func obtener_nodos_preorden() -> Array:
+	var lista: Array = []
+	_recorrer_preorden(raiz, lista)
+	return lista
+
+
+func _recorrer_preorden(nodo: Nodo, lista: Array) -> void:
+	if nodo == null:
 		return
 	
-	var rng = RandomNumberGenerator.new()
-	rng.randomize()
-	
-	# Shuffle and assign values efficiently
-	_mezclar_array(hojas_validas, rng)
-	
-	for i in range(min(valores.size(), hojas_validas.size())):
-		hojas_validas[i].dato = valores[i]
+	lista.append(nodo)
+	_recorrer_preorden(nodo.izquierdo, lista)
+	_recorrer_preorden(nodo.derecho, lista)
 
 
 func _obtener_hojas_validas() -> Array:
 	var hojas = []
 	_colectar_hojas(raiz, hojas)
-	
 	var hojas_validas = []
 	for hoja in hojas:
 		if hoja != raiz and hoja.dato == 0:
 			hojas_validas.append(hoja)
-	
 	return hojas_validas
-
 
 func _colectar_hojas(nodo: Nodo, hojas: Array) -> void:
 	if nodo == null:
 		return
-	
 	if nodo.izquierdo == null and nodo.derecho == null:
 		hojas.append(nodo)
 	else:
 		_colectar_hojas(nodo.izquierdo, hojas)
 		_colectar_hojas(nodo.derecho, hojas)
 
-
-func _mezclar_array(array: Array, rng: RandomNumberGenerator) -> void:
+func _mezclar_array(array: Array) -> void:
 	for i in range(array.size() - 1, 0, -1):
 		var j = rng.randi_range(0, i)
 		var temp = array[i]
 		array[i] = array[j]
 		array[j] = temp
-
 
 func imprimir_arbol(nodo: Nodo = raiz, prefijo: String = "", es_izq: bool = true):
 	if nodo == null:
@@ -111,36 +176,3 @@ func imprimir_arbol(nodo: Nodo = raiz, prefijo: String = "", es_izq: bool = true
 	
 	# Luego imprime el izquierdo
 	imprimir_arbol(nodo.izquierdo, prefijo + ("    " if es_izq else "│   "), true)
-
-
-# Additional utility methods
-func obtener_estadisticas() -> Dictionary:
-	var stats = {
-		"total_nodos": 0,
-		"hojas": 0,
-		"nodos_con_3": 0,
-		"nodos_con_2": 0,
-		"nodos_con_1": 0,
-		"nodos_con_0": 0
-	}
-	_contar_estadisticas(raiz, stats)
-	return stats
-
-
-func _contar_estadisticas(nodo: Nodo, stats: Dictionary) -> void:
-	if nodo == null:
-		return
-	
-	stats.total_nodos += 1
-	
-	if nodo.izquierdo == null and nodo.derecho == null:
-		stats.hojas += 1
-	
-	match nodo.dato:
-		3: stats.nodos_con_3 += 1
-		2: stats.nodos_con_2 += 1
-		1: stats.nodos_con_1 += 1
-		0: stats.nodos_con_0 += 1
-	
-	_contar_estadisticas(nodo.izquierdo, stats)
-	_contar_estadisticas(nodo.derecho, stats)
