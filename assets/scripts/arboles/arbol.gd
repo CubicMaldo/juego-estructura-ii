@@ -2,9 +2,9 @@ class_name Arbol
 var raiz: Nodo = null
 
 # Parámetros configurables
-var longitud_minima = 4  
-var longitud_maxima = 7  
-var cantidad_ramas = 6
+var _longitud_minima = 4
+var _longitud_maxima = 7
+var _cantidad_ramas = 6
 
 # Generador global con semilla opcional
 var rng := RandomNumberGenerator.new()
@@ -19,9 +19,10 @@ func generar_arbol_controlado(semilla: int = -1) -> void:
 		rng.seed = semilla
 
 	# 1. Generar el camino principal con longitud aleatoria
-	raiz = Nodo.new(1)
+	raiz = Nodo.new(1,true)
+	
 	var actual = raiz
-	var longitud = rng.randi_range(longitud_minima, longitud_maxima)
+	var longitud = rng.randi_range(_longitud_minima, _longitud_maxima)
 
 	for i in range(1, longitud):
 		var nuevo = Nodo.new(0)
@@ -32,13 +33,14 @@ func generar_arbol_controlado(semilla: int = -1) -> void:
 		actual = nuevo
 
 	# 2. Generar ramas falsas
-	for i in range(cantidad_ramas):
+	for i in range(_cantidad_ramas):
 		_agregar_ramas(i)
-
+	
+	raiz.hijosVistos()
 	# 3. Colocar el nodo 3 en la hoja más profunda
 	var hoja_profunda = _obtener_hoja_mas_profunda()
 	if hoja_profunda != null:
-		hoja_profunda.dato = 3
+		hoja_profunda.tipo = 3
 	# 4. Colocar pistas en otras ramas falsas
 	_colocar_pistas()
 
@@ -101,9 +103,9 @@ func _colocar_pistas() -> void:
 	_mezclar_array(hojas)
 
 	for i in range(max_pistas):
-		hojas[i].dato = 2
+		hojas[i].tipo = 2
 
-func _obtener_hoja_mas_profunda() -> Nodo:
+func _obtener_hoja_mas_profunda() -> Nodo: 
 	var result = _buscar_hoja_profunda(raiz, 0)
 	return result.hoja
 
@@ -144,7 +146,7 @@ func _obtener_hojas_validas() -> Array:
 	_colectar_hojas(raiz, hojas)
 	var hojas_validas = []
 	for hoja in hojas:
-		if hoja != raiz and hoja.dato == 0:
+		if hoja != raiz and hoja.tipo == 0:
 			hojas_validas.append(hoja)
 	return hojas_validas
 
@@ -172,7 +174,22 @@ func imprimir_arbol(nodo: Nodo = raiz, prefijo: String = "", es_izq: bool = true
 	imprimir_arbol(nodo.derecho, prefijo + ("│   " if es_izq else "    "), false)
 	
 	# Imprime actual
-	print(prefijo + ("└── " if es_izq else "┌── ") + str(nodo.dato))
+	print(prefijo + ("└── " if es_izq else "┌── ") + str(nodo.tipo))
 	
 	# Luego imprime el izquierdo
 	imprimir_arbol(nodo.izquierdo, prefijo + ("    " if es_izq else "│   "), true)
+	
+func imprimir_arbol_vistos(nodo: Nodo = raiz, prefijo: String = "", es_izq: bool = true):
+	if nodo == null:
+		return
+	
+	# 🔹 Solo imprime si el nodo ha sido visto
+	if nodo.visto:
+		# Primero imprime el derecho
+		imprimir_arbol_vistos(nodo.derecho, prefijo + ("│   " if es_izq else "    "), false)
+		
+		# Imprime el nodo actual
+		print(prefijo + ("└── " if es_izq else "┌── ") + str(nodo.tipo))
+		
+		# Luego imprime el izquierdo
+		imprimir_arbol_vistos(nodo.izquierdo, prefijo + ("    " if es_izq else "│   "), true)

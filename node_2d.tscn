@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://s68a6a8aeg3c"]
 
-[ext_resource type="Script" uid="uid://df1bcf1m3e4xt" path="res://assets/scripts/test.gd" id="1_wtcfe"]
-[ext_resource type="Script" uid="uid://dhp345e04qi3y" path="res://assets/scripts/puntero.gd" id="2_0e48y"]
+[ext_resource type="Script" uid="uid://df1bcf1m3e4xt" path="res://assets/scripts/iniciador.gd" id="1_wtcfe"]
+[ext_resource type="Script" uid="uid://dhp345e04qi3y" path="res://assets/scripts/boton_puntero.gd" id="2_0e48y"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
