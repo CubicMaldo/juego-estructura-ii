@@ -1,0 +1,99 @@
+[gd_scene load_steps=4 format=3 uid="uid://s68a6a8aeg3c"]
+
+[ext_resource type="Script" uid="uid://df1bcf1m3e4xt" path="res://assets/scripts/iniciador.gd" id="1_wtcfe"]
+[ext_resource type="Script" uid="uid://dhp345e04qi3y" path="res://assets/scripts/boton_puntero.gd" id="2_0e48y"]
+[ext_resource type="Script" uid="uid://cygv0ixcyc63q" path="res://assets/scripts/control.gd" id="3_epypp"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wtcfe")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 13.0
+offset_top = -30.0
+offset_right = 33.0
+offset_bottom = 10.0
+grow_vertical = 2
+script = ExtResource("2_0e48y")
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -33.0
+offset_top = -30.0
+offset_right = -13.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("2_0e48y")
+direccion = "Derecha"
+
+[node name="Button3" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -22.0
+offset_right = 20.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("2_0e48y")
+direccion = "Centro"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -80.0
+offset_right = 90.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_epypp")
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 6.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 3.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
+[connection signal="pressed" from="Button2" to="Button2" method="_on_pressed"]
+[connection signal="pressed" from="Button3" to="Button3" method="_on_pressed"]
