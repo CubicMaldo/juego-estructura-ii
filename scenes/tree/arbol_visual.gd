@@ -17,7 +17,7 @@ func mostrar_arbol(arbol: Arbol):
 		return
 
 	
-	_dibujar_nodo(tree.raiz, 0, 50, 100)
+	_dibujar_nodo(tree.raiz, 0, 0, 150)
 	queue_redraw()
 
 
@@ -46,14 +46,14 @@ func _dibujar_nodo(nodo: Nodo, x: float, y: float, offset_x: float):
 	if nodo.izquierdo != null:
 		var x_izq = x - offset_x
 		var y_izq = y + 30
-		lineas.append([Vector2(x + 40, y + 40), Vector2(x_izq + 40, y_izq + 40)])
+		lineas.append([Vector2(x + 15, y + 15), Vector2(x_izq + 15, y_izq + 15)])
 		_dibujar_nodo(nodo.izquierdo, x_izq, y_izq, offset_x * 0.6)
 
 	# Derecho
 	if nodo.derecho != null:
 		var x_der = x + offset_x
 		var y_der = y + 30
-		lineas.append([Vector2(x + 40, y + 40), Vector2(x_der + 40, y_der + 40)])
+		lineas.append([Vector2(x + 15, y + 15), Vector2(x_der + 15, y_der + 15)])
 		_dibujar_nodo(nodo.derecho, x_der, y_der, offset_x * 0.6)
 
 

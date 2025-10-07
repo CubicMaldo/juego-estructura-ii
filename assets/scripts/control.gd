@@ -1,6 +1,6 @@
 extends Control
 
-@onready var arbol_visual_contenedor = $Panel
+@onready var arbol_visual_contenedor = $Panel/MarginContainer
 @onready var boton_izq = $"../Button"
 @onready var boton_der = $"../Button2"
 @onready var boton_ctr = $"../Button3"
@@ -19,7 +19,7 @@ func _ready():
 	arbol_visual.mostrar_arbol(arbol)
 	
 	# Añadir al contenedor visual
-	arbol_visual_contenedor.add_child(arbol_visual)
+	add_child(arbol_visual)
 	#
 	## Conectar botones
 	#boton_izq.pressed.connect(func(): Global.cambiarPuntero("Izquierda"))
