@@ -1,6 +1,8 @@
 class_name Arbol
 var raiz: Nodo = null
 
+#ARBOL VISUAL DE VERDAD
+
 # Parámetros configurables
 var _longitud_minima = 4
 var _longitud_maxima = 7
@@ -11,26 +13,26 @@ var rng := RandomNumberGenerator.new()
 
 func generar_arbol_controlado(semilla: int = -1) -> void:
 	# Si no se pasa semilla, se randomiza
-	
 	if semilla == -1:
 		rng.randomize()
 		print("Semilla:", rng.seed)
 	else:
 		rng.seed = semilla
-
 	# 1. Generar el camino principal con longitud aleatoria
 	raiz = Nodo.new(1,true)
 	
 	var actual = raiz
 	var longitud = rng.randi_range(_longitud_minima, _longitud_maxima)
-
+	
 	for i in range(1, longitud):
 		var nuevo = Nodo.new(0)
+		nuevo.padre = actual  # ← asigna el padre
 		if rng.randf() < 0.5:
 			actual.izquierdo = nuevo
 		else:
 			actual.derecho = nuevo
 		actual = nuevo
+
 
 	# 2. Generar ramas falsas
 	for i in range(_cantidad_ramas):
@@ -46,7 +48,7 @@ func generar_arbol_controlado(semilla: int = -1) -> void:
 
 
 func _agregar_ramas(i: int) -> void:
-	var camino = obtener_nodos_preorden()
+	var camino = _obtener_nodos_preorden_sin_hojas()
 	if camino.size() <= 1:
 		return
 
@@ -58,7 +60,7 @@ func _agregar_ramas(i: int) -> void:
 	else:
 		padre = camino[0]
 
-	# 🔹 Si el padre es una hoja, buscar otro que no lo sea
+	#Si el padre es una hoja, buscar otro que no lo sea
 	var intentos = 0
 	while _es_hoja(padre) and intentos < 10:
 		padre = camino[rng.randi_range(0, camino.size() - 1)]
@@ -69,6 +71,7 @@ func _agregar_ramas(i: int) -> void:
 
 	# Crear nodo raíz de la rama falsa
 	var nuevo = Nodo.new(0)
+	nuevo.padre = padre  # ← asigna el padre
 	if padre.derecho == null:
 		padre.derecho = nuevo
 	elif padre.izquierdo == null:
@@ -76,16 +79,18 @@ func _agregar_ramas(i: int) -> void:
 	else:
 		return
 
-	# 🔹 Extender la rama con profundidad aleatoria
+	# Extender la rama
 	var profundidad = rng.randi_range(1, 3)
 	var actual = nuevo
 	for j in range(profundidad):
 		var hijo = Nodo.new(0)
+		hijo.padre = actual  # ← asigna el padre también
 		if rng.randf() < 0.5:
 			actual.izquierdo = hijo
 		else:
 			actual.derecho = hijo
 		actual = hijo
+
 
 
 func _es_hoja(nodo: Nodo) -> bool:
@@ -125,20 +130,24 @@ func _buscar_hoja_profunda(nodo: Nodo, depth: int) -> Dictionary:
 	else:
 		return right
 
-# Utilidades previas
-func obtener_nodos_preorden() -> Array:
+#Utilidades previas
+func _obtener_nodos_preorden_sin_hojas() -> Array:
 	var lista: Array = []
-	_recorrer_preorden(raiz, lista)
+	_recorrer_preorden_sin_hojas(raiz, lista)
 	return lista
 
 
-func _recorrer_preorden(nodo: Nodo, lista: Array) -> void:
+func _recorrer_preorden_sin_hojas(nodo: Nodo, lista: Array) -> void:
 	if nodo == null:
 		return
 	
-	lista.append(nodo)
-	_recorrer_preorden(nodo.izquierdo, lista)
-	_recorrer_preorden(nodo.derecho, lista)
+	#  Solo agregamos si no es hoja
+	if not (nodo.izquierdo == null and nodo.derecho == null):
+		lista.append(nodo)
+	
+	_recorrer_preorden_sin_hojas(nodo.izquierdo, lista)
+	_recorrer_preorden_sin_hojas(nodo.derecho, lista)
+
 
 
 func _obtener_hojas_validas() -> Array:
@@ -183,13 +192,15 @@ func imprimir_arbol_vistos(nodo: Nodo = raiz, prefijo: String = "", es_izq: bool
 	if nodo == null:
 		return
 	
-	# 🔹 Solo imprime si el nodo ha sido visto
+	#  Solo imprime si el nodo ha sido visto
 	if nodo.visto:
 		# Primero imprime el derecho
 		imprimir_arbol_vistos(nodo.derecho, prefijo + ("│   " if es_izq else "    "), false)
 		
 		# Imprime el nodo actual
-		print(prefijo + ("└── " if es_izq else "┌── ") + str(nodo.tipo))
-		
+		if nodo == Global.nodo_actual:
+			print(prefijo + ("└── " if es_izq else "┌── ") + str(nodo.tipo)+"⬅️")
+		else:
+			print(prefijo + ("└── " if es_izq else "┌── ") + str(nodo.tipo))
 		# Luego imprime el izquierdo
 		imprimir_arbol_vistos(nodo.izquierdo, prefijo + ("    " if es_izq else "│   "), true)

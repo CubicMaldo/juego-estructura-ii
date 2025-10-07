@@ -4,6 +4,7 @@ var dato
 var tipo : int
 
 var visto : bool
+var visitado : bool
 
 var padre : Nodo
 var izquierdo : Nodo

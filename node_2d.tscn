@@ -17,9 +17,9 @@ layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 3.0
+offset_left = 13.0
 offset_top = -20.0
-offset_right = 43.0
+offset_right = 33.0
 offset_bottom = 20.0
 grow_vertical = 2
 script = ExtResource("2_0e48y")
@@ -31,16 +31,33 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -43.0
+offset_left = -33.0
 offset_top = -20.0
-offset_right = -3.0
+offset_right = -13.0
 offset_bottom = 20.0
 grow_horizontal = 0
 grow_vertical = 2
 script = ExtResource("2_0e48y")
 direccion = "Derecha"
 
+[node name="Button3" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -32.0
+offset_right = 20.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("2_0e48y")
+direccion = "Centro"
+
 [node name="Control" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -64,3 +81,4 @@ grow_vertical = 2
 
 [connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
 [connection signal="pressed" from="Button2" to="Button2" method="_on_pressed"]
+[connection signal="pressed" from="Button3" to="Button3" method="_on_pressed"]
