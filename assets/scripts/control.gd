@@ -13,6 +13,7 @@ func _ready():
 	Global.tree = arbol
 	Global.tree.generar_arbol_controlado()
 	Global.tree.imprimir_arbol()
+	Global.tree.imprimir_arbol_vistos()
 	Global.nodo_actual = Global.tree.raiz
 	#Global.tree.imprimir_arbol()
 	

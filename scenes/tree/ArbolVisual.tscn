@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b18u3yjvlwrp5"]
 
-[ext_resource type="Script" uid="uid://bj6wbgdw1jpwx" path="res://scenes/tree/arbol_visual.gd" id="1_yak8b"]
-[ext_resource type="Script" uid="uid://bcmietwkpm61y" path="res://scenes/tree/lineastree.gd" id="2_s14mt"]
+[ext_resource type="Script" uid="uid://bj6wbgdw1jpwx" path="res://assets/scripts/arboles/visual/arbol_visual.gd" id="1_yak8b"]
+[ext_resource type="Script" uid="uid://bcmietwkpm61y" path="res://assets/scripts/arboles/visual/lineastree.gd" id="2_s14mt"]
 
 [node name="ArbolVisual" type="Control"]
 layout_mode = 3
@@ -10,28 +10,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -0.5
-offset_top = -0.5
-offset_right = 0.5
-offset_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_yak8b")
 
-[node name="Lineas" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -0.5
-offset_right = 39.5
-offset_bottom = 40.0
-grow_horizontal = 2
+[node name="Lineas" type="Node2D" parent="."]
 script = ExtResource("2_s14mt")
 
 [node name="NodosContainer" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2

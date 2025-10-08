@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://u6gjmuurdl8t"]
+
+[ext_resource type="PackedScene" uid="uid://dyre0wtdeeh7c" path="res://scenes/desktop/program.tscn" id="1_37kl0"]
+
+[node name="Node" type="Node"]
+
+[node name="App" parent="." instance=ExtResource("1_37kl0")]
+
+[node name="App2" parent="." instance=ExtResource("1_37kl0")]
+offset_left = -187.28003
+offset_right = -91.28003

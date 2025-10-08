@@ -4,9 +4,9 @@ var raiz: Nodo = null
 #ARBOL VISUAL DE VERDAD
 
 # Parámetros configurables
-var _longitud_minima = 4
-var _longitud_maxima = 7
-var _cantidad_ramas = 6
+var _longitud_minima = 3
+var _longitud_maxima = 5
+var _cantidad_ramas = 4
 
 # Generador global con semilla opcional
 var rng := RandomNumberGenerator.new()
@@ -33,7 +33,6 @@ func generar_arbol_controlado(semilla: int = -1) -> void:
 			actual.derecho = nuevo
 		actual = nuevo
 
-
 	# 2. Generar ramas falsas
 	for i in range(_cantidad_ramas):
 		_agregar_ramas(i)
@@ -59,13 +58,7 @@ func _agregar_ramas(i: int) -> void:
 		padre = camino[rng.randi_range(0, camino.size() - 1)]
 	else:
 		padre = camino[0]
-
-	#Si el padre es una hoja, buscar otro que no lo sea
-	var intentos = 0
-	while _es_hoja(padre) and intentos < 10:
-		padre = camino[rng.randi_range(0, camino.size() - 1)]
-		intentos += 1
-
+	
 	if padre == null or (padre.izquierdo != null and padre.derecho != null):
 		return
 
@@ -90,7 +83,6 @@ func _agregar_ramas(i: int) -> void:
 		else:
 			actual.derecho = hijo
 		actual = hijo
-
 
 
 func _es_hoja(nodo: Nodo) -> bool:
@@ -147,8 +139,6 @@ func _recorrer_preorden_sin_hojas(nodo: Nodo, lista: Array) -> void:
 	
 	_recorrer_preorden_sin_hojas(nodo.izquierdo, lista)
 	_recorrer_preorden_sin_hojas(nodo.derecho, lista)
-
-
 
 func _obtener_hojas_validas() -> Array:
 	var hojas = []

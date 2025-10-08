@@ -37,9 +37,3 @@ func _on_nodo_actualizado(nodo: Nodo) -> void:
 			disabled = true
 		else:
 			disabled = false
-
-
-
-func _paso_automatico(dir : String) -> void:
-	print("Solo había un camino ('%s'), avanzando automáticamente..." % dir)
-	Global.cambiarPuntero(dir)

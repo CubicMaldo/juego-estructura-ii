@@ -1,6 +1,5 @@
-[gd_scene load_steps=4 format=3 uid="uid://s68a6a8aeg3c"]
+[gd_scene load_steps=3 format=3 uid="uid://s68a6a8aeg3c"]
 
-[ext_resource type="Script" uid="uid://df1bcf1m3e4xt" path="res://assets/scripts/iniciador.gd" id="1_wtcfe"]
 [ext_resource type="Script" uid="uid://dhp345e04qi3y" path="res://assets/scripts/boton_puntero.gd" id="2_0e48y"]
 [ext_resource type="Script" uid="uid://cygv0ixcyc63q" path="res://assets/scripts/control.gd" id="3_epypp"]
 
@@ -11,17 +10,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_wtcfe")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 13.0
-offset_top = -30.0
-offset_right = 33.0
-offset_bottom = 10.0
+offset_left = 20.0
+offset_top = -45.0
+offset_right = 80.0
+offset_bottom = 45.0
 grow_vertical = 2
 script = ExtResource("2_0e48y")
 
@@ -32,10 +30,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -33.0
-offset_top = -30.0
-offset_right = -13.0
-offset_bottom = 10.0
+offset_left = -80.0
+offset_top = -45.0
+offset_right = -20.0
+offset_bottom = 45.0
 grow_horizontal = 0
 grow_vertical = 2
 script = ExtResource("2_0e48y")
@@ -48,10 +46,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -22.0
-offset_right = 20.0
-offset_bottom = -2.0
+offset_left = -45.0
+offset_top = -80.0
+offset_right = 45.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("2_0e48y")
