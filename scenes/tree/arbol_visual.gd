@@ -1,6 +1,8 @@
 extends Control
 
 @export var nodo_escena: PackedScene
+@onready var _lineasNode : Control = $Lineas
+
 var tree: Arbol
 var lineas: Array = []
 
@@ -8,6 +10,7 @@ func _ready():
 	# Aseguramos que rect_size ya existe
 	await get_tree().process_frame
 	queue_redraw()
+	
 
 
 func mostrar_arbol(arbol: Arbol):
@@ -15,10 +18,8 @@ func mostrar_arbol(arbol: Arbol):
 
 	if tree.raiz == null:
 		return
-
-	
-	_dibujar_nodo(tree.raiz, 0, 0, 150)
-	queue_redraw()
+	_dibujar_nodo(tree.raiz, 0, 0, 180)
+	$Lineas.actualizar_lineas(lineas)
 
 
 func _clear_tree_visual():
@@ -46,17 +47,38 @@ func _dibujar_nodo(nodo: Nodo, x: float, y: float, offset_x: float):
 	if nodo.izquierdo != null:
 		var x_izq = x - offset_x
 		var y_izq = y + 30
-		lineas.append([Vector2(x + 15, y + 15), Vector2(x_izq + 15, y_izq + 15)])
-		_dibujar_nodo(nodo.izquierdo, x_izq, y_izq, offset_x * 0.6)
+		lineas.append([Vector2(x, y), Vector2(x_izq, y_izq)])
+		_dibujar_nodo(nodo.izquierdo, x_izq, y_izq, offset_x * 0.8)
 
 	# Derecho
 	if nodo.derecho != null:
 		var x_der = x + offset_x
 		var y_der = y + 30
-		lineas.append([Vector2(x + 15, y + 15), Vector2(x_der + 15, y_der + 15)])
-		_dibujar_nodo(nodo.derecho, x_der, y_der, offset_x * 0.6)
+		lineas.append([Vector2(x, y), Vector2(x_der, y_der)])
+		_dibujar_nodo(nodo.derecho, x_der, y_der, offset_x * 0.8)
 
 
-func _draw():
-	for linea in lineas:
-		draw_line(linea[0], linea[1], Color.WHITE, 2)
+var drag_active := false
+var last_mouse_pos := Vector2.ZERO
+var camera_offset := Vector2.ZERO
+
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				# Empieza el arrastre
+				drag_active = true
+				last_mouse_pos = event.position
+			else:
+				# Suelta el botón
+				drag_active = false
+
+	elif event is InputEventMouseMotion and drag_active:
+		# Calcular el movimiento del ratón
+		var delta = event.position - last_mouse_pos
+		last_mouse_pos = event.position
+		
+		# Mueve el contenido del árbol (todo el panel de nodos)
+		camera_offset += delta
+		$NodosContainer.position += delta
+		$Lineas.position += delta  # Asegúrate de mover las líneas también

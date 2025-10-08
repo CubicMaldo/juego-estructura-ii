@@ -1,6 +1,6 @@
 extends Control
 
-@onready var arbol_visual_contenedor = $Panel/MarginContainer
+@onready var arbol_visual_contenedor = %SubViewport
 @onready var boton_izq = $"../Button"
 @onready var boton_der = $"../Button2"
 @onready var boton_ctr = $"../Button3"
@@ -10,7 +10,10 @@ var arbol: Arbol
 
 func _ready():
 	arbol = Arbol.new()
-	arbol.generar_arbol_controlado()
+	Global.tree = arbol
+	Global.tree.generar_arbol_controlado()
+	Global.tree.imprimir_arbol()
+	Global.nodo_actual = Global.tree.raiz
 	#Global.tree.imprimir_arbol()
 	
 	# Instanciamos el árbol visual
@@ -19,7 +22,7 @@ func _ready():
 	arbol_visual.mostrar_arbol(arbol)
 	
 	# Añadir al contenedor visual
-	add_child(arbol_visual)
+	arbol_visual_contenedor.add_child(arbol_visual)
 	#
 	## Conectar botones
 	#boton_izq.pressed.connect(func(): Global.cambiarPuntero("Izquierda"))

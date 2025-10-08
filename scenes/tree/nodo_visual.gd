@@ -4,9 +4,6 @@ var nodo: Nodo  # Referencia al nodo lógico
 @onready var label : Label = $Label  # Si tienes un Label hijo opcional
 
 func _ready():
-	if label != null:
-		print("label inicializado")
-		return
 	# Opcional: tamaño estándar y estilo base
 	size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	size_flags_vertical = Control.SIZE_SHRINK_CENTER
