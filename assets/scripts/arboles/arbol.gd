@@ -4,9 +4,14 @@ var raiz: Nodo = null
 #ARBOL VISUAL DE VERDAD
 
 # Parámetros configurables
-var _longitud_minima = 3
-var _longitud_maxima = 5
-var _cantidad_ramas = 4
+
+enum Nodos { INICIO = 0, DESAFIO = 1, PISTA = 2, FINAL = 3}
+
+@export var _longitud_minima = 3
+@export var _longitud_maxima = 5
+@export var _numero_de_pistas = 2
+@export var _cantidad_ramas = 4
+
 
 # Generador global con semilla opcional
 var rng := RandomNumberGenerator.new()
@@ -19,13 +24,13 @@ func generar_arbol_controlado(semilla: int = -1) -> void:
 	else:
 		rng.seed = semilla
 	# 1. Generar el camino principal con longitud aleatoria
-	raiz = Nodo.new(1,true)
+	raiz = Nodo.new(Nodos.INICIO, true)
 	
 	var actual = raiz
 	var longitud = rng.randi_range(_longitud_minima, _longitud_maxima)
 	
 	for i in range(1, longitud):
-		var nuevo = Nodo.new(0)
+		var nuevo = Nodo.new(Nodos.DESAFIO)
 		nuevo.padre = actual  # ← asigna el padre
 		if rng.randf() < 0.5:
 			actual.izquierdo = nuevo
@@ -41,7 +46,7 @@ func generar_arbol_controlado(semilla: int = -1) -> void:
 	# 3. Colocar el nodo 3 en la hoja más profunda
 	var hoja_profunda = _obtener_hoja_mas_profunda()
 	if hoja_profunda != null:
-		hoja_profunda.tipo = 3
+		hoja_profunda.tipo = Nodos.FINAL
 	# 4. Colocar pistas en otras ramas falsas
 	_colocar_pistas()
 
@@ -63,7 +68,7 @@ func _agregar_ramas(i: int) -> void:
 		return
 
 	# Crear nodo raíz de la rama falsa
-	var nuevo = Nodo.new(0)
+	var nuevo = Nodo.new(Nodos.DESAFIO)
 	nuevo.padre = padre  # ← asigna el padre
 	if padre.derecho == null:
 		padre.derecho = nuevo
@@ -76,7 +81,7 @@ func _agregar_ramas(i: int) -> void:
 	var profundidad = rng.randi_range(1, 3)
 	var actual = nuevo
 	for j in range(profundidad):
-		var hijo = Nodo.new(0)
+		var hijo = Nodo.new(Nodos.DESAFIO)
 		hijo.padre = actual  # ← asigna el padre también
 		if rng.randf() < 0.5:
 			actual.izquierdo = hijo
@@ -96,11 +101,11 @@ func _colocar_pistas() -> void:
 	if hojas.is_empty():
 		return
 
-	var max_pistas = min(2, hojas.size())
+	var max_pistas = min(_numero_de_pistas, hojas.size())
 	_mezclar_array(hojas)
 
 	for i in range(max_pistas):
-		hojas[i].tipo = 2
+		hojas[i].tipo = Nodos.PISTA
 
 func _obtener_hoja_mas_profunda() -> Nodo: 
 	var result = _buscar_hoja_profunda(raiz, 0)
@@ -145,7 +150,7 @@ func _obtener_hojas_validas() -> Array:
 	_colectar_hojas(raiz, hojas)
 	var hojas_validas = []
 	for hoja in hojas:
-		if hoja != raiz and hoja.tipo == 0:
+		if hoja != raiz and hoja.tipo == Nodos.DESAFIO:
 			hojas_validas.append(hoja)
 	return hojas_validas
 

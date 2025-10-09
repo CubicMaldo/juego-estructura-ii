@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=12 format=3 uid="uid://chrommxyoxqu4"]
 
-[ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://scenes/desktop/desktop.gd" id="1_06q4v"]
+[ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://assets/scripts/desktop/desktop.gd" id="1_06q4v"]
 [ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
-[ext_resource type="PackedScene" uid="uid://dyre0wtdeeh7c" path="res://scenes/desktop/appIcon.tscn" id="2_06q4v"]
+[ext_resource type="PackedScene" uid="uid://dyre0wtdeeh7c" path="res://scenes/desktop/apps/appIcon.tscn" id="2_06q4v"]
+[ext_resource type="PackedScene" uid="uid://bbplcuyivtpgx" path="res://scenes/desktop/apps/appPanel.tscn" id="2_46iw5"]
 [ext_resource type="Shader" uid="uid://dwj1gcianwteq" path="res://assets/shaders/blur.gdshader" id="3_46iw5"]
+[ext_resource type="PackedScene" uid="uid://bdiccef8alau5" path="res://scenes/desktop/buttonVisualEffects.tscn" id="6_hxdtg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ax2js"]
 shader = ExtResource("1_13veq")
@@ -22,7 +24,7 @@ shader_parameter/blur_amount = 1.0000000475
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rvpx8"]
 shader = ExtResource("3_46iw5")
-shader_parameter/blur_amount = 1.0000000475
+shader_parameter/blur_amount = 4.00000019
 shader_parameter/brightness = 1.00000002375
 shader_parameter/saturation = 1.00000002375
 shader_parameter/tint_color = Color(0.100499995, 0.100499995, 0.15, 0.2)
@@ -48,6 +50,23 @@ shader_parameter/pixel_filter = 740.0
 shader_parameter/is_rotating = false
 shader_parameter/blur_amount = 3.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_73eyv"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
 [node name="desktop" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -56,6 +75,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_06q4v")
+app_panel_scene = ExtResource("2_46iw5")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_ax2js")
@@ -103,9 +123,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -956.0
-offset_top = -84.0
-offset_right = 960.5
-offset_bottom = -4.000366
+offset_top = -85.0
+offset_right = 956.0
+offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_fuoj2")
@@ -127,44 +147,13 @@ layout_mode = 2
 theme_override_constants/separation = 12
 metadata/_edit_lock_ = true
 
-[node name="ColorRect" type="ColorRect" parent="Taskbar/MargenBar/TaskHBox"]
-custom_minimum_size = Vector2(64, 64)
+[node name="Button4" parent="Taskbar/MargenBar/TaskHBox" instance=ExtResource("6_hxdtg")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-color = Color(0.11, 0.11, 0.11, 0.7490196)
 
-[node name="ColorRect2" type="ColorRect" parent="Taskbar/MargenBar/TaskHBox"]
+[node name="Button3" type="Button" parent="Taskbar/MargenBar/TaskHBox"]
+modulate = Color(0, 0, 4.165, 1)
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-color = Color(0.11, 0.11, 0.11, 0.7490196)
-
-[node name="ColorRect3" type="ColorRect" parent="Taskbar/MargenBar/TaskHBox"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-color = Color(0.11, 0.11, 0.11, 0.7490196)
-
-[node name="ColorRect4" type="ColorRect" parent="Taskbar/MargenBar/TaskHBox"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-color = Color(0.11, 0.11, 0.11, 0.7490196)
-
-[node name="ColorRect5" type="ColorRect" parent="Taskbar/MargenBar/TaskHBox"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-color = Color(0.11, 0.11, 0.11, 0.7490196)
-
-[node name="ColorRect6" type="ColorRect" parent="Taskbar/MargenBar/TaskHBox"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-color = Color(0.11, 0.11, 0.11, 0.7490196)
+theme_override_styles/focus = SubResource("StyleBoxFlat_73eyv")

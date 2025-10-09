@@ -3,7 +3,7 @@
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="1_esngw"]
 [ext_resource type="Texture2D" uid="uid://cr7pw0ennxyuk" path="res://assets/textures/recyclebin.png" id="1_gt1af"]
 [ext_resource type="Script" uid="uid://6gjs30jihdp" path="res://assets/scripts/desktop/desktop_apps.gd" id="1_uktdj"]
-[ext_resource type="PackedScene" uid="uid://b18u3yjvlwrp5" path="res://scenes/tree/ArbolVisual.tscn" id="2_4eibx"]
+[ext_resource type="PackedScene" uid="uid://s68a6a8aeg3c" path="res://scenes/tree/node_2d.tscn" id="2_4eibx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rvyab"]
 content_margin_left = 4.0
@@ -35,7 +35,7 @@ shader_parameter/inset = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uktdj"]
 size = Vector2(63, 81)
 
-[node name="App" type="Button"]
+[node name="App" type="Button" node_paths=PackedStringArray("texture_node", "shadow_node")]
 custom_minimum_size = Vector2(96, 96)
 anchors_preset = 8
 anchor_left = 0.5
@@ -52,6 +52,8 @@ pivot_offset = Vector2(48, 48)
 theme_override_styles/focus = SubResource("StyleBoxFlat_rvyab")
 script = ExtResource("1_uktdj")
 app_to_open = ExtResource("2_4eibx")
+texture_node = NodePath("AppTexture")
+shadow_node = NodePath("AppShadow")
 
 [node name="AppShadow" type="TextureRect" parent="."]
 modulate = Color(0, 0, 0, 1)

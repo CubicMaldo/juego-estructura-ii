@@ -1,5 +1,6 @@
 extends  Control# Puedes usar Control si prefieres, pero Button te da interacción directa
 
+enum Nodos { INICIO = 0, DESAFIO = 1, PISTA = 2, FINAL = 3}
 var nodo: Nodo  # Referencia al nodo lógico
 @onready var label : Label = $Label  # Si tienes un Label hijo opcional
 
@@ -16,18 +17,19 @@ func set_tipo(tipo: int):
 		return
 	
 	match tipo:
-		1:
+		Nodos.INICIO:
 			label.set_text("Inicio")
 			modulate = Color(0.2, 1.0, 0.2)  # Verde
-		2:
+		Nodos.DESAFIO:
+			label.text = "Nodo"
+			modulate = Color(0.8, 0.8, 0.8)
+		Nodos.PISTA:
 			label.set_text("Pista")
 			modulate = Color(0.2, 0.6, 1.0)  # Azul
-		3:
+		Nodos.FINAL:
 			label.set_text("Meta")
-			modulate = Color(1.0, 0.8, 0.2)  # Amarillo
-		_:
-			label.text = "Nodo"
-			modulate = Color(0.8, 0.8, 0.8)  # Gris
+			modulate = Color(1.0, 0.8, 0.2)
+			
 
 
 # 🔹 Si el nodo está marcado como visto, cámbiale el estilo
