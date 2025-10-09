@@ -167,6 +167,9 @@ func _on_mouse_exited() -> void:
 var clickedTimesOnFocus := 0
 
 func _on_pressed() -> void:
+	
+	
+	
 	clickedTimesOnFocus += 1
 	if clickedTimesOnFocus < 2:
 		return

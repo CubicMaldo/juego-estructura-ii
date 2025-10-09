@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://chrommxyoxqu4"]
 
-[ext_resource type="PackedScene" uid="uid://dyre0wtdeeh7c" path="res://scenes/desktop/program.tscn" id="1_5spxl"]
-[ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://scenes/desktop/balatro.gdshader" id="1_fuoj2"]
-[ext_resource type="Shader" uid="uid://dwj1gcianwteq" path="res://scenes/desktop/blur.gdshader" id="3_ax2js"]
+[ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
+[ext_resource type="PackedScene" uid="uid://dyre0wtdeeh7c" path="res://scenes/desktop/appIcon.tscn" id="2_06q4v"]
+[ext_resource type="Shader" uid="uid://dwj1gcianwteq" path="res://assets/shaders/blur.gdshader" id="3_46iw5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ax2js"]
-shader = ExtResource("1_fuoj2")
+shader = ExtResource("1_13veq")
 shader_parameter/spin_rotation_speed = 0.515
 shader_parameter/move_speed = 0.2
 shader_parameter/offset = Vector2(0, 0)
@@ -20,7 +20,7 @@ shader_parameter/is_rotating = true
 shader_parameter/blur_amount = 1.0000000475
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rvpx8"]
-shader = ExtResource("3_ax2js")
+shader = ExtResource("3_46iw5")
 shader_parameter/blur_amount = 1.0000000475
 shader_parameter/brightness = 1.00000002375
 shader_parameter/saturation = 1.00000002375
@@ -33,7 +33,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gpmcu"]
-shader = ExtResource("1_fuoj2")
+shader = ExtResource("1_13veq")
 shader_parameter/spin_rotation_speed = 2.0
 shader_parameter/move_speed = 7.0
 shader_parameter/offset = Vector2(0, 0)
@@ -86,40 +86,40 @@ theme_override_constants/v_separation = 24
 columns = 2
 metadata/_edit_lock_ = true
 
-[node name="App" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App2" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App2" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App3" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App3" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App4" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App4" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App5" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App5" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App6" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App6" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App7" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App7" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App8" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App8" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App9" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App9" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App10" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App10" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App11" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App11" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App12" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("1_5spxl")]
+[node name="App12" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
 [node name="Taskbar" type="Panel" parent="."]
