@@ -37,8 +37,6 @@ func _clear_tree_visual():
 func _dibujar_nodo(nodo: Nodo, x: float, y: float, offset_x: float, offset_y : float):
 	if nodo == null:
 		return
-	if not nodo.visto:
-		return
 	# Crear el nodo visual y colocarlo
 	var nodo_visual = nodo_escena.instantiate()
 	nodo_visual.position = Vector2(x, y)

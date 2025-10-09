@@ -168,15 +168,19 @@ var clickedTimesOnFocus := 0
 
 func _on_pressed() -> void:
 	clickedTimesOnFocus += 1
-	
 	if clickedTimesOnFocus < 2:
 		return
-	if tween_hover and tween_hover.is_running():
-		tween_hover.kill()
-	tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-	tween_hover.tween_property(self, "scale", Vector2(1.2, 1.2), 0.5)
+	
+	_clicked_twice()
+	
 	clickedTimesOnFocus = 0
 
 
 func _on_focus_exited() -> void:
 	clickedTimesOnFocus = 0
+
+func _clicked_twice() -> void:
+	if tween_hover and tween_hover.is_running():
+		tween_hover.kill()
+	tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+	tween_hover.tween_property(self, "scale", Vector2(1.2, 1.2), 0.5)
