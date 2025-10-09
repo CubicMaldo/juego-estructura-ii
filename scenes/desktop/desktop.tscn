@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=9 format=3 uid="uid://chrommxyoxqu4"]
 
+[ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://scenes/desktop/desktop.gd" id="1_06q4v"]
 [ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
 [ext_resource type="PackedScene" uid="uid://dyre0wtdeeh7c" path="res://scenes/desktop/appIcon.tscn" id="2_06q4v"]
 [ext_resource type="Shader" uid="uid://dwj1gcianwteq" path="res://assets/shaders/blur.gdshader" id="3_46iw5"]
@@ -54,6 +55,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_06q4v")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_ax2js")
@@ -79,47 +81,17 @@ theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 metadata/_edit_lock_ = true
 
-[node name="GridContainer" type="GridContainer" parent="ColorRect/MarginContainer"]
+[node name="AppContainer" type="GridContainer" parent="ColorRect/MarginContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 24
 theme_override_constants/v_separation = 24
 columns = 2
 metadata/_edit_lock_ = true
 
-[node name="App" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
+[node name="App" parent="ColorRect/MarginContainer/AppContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
-[node name="App2" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-
-[node name="App3" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-
-[node name="App4" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-
-[node name="App5" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-
-[node name="App6" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-
-[node name="App7" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-
-[node name="App8" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-
-[node name="App9" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-
-[node name="App10" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-
-[node name="App11" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-
-[node name="App12" parent="ColorRect/MarginContainer/GridContainer" instance=ExtResource("2_06q4v")]
+[node name="App2" parent="ColorRect/MarginContainer/AppContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 
 [node name="Taskbar" type="Panel" parent="."]

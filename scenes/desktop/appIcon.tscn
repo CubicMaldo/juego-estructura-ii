@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dyre0wtdeeh7c"]
+[gd_scene load_steps=8 format=3 uid="uid://dyre0wtdeeh7c"]
 
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="1_esngw"]
 [ext_resource type="Texture2D" uid="uid://cr7pw0ennxyuk" path="res://assets/textures/recyclebin.png" id="1_gt1af"]
 [ext_resource type="Script" uid="uid://6gjs30jihdp" path="res://assets/scripts/desktop/desktop_apps.gd" id="1_uktdj"]
+[ext_resource type="PackedScene" uid="uid://b18u3yjvlwrp5" path="res://scenes/tree/ArbolVisual.tscn" id="2_4eibx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rvyab"]
 content_margin_left = 4.0
@@ -50,6 +51,7 @@ grow_vertical = 2
 pivot_offset = Vector2(48, 48)
 theme_override_styles/focus = SubResource("StyleBoxFlat_rvyab")
 script = ExtResource("1_uktdj")
+app_to_open = ExtResource("2_4eibx")
 
 [node name="AppShadow" type="TextureRect" parent="."]
 modulate = Color(0, 0, 0, 1)

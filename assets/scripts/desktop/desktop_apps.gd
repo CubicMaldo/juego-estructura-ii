@@ -131,7 +131,7 @@ func _on_gui_input(event: InputEvent) -> void:
 	var mouse_pos: Vector2 = get_local_mouse_position()
 	#print("Mouse: ", mouse_pos)
 	#print("Card: ", position + size)
-	var diff: Vector2 = (position + size) - mouse_pos
+	var _diff: Vector2 = (position + size) - mouse_pos
 
 	var lerp_val_x: float = remap(mouse_pos.x, 0.0, size.x, 0, 1)
 	var lerp_val_y: float = remap(mouse_pos.y, 0.0, size.y, 0, 1)
@@ -164,25 +164,27 @@ func _on_mouse_exited() -> void:
 	tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	tween_hover.tween_property(self, "scale", Vector2.ONE, 0.55)
 
+signal open_app(app_ref : PackedScene)
+@export var app_to_open : PackedScene
+
 var clickedTimesOnFocus := 0
 
 func _on_pressed() -> void:
-	
-	
-	
 	clickedTimesOnFocus += 1
 	if clickedTimesOnFocus < 2:
 		return
-	
 	_clicked_twice()
-	
 	clickedTimesOnFocus = 0
 
 
 func _on_focus_exited() -> void:
+	following_mouse = false
 	clickedTimesOnFocus = 0
 
 func _clicked_twice() -> void:
+	
+	print("emitiendo")
+	open_app.emit(app_to_open)
 	if tween_hover and tween_hover.is_running():
 		tween_hover.kill()
 	tween_hover = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
