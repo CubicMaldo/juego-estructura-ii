@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b5cyt0f4gaokd"]
 
-[ext_resource type="Script" uid="uid://q18e6rud5lna" path="res://assets/scripts/arboles/visual/nodo_visual.gd" id="1_ed7si"]
+[ext_resource type="Script" uid="uid://q18e6rud5lna" path="res://assets/scripts/arboles/visual/Visual_Node.gd" id="1_ed7si"]
 
 [node name="NodoVisual" type="Control"]
 layout_direction = 4

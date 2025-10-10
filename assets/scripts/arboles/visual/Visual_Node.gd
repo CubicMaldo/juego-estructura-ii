@@ -1,7 +1,7 @@
 extends  Control# Puedes usar Control si prefieres, pero Button te da interacción directa
 
-enum Nodos { INICIO = 0, DESAFIO = 1, PISTA = 2, FINAL = 3}
-var nodo: Nodo  # Referencia al nodo lógico
+enum NodosJuego { INICIO = 0, DESAFIO = 1, PISTA = 2, FINAL = 3}
+var nodo: TreeNode  # Referencia al nodo lógico
 @onready var label : Label = $Label  # Si tienes un Label hijo opcional
 
 func _ready():
@@ -17,16 +17,16 @@ func set_tipo(tipo: int):
 		return
 	
 	match tipo:
-		Nodos.INICIO:
+		NodosJuego.INICIO:
 			label.set_text("Inicio")
 			modulate = Color(0.2, 1.0, 0.2)  # Verde
-		Nodos.DESAFIO:
-			label.text = "Nodo"
+		NodosJuego.DESAFIO:
+			label.set_text("TreeNode")
 			modulate = Color(0.8, 0.8, 0.8)
-		Nodos.PISTA:
+		NodosJuego.PISTA:
 			label.set_text("Pista")
 			modulate = Color(0.2, 0.6, 1.0)  # Azul
-		Nodos.FINAL:
+		NodosJuego.FINAL:
 			label.set_text("Meta")
 			modulate = Color(1.0, 0.8, 0.2)
 			
@@ -43,5 +43,5 @@ func actualizar_estado_visto():
 # 🔹 Detecta clics en el nodo (opcional)
 func _pressed():
 	if nodo != null:
-		print("🟢 Nodo presionado:", nodo.tipo)
+		print("🟢 TreeNode presionado:", nodo.tipo)
 		# Aquí podrías emitir una señal global para saltar a ese nodo

@@ -31,7 +31,7 @@ func _ready() -> void:
 	# Asegurar que este Control capture eventos
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	
-	print("PanelDragger: Panel encontrado en: ", panel.get_path())
+	#print("PanelDragger: Panel encontrado en: ", panel.get_path())
 
 func _find_parent_panel() -> Panel:
 	var current_node = get_parent()

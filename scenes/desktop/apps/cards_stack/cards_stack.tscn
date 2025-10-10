@@ -1,0 +1,134 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0mx4seqmfq4d"]
+
+[ext_resource type="Script" uid="uid://b78r2ssceaj43" path="res://assets/scripts/cards_stack/cards_stack.gd" id="1_ba6y3"]
+[ext_resource type="PackedScene" uid="uid://vm7jfk3vjddq" path="res://scenes/desktop/apps/cards_stack/card.tscn" id="1_bx0j3"]
+
+[node name="CardsStack" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ba6y3")
+
+[node name="BG" type="ColorRect" parent="."]
+self_modulate = Color(1, 1, 1, 0.541176)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopPoint" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 80.0
+offset_right = 20.0
+offset_bottom = 120.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Cards" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 94.0
+offset_right = 20.0
+offset_bottom = 134.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Card5" parent="Cards" instance=ExtResource("1_bx0j3")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -779.0
+offset_top = -912.0
+offset_right = -404.0
+offset_bottom = -700.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(187.5, 106)
+color = Color(0, 0.658824, 0.192157, 1)
+threshold_speed = 150.0
+
+[node name="Card4" parent="Cards" instance=ExtResource("1_bx0j3")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 103.0
+offset_top = -824.0
+offset_right = 478.0
+offset_bottom = -612.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(187.5, 106)
+color = Color(0.709804, 0.290196, 1, 1)
+threshold_speed = 150.0
+
+[node name="Card3" parent="Cards" instance=ExtResource("1_bx0j3")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -599.0
+offset_top = -568.0
+offset_right = -224.0
+offset_bottom = -356.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(187.5, 106)
+color = Color(0.380392, 0.494118, 1, 1)
+threshold_speed = 150.0
+
+[node name="Card2" parent="Cards" instance=ExtResource("1_bx0j3")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 292.0
+offset_top = -409.0
+offset_right = 667.0
+offset_bottom = -197.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(187.5, 106)
+color = Color(0.768627, 0.466667, 0, 1)
+threshold_speed = 150.0
+
+[node name="Card" parent="Cards" instance=ExtResource("1_bx0j3")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -187.0
+offset_top = -244.0
+offset_right = 188.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(187.5, 106)
+color = Color(1, 0.101961, 0.235294, 1)
+threshold_speed = 150.0
