@@ -18,7 +18,7 @@ class_name ButtonVisualEffects
 @export var enable_hover_scale: bool = true
 
 @export_group("Node References")
-@export var texture_node: TextureRect
+@export var texture_node: Control
 @export var shadow_node: Control
 
 var tween_rot: Tween

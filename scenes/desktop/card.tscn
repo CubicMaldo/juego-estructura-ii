@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://dw01q6aqp3mk1"]
+
+[ext_resource type="Script" uid="uid://dldh5i432g78j" path="res://assets/scripts/cards_stack/card.gd" id="1_s7h5d"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_px6tc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6f1bb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jkqhe"]
+resource_local_to_scene = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gt26c"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 16
+
+[node name="Button" type="Button"]
+material = SubResource("ShaderMaterial_px6tc")
+offset_right = 375.0
+offset_bottom = 210.0
+pivot_offset = Vector2(187.5, 105)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6f1bb")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_6f1bb")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_6f1bb")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_6f1bb")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_6f1bb")
+script = ExtResource("1_s7h5d")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+material = SubResource("ShaderMaterial_jkqhe")
+layout_mode = 1
+offset_right = 746.0
+offset_bottom = 418.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(746, 418)
+render_target_update_mode = 4
+
+[node name="Card" type="Panel" parent="SubViewportContainer/SubViewport"]
+self_modulate = Color(1, 0.141176, 0.270588, 1)
+offset_right = 746.0
+offset_bottom = 418.0
+pivot_offset = Vector2(246.5, 137)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gt26c")
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

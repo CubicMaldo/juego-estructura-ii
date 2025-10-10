@@ -4,6 +4,7 @@ class_name TreeLayout
 ## ------------------------------------------------------------
 ## Layout de árbol jerárquico optimizado (Reingold–Tilford mejorado)
 ## Compatible con orientación vertical u horizontal
+## Usa directamente TreeNode sin wrapper adicional
 ## ------------------------------------------------------------
 
 # Orientación y espaciado básico
@@ -50,15 +51,63 @@ class_name TreeLayout
 @export var balance_subtrees: bool = true
 
 # ------------------------------------------------------------
+# DATOS DE LAYOUT ALMACENADOS POR NODO
+# ------------------------------------------------------------
 
-func calculate_layout(root: Nodo) -> Dictionary:
+var _layout_data: Dictionary = {}  # TreeNode -> Dictionary con datos de layout
+
+func _get_layout(node: TreeNode) -> Dictionary:
+	if not _layout_data.has(node):
+		_layout_data[node] = {
+			"prelim": 0.0,
+			"modifier": 0.0,
+			"x": 0.0,
+			"left_sibling": null,
+			"leaf_count": 0,
+			"level": 0
+		}
+	return _layout_data[node]
+
+func _set_prelim(node: TreeNode, value: float) -> void:
+	_get_layout(node)["prelim"] = value
+
+func _get_prelim(node: TreeNode) -> float:
+	return _get_layout(node)["prelim"]
+
+func _set_modifier(node: TreeNode, value: float) -> void:
+	_get_layout(node)["modifier"] = value
+
+func _get_modifier(node: TreeNode) -> float:
+	return _get_layout(node)["modifier"]
+
+func _set_x(node: TreeNode, value: float) -> void:
+	_get_layout(node)["x"] = value
+
+func _get_x(node: TreeNode) -> float:
+	return _get_layout(node)["x"]
+
+func _set_left_sibling(node: TreeNode, sibling: TreeNode) -> void:
+	_get_layout(node)["left_sibling"] = sibling
+
+func _get_left_sibling(node: TreeNode) -> TreeNode:
+	return _get_layout(node)["left_sibling"]
+
+# ------------------------------------------------------------
+# FUNCIÓN PRINCIPAL DE LAYOUT
+# ------------------------------------------------------------
+
+func calculate_layout(root: TreeNode) -> Dictionary:
 	if root == null:
 		return {}
+
+	# Limpiar datos anteriores
+	_layout_data.clear()
 
 	if subtree_spacing <= 0.0:
 		subtree_spacing = node_spacing * 0.8
 
-	var tree_root := _build_tree_structure(root)
+	# Preparar estructura (hermanos, metadatos)
+	_prepare_tree_structure(root)
 	
 	var effective_node_spacing = node_spacing * sibling_spacing_multiplier
 	var effective_subtree_spacing = subtree_spacing
@@ -67,14 +116,14 @@ func calculate_layout(root: Nodo) -> Dictionary:
 		effective_node_spacing *= compact_factor
 		effective_subtree_spacing *= compact_factor
 	
-	_calculate_initial_positions(tree_root, effective_node_spacing, effective_subtree_spacing)
-	_finalize_positions(tree_root, 0.0)
+	_calculate_initial_positions(root, effective_node_spacing, effective_subtree_spacing)
+	_finalize_positions(root, 0.0)
 
 	var positions := {}
-	_collect_positions(tree_root, positions, 0, level_spacing)
+	_collect_positions(root, positions, 0, level_spacing)
 	
 	if align_leaf_nodes:
-		_align_leaves(positions, tree_root)
+		_align_leaves(positions, root)
 	
 	positions = _normalize_positions(positions)
 	positions = _apply_margins(positions)
@@ -83,87 +132,87 @@ func calculate_layout(root: Nodo) -> Dictionary:
 	return positions
 
 # ------------------------------------------------------------
-# ESTRUCTURA INTERNA DEL ÁRBOL
+# PREPARACIÓN DEL ÁRBOL
 # ------------------------------------------------------------
 
-class TreeNode:
-	var nodo: Nodo
-	var parent: TreeNode
-	var children: Array = []
-	var x: float = 0.0
-	var y: float = 0.0
-	var prelim: float = 0.0
-	var modifier: float = 0.0
-	var left_sibling: TreeNode
-	var metadata := {}
-
-	func _init(_nodo: Nodo, _parent: TreeNode = null) -> void:
-		nodo = _nodo
-		parent = _parent
-
-	func is_leaf() -> bool:
-		return children.is_empty()
-
-	func get_leftmost_child() -> TreeNode:
-		return children.front() if not children.is_empty() else null
-
-	func get_rightmost_child() -> TreeNode:
-		return children.back() if not children.is_empty() else null
-
-# ------------------------------------------------------------
-# CONSTRUCCIÓN DEL ÁRBOL
-# ------------------------------------------------------------
-
-func _build_tree_structure(nodo: Nodo, parent: TreeNode = null) -> TreeNode:
-	var tree_node := TreeNode.new(nodo, parent)
-	var children : Array = nodo.get_children()
-
+func _prepare_tree_structure(node: TreeNode, parent: TreeNode = null, level: int = 0) -> void:
+	var layout = _get_layout(node)
+	layout["level"] = level
+	
+	var children = node.get_children()
+	
+	# Establecer hermanos izquierdos
 	var prev_child: TreeNode = null
 	for child in children:
-		if child is Nodo:
-			var child_tree := _build_tree_structure(child, tree_node)
-			child_tree.left_sibling = prev_child
-			tree_node.children.append(child_tree)
-			prev_child = child_tree
-
-	tree_node.metadata["leaf_count"] = _count_leaves(tree_node)
-	tree_node.metadata["child_count"] = tree_node.children.size()
-	tree_node.metadata["level"] = _get_node_level(tree_node)
+		if child is TreeNode:
+			_set_left_sibling(child, prev_child)
+			_prepare_tree_structure(child, node, level + 1)
+			prev_child = child
 	
-	return tree_node
+	# Calcular metadata
+	layout["leaf_count"] = _count_leaves(node)
+
+# ------------------------------------------------------------
+# HELPERS PARA NODOS
+# ------------------------------------------------------------
+
+func _is_leaf(node: TreeNode) -> bool:
+	if node == null:
+		return false
+	return node.izquierdo == null and node.derecho == null
+
+func _get_leftmost_child(node: TreeNode) -> TreeNode:
+	if node.izquierdo != null:
+		return node.izquierdo
+	return node.derecho
+
+func _get_rightmost_child(node: TreeNode) -> TreeNode:
+	if node.derecho != null:
+		return node.derecho
+	return node.izquierdo
 
 # ------------------------------------------------------------
 # POSICIONAMIENTO INICIAL
 # ------------------------------------------------------------
 
 func _calculate_initial_positions(node: TreeNode, node_spacing: float, subtree_spacing: float) -> void:
-	for child in node.children:
+	if node == null:
+		return
+	
+	# Procesar hijos primero
+	var children = node.get_children()
+	for child in children:
 		_calculate_initial_positions(child, node_spacing, subtree_spacing)
 
-	if node.is_leaf():
+	if _is_leaf(node):
 		var effective_spacing = node_spacing
 		if use_node_size_in_spacing:
 			effective_spacing = max(node_spacing, node_width * 1.5)
-		node.prelim = node.left_sibling.prelim + effective_spacing if node.left_sibling else 0.0
+		
+		var left_sib = _get_left_sibling(node)
+		if left_sib:
+			_set_prelim(node, _get_prelim(left_sib) + effective_spacing)
+		else:
+			_set_prelim(node, 0.0)
 	else:
 		_position_internal_node(node, node_spacing, subtree_spacing)
 
 # ------------------------------------------------------------
 
 func _position_internal_node(node: TreeNode, node_spacing: float, _subtree_spacing: float) -> void:
-	var leftmost := node.get_leftmost_child()
-	var rightmost := node.get_rightmost_child()
+	var leftmost := _get_leftmost_child(node)
+	var rightmost := _get_rightmost_child(node)
 	if leftmost == null or rightmost == null:
 		return
 
 	var mid := 0.0
 	match centering_mode:
 		"center":
-			mid = (leftmost.prelim + rightmost.prelim) / 2.0
+			mid = (_get_prelim(leftmost) + _get_prelim(rightmost)) / 2.0
 		"left":
-			mid = leftmost.prelim
+			mid = _get_prelim(leftmost)
 		"right":
-			mid = rightmost.prelim
+			mid = _get_prelim(rightmost)
 		"weighted_leaves":
 			mid = _get_weighted_midpoint_leaves(node)
 		"weighted_children":
@@ -171,22 +220,23 @@ func _position_internal_node(node: TreeNode, node_spacing: float, _subtree_spaci
 		_:
 			mid = _get_weighted_midpoint_leaves(node)
 
-	if node.left_sibling != null:
-		node.prelim = node.left_sibling.prelim + node_spacing
-		node.modifier = node.prelim - mid
+	var left_sib = _get_left_sibling(node)
+	if left_sib != null:
+		_set_prelim(node, _get_prelim(left_sib) + node_spacing)
+		_set_modifier(node, _get_prelim(node) - mid)
 		if balance_subtrees:
 			_apportion(node, _subtree_spacing)
 	else:
-		node.prelim = mid
+		_set_prelim(node, mid)
 
 # ------------------------------------------------------------
 
 func _apportion(node: TreeNode, _subtree_spacing: float) -> void:
-	var leftmost := node.get_leftmost_child()
+	var leftmost := _get_leftmost_child(node)
 	if leftmost == null:
 		return
 
-	var left_neighbor := leftmost.left_sibling
+	var left_neighbor := _get_left_sibling(leftmost)
 	if left_neighbor == null:
 		return
 
@@ -195,7 +245,7 @@ func _apportion(node: TreeNode, _subtree_spacing: float) -> void:
 		min_spacing = max(_subtree_spacing, node_width * 2.0)
 
 	# calcula solapamiento real
-	var overlap : float = (left_neighbor.prelim + _get_subtree_width(left_neighbor) + min_spacing) - leftmost.prelim
+	var overlap : float = (_get_prelim(left_neighbor) + _get_subtree_width(left_neighbor) + min_spacing) - _get_prelim(leftmost)
 
 	if overlap > 0.0:
 		overlap = lerpf(overlap, overlap * apportion_smoothing, 1.0)
@@ -203,27 +253,39 @@ func _apportion(node: TreeNode, _subtree_spacing: float) -> void:
 
 
 func _shift_subtree(node: TreeNode, shift: float) -> void:
-	# Mueve todo el subárbol hacia la derecha (o abajo si horizontal)
-	for child in node.children:
-		child.prelim += shift
-		child.modifier += shift
+	if node == null:
+		return
+	
+	_set_prelim(node, _get_prelim(node) + shift)
+	_set_modifier(node, _get_modifier(node) + shift)
+	
+	# Mover hijos recursivamente
+	var children = node.get_children()
+	for child in children:
 		_shift_subtree(child, shift)
 
 func _get_subtree_width(node: TreeNode) -> float:
-	if node.is_leaf():
+	if _is_leaf(node):
 		return node_width
-	var left := node.get_leftmost_child()
-	var right := node.get_rightmost_child()
-	return abs(right.prelim - left.prelim) + node_width
+	var left := _get_leftmost_child(node)
+	var right := _get_rightmost_child(node)
+	if left == null or right == null:
+		return node_width
+	return abs(_get_prelim(right) - _get_prelim(left)) + node_width
 
 # ------------------------------------------------------------
 # CÁLCULO DE POSICIONES FINALES
 # ------------------------------------------------------------
 
 func _finalize_positions(node: TreeNode, mod_sum: float) -> void:
-	node.x = node.prelim + mod_sum
-	for child in node.children:
-		_finalize_positions(child, mod_sum + node.modifier)
+	if node == null:
+		return
+	
+	_set_x(node, _get_prelim(node) + mod_sum)
+	
+	var children = node.get_children()
+	for child in children:
+		_finalize_positions(child, mod_sum + _get_modifier(node))
 
 # ------------------------------------------------------------
 # RECOLECCIÓN DE POSICIONES
@@ -242,13 +304,14 @@ func _collect_positions(node: TreeNode, positions: Dictionary, level: int, level
 	
 	var pos: Vector2
 	if orientation == "vertical":
-		pos = Vector2(node.x * aspect_ratio, float(level) * effective_level_spacing)
+		pos = Vector2(_get_x(node) * aspect_ratio, float(level) * effective_level_spacing)
 	else:
-		pos = Vector2(float(level) * effective_level_spacing, node.x * aspect_ratio)
+		pos = Vector2(float(level) * effective_level_spacing, _get_x(node) * aspect_ratio)
 	
-	positions[node.nodo] = pos
+	positions[node] = pos
 
-	for child in node.children:
+	var children = node.get_children()
+	for child in children:
 		_collect_positions(child, positions, level + 1, level_spacing)
 
 # ------------------------------------------------------------
@@ -260,21 +323,22 @@ func _align_leaves(positions: Dictionary, root: TreeNode) -> void:
 	var leaves := _collect_leaves(root)
 	
 	for leaf in leaves:
-		if leaf.nodo in positions:
-			var pos = positions[leaf.nodo]
+		if leaf in positions:
+			var pos = positions[leaf]
 			if orientation == "vertical":
 				var target_y = (max_depth - 1) * level_spacing
-				positions[leaf.nodo] = Vector2(pos.x, target_y)
+				positions[leaf] = Vector2(pos.x, target_y)
 			else:
 				var target_x = (max_depth - 1) * level_spacing
-				positions[leaf.nodo] = Vector2(target_x, pos.y)
+				positions[leaf] = Vector2(target_x, pos.y)
 
 func _collect_leaves(node: TreeNode) -> Array:
 	var leaves := []
-	if node.is_leaf():
+	if _is_leaf(node):
 		leaves.append(node)
 	else:
-		for child in node.children:
+		var children = node.get_children()
+		for child in children:
 			leaves.append_array(_collect_leaves(child))
 	return leaves
 
@@ -285,41 +349,46 @@ func _collect_leaves(node: TreeNode) -> Array:
 func _get_weighted_midpoint_leaves(node: TreeNode) -> float:
 	var total_weight := 0.0
 	var weighted_sum := 0.0
-	for child in node.children:
+	var children = node.get_children()
+	
+	for child in children:
 		var leaves := _count_leaves(child)
 		total_weight += leaves
-		weighted_sum += child.prelim * leaves
+		weighted_sum += _get_prelim(child) * leaves
 	return weighted_sum / total_weight if total_weight > 0 else 0.0
 
 func _get_weighted_midpoint_children(node: TreeNode) -> float:
 	var total := 0.0
-	for child in node.children:
-		total += child.prelim
-	return total / node.children.size() if node.children.size() > 0 else 0.0
+	var children = node.get_children()
+	var count = 0
+	
+	for child in children:
+		total += _get_prelim(child)
+		count += 1
+	
+	return total / count if count > 0 else 0.0
 
 func _count_leaves(node: TreeNode) -> int:
-	if node.is_leaf():
+	if node == null:
+		return 0
+	if _is_leaf(node):
 		return 1
 	var count := 0
-	for child in node.children:
+	var children = node.get_children()
+	for child in children:
 		count += _count_leaves(child)
 	return count
 
 func _count_levels(node: TreeNode) -> int:
-	if node.is_leaf():
+	if node == null:
+		return 0
+	if _is_leaf(node):
 		return 1
 	var max_level := 0
-	for child in node.children:
+	var children = node.get_children()
+	for child in children:
 		max_level = max(max_level, _count_levels(child))
 	return max_level + 1
-
-func _get_node_level(node: TreeNode) -> int:
-	var level := 0
-	var current := node
-	while current.parent != null:
-		level += 1
-		current = current.parent
-	return level
 
 func _normalize_positions(positions: Dictionary) -> Dictionary:
 	if positions.is_empty():

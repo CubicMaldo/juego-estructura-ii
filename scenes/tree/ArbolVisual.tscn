@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://b18u3yjvlwrp5"]
 
-[ext_resource type="Script" uid="uid://duae2b8ui1ps1" path="res://assets/scripts/arboles/visual/TreeVisualizer.gd" id="1_f10rm"]
-[ext_resource type="Script" uid="uid://bcmietwkpm61y" path="res://assets/scripts/arboles/visual/lineastree.gd" id="2_s14mt"]
-[ext_resource type="Script" uid="uid://douwg7h31bch4" path="res://scenes/tree/TreeLayout.gd" id="3_u1lj3"]
-[ext_resource type="Script" uid="uid://6lyydr1opiq7" path="res://scenes/tree/TreeCamera.gd" id="4_e2vb7"]
+[ext_resource type="Script" uid="uid://duae2b8ui1ps1" path="res://assets/scripts/arboles/visual/M_TreeVisualizer.gd" id="1_f10rm"]
+[ext_resource type="Script" uid="uid://bcmietwkpm61y" path="res://assets/scripts/arboles/visual/TreeLines.gd" id="2_s14mt"]
+[ext_resource type="Script" uid="uid://douwg7h31bch4" path="res://assets/scripts/arboles/visual/TreeLayout.gd" id="3_u1lj3"]
+[ext_resource type="Script" uid="uid://6lyydr1opiq7" path="res://assets/scripts/arboles/visual/TreeCamera.gd" id="4_e2vb7"]
 
 [node name="ArbolVisual" type="Control"]
 layout_mode = 3
