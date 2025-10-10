@@ -11,7 +11,8 @@ var arbol: Arbol
 func _ready():
 	arbol = Arbol.new()
 	Global.tree = arbol
-	Global.tree.generar_arbol_controlado(-1981898002738864403)
+	Global.tree.generar_arbol_controlado(-3134212811937338020
+)
 	Global.tree.imprimir_arbol()
 	Global.tree.imprimir_arbol_vistos()
 	Global.nodo_actual = Global.tree.raiz

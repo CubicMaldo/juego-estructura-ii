@@ -6,11 +6,6 @@ extends Control
 @export var layout_engine: TreeLayout
 @export var camera_controller: TreeCamera
 
-@export_category("Tree Layout Settings")
-@export var node_spacing: float = 500.0
-@export var level_spacing: float = 120.0
-@export var subtree_spacing: float = 0.0
-
 @export_category("Visual Settings")
 @export var animation_duration: float = 0.5
 @export var auto_center_on_ready: bool = true
@@ -82,34 +77,27 @@ func mostrar_arbol(arbol: Arbol) -> void:
 	tree = arbol
 	
 	# Calcular layout
-	var positions = layout_engine.calculate_tree_layout(
-		tree.raiz, 
-		node_spacing, 
-		level_spacing, 
-		subtree_spacing
-	)
+	var positions = layout_engine.calculate_layout(tree.raiz)
 	
 	# Dibujar árbol
 	_draw_tree_with_positions(positions)
-	
 	# Centrar si es necesario
+	print(is_inside_tree())
 	if auto_center_on_ready and is_inside_tree():
 		await get_tree().process_frame
-		center_tree()
-	
+	center_tree()
 	tree_loaded.emit()
 
 func center_tree() -> void:
 	if camera_controller == null:
 		push_error("Camera controller not initialized")
 		return
-	
 	var bounds = _get_tree_bounds()
 	if bounds.size == Vector2.ZERO:
 		return
 	
-	var viewport_center = size / 2.0
-	var tree_center = bounds.get_center()
+	var viewport_center : Vector2 = size / 2.0
+	var tree_center = bounds.get_center() * 1000
 	var offset = viewport_center - tree_center
 	
 	camera_controller.center_on_position(offset, animation_duration)

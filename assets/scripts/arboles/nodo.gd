@@ -20,3 +20,11 @@ func hijosVistos():
 		self.izquierdo.visto = true
 	if self.derecho != null:
 		self.derecho.visto = true
+
+func get_children() -> Array:
+	var children : Array
+	if self.izquierdo != null:
+		children.append(self.izquierdo)
+	if self.derecho != null:
+		children.append(self.derecho)
+	return children
