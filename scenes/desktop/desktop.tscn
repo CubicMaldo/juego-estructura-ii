@@ -9,18 +9,20 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ax2js"]
 shader = ExtResource("1_13veq")
-shader_parameter/spin_rotation_speed = 0.515
-shader_parameter/move_speed = 0.2
+shader_parameter/polar_coordinates = false
+shader_parameter/polar_center = Vector2(0.5, 0.5)
+shader_parameter/polar_zoom = 1.0
+shader_parameter/polar_repeat = 1.0
+shader_parameter/spin_rotation = 0.0
+shader_parameter/spin_speed = 7.0
 shader_parameter/offset = Vector2(0, 0)
 shader_parameter/colour_1 = Color(0.1764, 0.36, 0.27126, 1)
-shader_parameter/colour_2 = Color(0, 0, 0, 1)
+shader_parameter/colour_2 = Color(0.1764706, 0.36078432, 0.27058825, 1)
 shader_parameter/colour_3 = Color(0.086, 0.137, 0.145, 1)
 shader_parameter/contrast = 3.355
 shader_parameter/lighting = 0.4
-shader_parameter/spin_amount = 0.05
+shader_parameter/spin_amount = 0.0
 shader_parameter/pixel_filter = 5000.0
-shader_parameter/is_rotating = true
-shader_parameter/blur_amount = 1.0000000475
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rvpx8"]
 shader = ExtResource("3_46iw5")
@@ -37,8 +39,12 @@ corner_radius_bottom_right = 12
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gpmcu"]
 shader = ExtResource("1_13veq")
-shader_parameter/spin_rotation_speed = 2.0
-shader_parameter/move_speed = 7.0
+shader_parameter/polar_coordinates = false
+shader_parameter/polar_center = Vector2(0.5, 0.5)
+shader_parameter/polar_zoom = 1.0
+shader_parameter/polar_repeat = 1.0
+shader_parameter/spin_rotation = 0.0
+shader_parameter/spin_speed = 1.0
 shader_parameter/offset = Vector2(0, 0)
 shader_parameter/colour_1 = Color(0.871, 0.267, 0.231, 1)
 shader_parameter/colour_2 = Color(0, 0.42, 0.706, 1)
@@ -47,8 +53,6 @@ shader_parameter/contrast = 3.5
 shader_parameter/lighting = 0.4
 shader_parameter/spin_amount = 0.25
 shader_parameter/pixel_filter = 740.0
-shader_parameter/is_rotating = false
-shader_parameter/blur_amount = 3.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_73eyv"]
 content_margin_left = 4.0

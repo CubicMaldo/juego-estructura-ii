@@ -39,7 +39,7 @@ func generar_arbol_controlado(semilla: int = -1) -> void:
 		_agregar_ramas(i)
 	
 	# 3. Colocar el nodo FINAL en la hoja más profunda
-	var hoja_profunda = _obtener_hoja_mas_profunda()
+	var hoja_profunda = obtener_hoja_mas_profunda()
 	if hoja_profunda != null:
 		hoja_profunda.tipo = NodosJuego.FINAL
 	
@@ -92,7 +92,7 @@ func _colocar_pistas() -> void:
 	for i in range(max_pistas):
 		hojas[i].tipo = NodosJuego.PISTA
 
-func _obtener_hoja_mas_profunda() -> TreeNode: 
+func obtener_hoja_mas_profunda() -> TreeNode: 
 	var result = _buscar_hoja_profunda(raiz, 0)
 	return result.hoja
 

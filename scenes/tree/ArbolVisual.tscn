@@ -15,6 +15,9 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_f10rm")
+color_discovered = Color(0.8509804, 0.8509804, 0.8509804, 1)
+color_visited = Color(0.29803923, 0.62352943, 1, 1)
+color_current = Color(1, 0.7764706, 0.2, 1)
 
 [node name="TreeLayout" type="Control" parent="."]
 layout_mode = 1

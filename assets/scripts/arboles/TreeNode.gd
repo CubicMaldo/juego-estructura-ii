@@ -8,6 +8,7 @@ var padre: TreeNode
 var izquierdo: TreeNode
 var derecho: TreeNode
 
+
 func _init(_tipo: int, _padre: TreeNode = null):
 	self.tipo = _tipo
 	self.padre = _padre

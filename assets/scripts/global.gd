@@ -1,10 +1,10 @@
 extends Node
 
 ## Simplified global - only holds the game controller reference
-## All game logic is now in GameController
+## All game logic is now in TreeAppController
 
-var treeMap : GameController
+var treeMap : TreeAppController
 
 func _ready():
-	treeMap = GameController.new()
+	treeMap = TreeAppController.new()
 	add_child(treeMap)

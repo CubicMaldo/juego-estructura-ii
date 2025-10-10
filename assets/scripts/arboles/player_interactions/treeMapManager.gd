@@ -36,7 +36,6 @@ func _ready():
 
 func _on_player_moved(node: TreeNode):
 	_update_button_states()
-	print("moved")
 	# Refrescar visibilidad del árbol visual
 	if arbol_visual.has_method("refresh_visibility"):
 		arbol_visual.refresh_visibility()
@@ -46,8 +45,9 @@ func _on_player_moved(node: TreeNode):
 		arbol_visual.update_current_node(node)
 
 func _on_node_revealed(node: TreeNode):
-	print("🎨 Visual node revealed: ", node.tipo)
-	# Aquí puedes agregar efectos de sonido, partículas, etc.
+	#print("🎨 Visual node revealed: ", node.tipo)
+	# Aquí agregar efectos de sonido, partículas, etc.
+	pass
 
 func _update_button_states():
 	button_izq.disabled = not Global.treeMap.can_navigate_left()

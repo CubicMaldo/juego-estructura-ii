@@ -9,7 +9,13 @@ extends Control
 @export_category("Visual Settings")
 @export var animation_duration: float = 0.5
 @export var auto_center_on_ready: bool = true
-@export var fog_of_war_enabled: bool = true  # Toggle para fog of war
+@export var fog_of_war_enabled: bool = true
+
+@export_category("Node Colors")
+@export var color_undiscovered: Color = Color(0.3, 0.3, 0.3, 0.3)  # Gris oscuro
+@export var color_discovered: Color = Color.WHITE  # Blanco (descubierto pero no visitado)
+@export var color_visited: Color = Color(0.4, 0.6, 0.9, 1.0)  # Azul (visitado)
+@export var color_current: Color = Color(1.0, 0.8, 0.2, 1.0)  # Amarillo/Dorado (actual)
 
 enum NodosJuego { INICIO = 0, DESAFIO = 1, PISTA = 2, FINAL = 3 }
 
@@ -21,11 +27,12 @@ signal tree_loaded()
 signal node_visual_revealed(node: TreeNode)
 
 var tree: Arbol
-var visibility_tracker: VisibilityTracker  # 🆕 Referencia al tracker
+var visibility_tracker: VisibilityTracker
 var lineas: Array[Array] = []
 
 # Mapeo de nodos lógicos a nodos visuales
 var node_to_visual: Dictionary = {}  # TreeNode -> Control/Node2D
+var current_node: TreeNode = null  # 🆕 Nodo actual
 
 # Referencias a contenedores
 var nodos_container: Control
@@ -70,20 +77,54 @@ func _initialize_dependencies() -> void:
 
 # ========== API PÚBLICA CON VISIBILITY ==========
 
+## Actualizar el nodo actual manualmente (si VisibilityTracker no tiene señal)
+func set_current_node(node: TreeNode) -> void:
+	"""Establece el nodo actual y actualiza la visualización"""
+	if current_node == node:
+		return
+	
+	var old_node = current_node
+	current_node = node
+	
+	# Actualizar apariencia del nodo anterior
+	if old_node and node_to_visual.has(old_node):
+		var old_visual = node_to_visual[old_node]
+		_update_node_appearance(old_node, old_visual)
+	
+	# Actualizar apariencia del nodo actual
+	if current_node and node_to_visual.has(current_node):
+		var new_visual = node_to_visual[current_node]
+		_update_node_appearance(current_node, new_visual)
+	
+	#print("🎯 Current node set to: ", node.tipo if node else "null")
+
 ## Conectar con el sistema de visibilidad
 func connect_visibility_tracker(tracker: VisibilityTracker) -> void:
 	if visibility_tracker != null:
 		# Desconectar señales previas
-		if visibility_tracker.node_discovered.is_connected(_on_node_discovered):
+		if visibility_tracker.has_signal("node_discovered") and visibility_tracker.node_discovered.is_connected(_on_node_discovered):
 			visibility_tracker.node_discovered.disconnect(_on_node_discovered)
-		if visibility_tracker.node_visited.is_connected(_on_node_visited):
+		if visibility_tracker.has_signal("node_visited") and visibility_tracker.node_visited.is_connected(_on_node_visited):
 			visibility_tracker.node_visited.disconnect(_on_node_visited)
+		if visibility_tracker.has_signal("current_node_changed") and visibility_tracker.current_node_changed.is_connected(_on_current_node_changed):
+			visibility_tracker.current_node_changed.disconnect(_on_current_node_changed)
 	
 	visibility_tracker = tracker
 	
 	if visibility_tracker != null:
-		visibility_tracker.node_discovered.connect(_on_node_discovered)
-		visibility_tracker.node_visited.connect(_on_node_visited)
+		# Conectar señales si existen
+		if visibility_tracker.has_signal("node_discovered"):
+			visibility_tracker.node_discovered.connect(_on_node_discovered)
+		
+		if visibility_tracker.has_signal("node_visited"):
+			visibility_tracker.node_visited.connect(_on_node_visited)
+		
+		if visibility_tracker.has_signal("current_node_changed"):
+			visibility_tracker.current_node_changed.connect(_on_current_node_changed)
+		
+		# Sincronizar nodo actual
+		if "current_node" in visibility_tracker and visibility_tracker.current_node:
+			current_node = visibility_tracker.current_node
 
 ## Mostrar árbol (con o sin fog of war)
 func mostrar_arbol(arbol: Arbol, tracker: VisibilityTracker = null) -> void:
@@ -111,12 +152,12 @@ func mostrar_arbol(arbol: Arbol, tracker: VisibilityTracker = null) -> void:
 	
 	if auto_center_on_ready and is_inside_tree():
 		await get_tree().process_frame
-	center_tree()
+		center_tree()
 	tree_loaded.emit()
 
 ## Actualizar visualización según visibilidad actual
 func refresh_visibility() -> void:
-	if tree == null or visibility_tracker == null:
+	if tree == null:
 		return
 	
 	# Recalcular posiciones
@@ -127,16 +168,17 @@ func refresh_visibility() -> void:
 	for nodo in node_to_visual.keys():
 		var visual = node_to_visual[nodo]
 		
-		if visual and is_instance_valid(visual) and not visibility_tracker.discovered_nodes.has(nodo):
-			_update_node_visibility(nodo, visual)
+		if visual and is_instance_valid(visual):
+			_update_node_appearance(nodo, visual)
 	
 	# Actualizar líneas
-	_update_visible_lines(positions, offset)
+	if fog_of_war_enabled and visibility_tracker != null:
+		_update_visible_lines(positions, offset)
 
 # ========== CALLBACKS DE VISIBILITY TRACKER ==========
 
 func _on_node_discovered(node: TreeNode) -> void:
-	print("🔍 Node discovered in visualizer: ", node.tipo)
+	#print("🔍 Node discovered in visualizer: ", node.tipo)
 	
 	if not node_to_visual.has(node):
 		# El nodo no existe visualmente, crearlo
@@ -155,11 +197,25 @@ func _on_node_discovered(node: TreeNode) -> void:
 	refresh_visibility()
 
 func _on_node_visited(node: TreeNode) -> void:
-	print("✅ Node visited in visualizer: ", node.tipo)
+	#print("✅ Node visited in visualizer: ", node.tipo)
 	
 	if node_to_visual.has(node):
 		var visual = node_to_visual[node]
-		_mark_node_as_visited(visual)
+		_update_node_appearance(node, visual)
+
+func _on_current_node_changed(new_node: TreeNode, old_node: TreeNode) -> void:
+	#print("🎯 Current node changed: ", old_node, " -> ", new_node)
+	
+	# Actualizar el nodo anterior
+	if old_node and node_to_visual.has(old_node):
+		var old_visual = node_to_visual[old_node]
+		_update_node_appearance(old_node, old_visual)
+	
+	# Actualizar el nodo actual
+	current_node = new_node
+	if new_node and node_to_visual.has(new_node):
+		var new_visual = node_to_visual[new_node]
+		_update_node_appearance(new_node, new_visual)
 
 # ========== DIBUJO CON FOG OF WAR ==========
 
@@ -174,15 +230,12 @@ func _draw_tree_with_fog_of_war(positions: Dictionary) -> void:
 		var pos = positions[nodo] + offset
 		var visual = _create_visual_node(nodo, pos)
 		
-		# Ocultar si no está descubierto
-		if not visibility_tracker.is_discovered(nodo):
+		# Configurar apariencia inicial
+		if not visibility_tracker or not visibility_tracker.is_discovered(nodo):
 			_hide_node_visual(visual)
 		else:
 			_reveal_node_visual(visual, nodo)
-			
-			# Marcar como visitado si aplica
-			if visibility_tracker.is_visited(nodo):
-				_mark_node_as_visited(visual)
+			_update_node_appearance(nodo, visual)
 	
 	# Dibujar solo líneas visibles
 	_update_visible_lines(positions, offset)
@@ -190,40 +243,91 @@ func _draw_tree_with_fog_of_war(positions: Dictionary) -> void:
 func _update_visible_lines(positions: Dictionary, offset: Vector2) -> void:
 	lineas.clear()
 	
+	if not visibility_tracker:
+		# Sin tracker, mostrar todas las líneas
+		for nodo in positions:
+			_add_node_connections(nodo, positions, offset, true)
+		_update_lineas_node()
+		return
+	
 	for nodo in positions:
 		# Solo dibujar líneas si el nodo está descubierto
 		if not visibility_tracker.is_discovered(nodo):
 			continue
 		
-		var start_pos = positions[nodo] + offset
-		
-		# Línea a hijo izquierdo (si está descubierto)
-		if nodo.izquierdo and positions.has(nodo.izquierdo):
-			if visibility_tracker.is_discovered(nodo.izquierdo):
-				var end_pos = positions[nodo.izquierdo] + offset
-				lineas.append([start_pos, end_pos])
-		
-		# Línea a hijo derecho (si está descubierto)
-		if nodo.derecho and positions.has(nodo.derecho):
-			if visibility_tracker.is_discovered(nodo.derecho):
-				var end_pos = positions[nodo.derecho] + offset
-				lineas.append([start_pos, end_pos])
+		_add_node_connections(nodo, positions, offset, false)
 	
 	_update_lineas_node()
 
-# ========== MANIPULACIÓN DE NODOS VISUALES ==========
+func _add_node_connections(nodo: TreeNode, positions: Dictionary, offset: Vector2, ignore_visibility: bool) -> void:
+	var start_pos = positions[nodo] + offset
+	
+	# Línea a hijo izquierdo
+	if nodo.izquierdo and positions.has(nodo.izquierdo):
+		if ignore_visibility or visibility_tracker.is_discovered(nodo.izquierdo):
+			var end_pos = positions[nodo.izquierdo] + offset
+			lineas.append([start_pos, end_pos])
+	
+	# Línea a hijo derecho
+	if nodo.derecho and positions.has(nodo.derecho):
+		if ignore_visibility or visibility_tracker.is_discovered(nodo.derecho):
+			var end_pos = positions[nodo.derecho] + offset
+			lineas.append([start_pos, end_pos])
+
+# ========== MANIPULACIÓN DE APARIENCIA DE NODOS ==========
+
+func _update_node_appearance(nodo: TreeNode, visual: Node) -> void:
+	"""Actualiza la apariencia del nodo según su estado actual"""
+	if visual == null or not is_instance_valid(visual):
+		return
+	
+	var target_color: Color
+	var target_scale: Vector2 = Vector2.ONE
+	
+	# Determinar el estado del nodo
+	if nodo == current_node:
+		# Nodo actual - PRIORIDAD MÁXIMA
+		target_color = color_current
+		target_scale = Vector2(1.1, 1.1)  # Ligeramente más grande
+	elif visibility_tracker and visibility_tracker.is_visited(nodo):
+		# Nodo visitado
+		target_color = color_visited
+	elif visibility_tracker and visibility_tracker.is_discovered(nodo):
+		# Nodo descubierto pero no visitado
+		target_color = color_discovered
+	else:
+		# Nodo no descubierto
+		target_color = color_undiscovered
+	
+	# Aplicar cambios con animación suave
+	_animate_node_appearance(visual, target_color, target_scale)
+
+func _animate_node_appearance(visual: Node, target_color: Color, target_scale: Vector2) -> void:
+	"""Anima el cambio de apariencia del nodo"""
+	if not (visual is Control or visual is Node2D):
+		return
+	
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	# Animar color
+	if visual.has_method("set_modulate"):
+		tween.tween_property(visual, "modulate", target_color, 0.3)
+	
+	# Animar escala
+	tween.tween_property(visual, "scale", target_scale, 0.3)
 
 func _hide_node_visual(visual: Node) -> void:
 	if visual == null:
 		return
 	
-	# Opción 1: Hacerlo invisible
-	if visual.has_method("set_visible"):
-		visual.visible = false
+	visual.visible = false
 	
-	# Opción 2: Cambiar modulate para efecto de niebla
+	# Aplicar color de no descubierto
 	if visual.has_method("set_modulate"):
-		visual.modulate = Color(0.3, 0.3, 0.3, 0.3)  # Oscuro y semi-transparente
+		visual.modulate = color_undiscovered
 
 func _reveal_node_visual(visual: Node, node: TreeNode) -> void:
 	if visual == null:
@@ -236,30 +340,28 @@ func _reveal_node_visual(visual: Node, node: TreeNode) -> void:
 		var tween = create_tween()
 		tween.set_trans(Tween.TRANS_CUBIC)
 		tween.set_ease(Tween.EASE_OUT)
+		tween.set_parallel(true)
 		
 		# Escala desde 0
 		visual.scale = Vector2.ZERO
 		tween.tween_property(visual, "scale", Vector2.ONE, 0.3)
 		
-		# Fade in
+		# Fade in con el color correcto
 		if visual.has_method("set_modulate"):
 			visual.modulate = Color(1, 1, 1, 0)
-			tween.parallel().tween_property(visual, "modulate", Color.WHITE, 0.3)
+			var target_color = _get_node_color(node)
+			tween.tween_property(visual, "modulate", target_color, 0.3)
 
-
-func _mark_node_as_visited(visual: Node) -> void:
-	if visual == null:
-		return
-	# Cambiar apariencia para indicar que fue visitado
-	visual.modulate = Color(0.179, 0.507, 0.435, 1.0)
-
-func _update_node_visibility(nodo: TreeNode, visual: Node) -> void:
-	if visibility_tracker.is_discovered(nodo):
-		_reveal_node_visual(visual, nodo)
-		if visibility_tracker.is_visited(nodo):
-			_mark_node_as_visited(visual)
+func _get_node_color(nodo: TreeNode) -> Color:
+	"""Obtiene el color apropiado para un nodo según su estado"""
+	if nodo == current_node:
+		return color_current
+	elif visibility_tracker and visibility_tracker.is_visited(nodo):
+		return color_visited
+	elif visibility_tracker and visibility_tracker.is_discovered(nodo):
+		return color_discovered
 	else:
-		_hide_node_visual(visual)
+		return color_undiscovered
 
 # ========== FUNCIONES DE DIBUJO ORIGINALES (modificadas) ==========
 
@@ -348,7 +450,7 @@ func center_tree() -> void:
 		return
 	
 	var viewport_center : Vector2 = size / 2.0
-	var tree_center = bounds.get_center() * 1000
+	var tree_center = bounds.get_center()
 	var offset = viewport_center - tree_center
 	
 	camera_controller.center_on_position(offset, animation_duration)
@@ -394,7 +496,8 @@ func _ensure_containers_ready() -> void:
 
 func _clear_tree_visual() -> void:
 	lineas.clear()
-	node_to_visual.clear()  # 🆕 Limpiar mapeo
+	node_to_visual.clear()
+	current_node = null  # 🆕 Resetear nodo actual
 	
 	if nodos_container:
 		for child in nodos_container.get_children():

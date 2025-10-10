@@ -1,4 +1,4 @@
-class_name GameController
+class_name TreeAppController
 extends Node
 
 ## Orchestrates the different systems without coupling them together
@@ -13,6 +13,7 @@ var visibility: VisibilityTracker
 
 var score: int = 0
 
+
 func _init():
 	navigator = PlayerNavigator.new()
 	visibility = VisibilityTracker.new()
@@ -24,13 +25,12 @@ func _init():
 func setup_game(seed_value: int = -1) -> void:
 	tree = Arbol.new()
 	tree.generar_arbol_controlado(seed_value)
-	
 	# Print tree stats
-	var stats = TreeDebugger.get_tree_stats(tree)
-	print("\n🌲 Tree Generated:")
-	print("  Total nodes: ", stats.total_nodes)
-	print("  Max depth: ", stats.max_depth)
-	print("  Pistas: ", stats.pista, " | Desafíos: ", stats.desafio)
+	#var stats = TreeDebugger.get_tree_stats(tree)
+	#print("\n🌲 Tree Generated:")
+	#print("  Total nodes: ", stats.total_nodes)
+	#print("  Max depth: ", stats.max_depth)
+	#print("  Pistas: ", stats.pista, " | Desafíos: ", stats.desafio)
 	
 	# Initialize player position
 	navigator.set_current_node(tree.raiz)
@@ -71,12 +71,17 @@ func _handle_navigation() -> void:
 	
 	# Check for game end
 	if current.tipo == Arbol.NodosJuego.FINAL:
-		emit_signal("game_over", true)
+		game_over.emit(true)
 	
-	emit_signal("player_moved", current)
+	player_moved.emit(current)
 
+#JUGADOR MOVIMIENTO
 func _on_player_moved(old_node: TreeNode, new_node: TreeNode) -> void:
 	print("\n=== Player moved from ", _node_type_name(old_node), " to ", _node_type_name(new_node), " ===")
+	visibility.move_to_node(new_node)
+	#WIP Agregar clase que maneje juegos segun tipo aqui
+	if new_node.tipo == 2:
+		visibility.forced_discovery(tree.obtener_hoja_mas_profunda())
 	TreeDebugger.print_tree_with_visibility(tree, visibility, navigator.current_node)
 
 func _on_node_visited(node: TreeNode) -> void:

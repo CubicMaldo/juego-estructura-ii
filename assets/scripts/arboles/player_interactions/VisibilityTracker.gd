@@ -1,14 +1,34 @@
-class_name VisibilityTracker
 extends Node
-
-## Tracks which nodes have been discovered/visited
-## Independent of both tree structure and player navigation
+class_name VisibilityTracker
 
 signal node_discovered(node: TreeNode)
 signal node_visited(node: TreeNode)
+signal current_node_changed(new_node: TreeNode, old_node: TreeNode)
 
-var discovered_nodes: Dictionary = {}  # TreeNode -> bool
-var visited_nodes: Dictionary = {}     # TreeNode -> bool
+# 🎯 FUENTE DE VERDAD
+var current_node: TreeNode = null
+var discovered_nodes: Dictionary = {}
+var visited_nodes: Dictionary = {}
+
+func move_to_node(node: TreeNode) -> void:
+	"""Mueve al jugador a un nuevo nodo"""
+	if node == null or node == current_node:
+		return
+
+	var old_node = current_node
+	current_node = node  #Actualizar fuente de verdad
+
+	# Descubrir nodo
+	if not discovered_nodes.has(node):
+		discover_node(node)
+
+	# Marcar como visitado
+	if not visited_nodes.has(node):
+		visited_nodes[node] = true
+		node_visited.emit(node)
+
+	# Notificar cambio
+	current_node_changed.emit(current_node, old_node)
 
 func discover_node(node: TreeNode) -> void:
 	if node == null:
@@ -16,7 +36,7 @@ func discover_node(node: TreeNode) -> void:
 	
 	if not is_discovered(node):
 		discovered_nodes[node] = true
-		emit_signal("node_discovered", node)
+		node_discovered.emit(node)
 
 func visit_node(node: TreeNode) -> void:
 	if node == null:
@@ -26,7 +46,7 @@ func visit_node(node: TreeNode) -> void:
 	
 	if not is_visited(node):
 		visited_nodes[node] = true
-		emit_signal("node_visited", node)
+		node_visited.emit(node)
 
 func reveal_children(node: TreeNode) -> void:
 	if node == null:
@@ -53,3 +73,8 @@ func get_visited_count() -> int:
 func reset() -> void:
 	discovered_nodes.clear()
 	visited_nodes.clear()
+
+func forced_discovery(node : TreeNode)->void:
+	while node.padre:
+		discover_node(node)
+		node = node.padre
