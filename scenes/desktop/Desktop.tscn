@@ -8,8 +8,7 @@
 [ext_resource type="Resource" uid="uid://bxrjf5byddb2h" path="res://resources/apps/TreeApp.tres" id="5_jw0rl"]
 [ext_resource type="Resource" uid="uid://da4a2imuy21fd" path="res://resources/apps/CardGame.tres" id="6_blv04"]
 [ext_resource type="PackedScene" uid="uid://bdiccef8alau5" path="res://scenes/desktop/buttonVisualEffects.tscn" id="6_hxdtg"]
-[ext_resource type="Resource" uid="uid://d7h9j2k4m6p8q" path="res://resources/apps/PasswordCrackerApp.tres" id="7_pwdcrk"]
-[ext_resource type="PackedScene" uid="uid://c3qnclp3n1mtc" path="res://scenes/world_environment.tscn" id="7_3vxvs"]
+[ext_resource type="Resource" uid="uid://c3ex0nu2yuhy" path="res://resources/apps/PasswordCrackerApp.tres" id="7_pwdcrk"]
 [ext_resource type="Shader" uid="uid://yq5a4bhdrkm4" path="res://assets/shaders/vhs.gdshader" id="8_ihslh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ax2js"]
@@ -85,11 +84,11 @@ adjustment_saturation = 1.45
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jw0rl"]
 shader = ExtResource("8_ihslh")
 shader_parameter/overlay = true
-shader_parameter/scanlines_opacity = 0.50000002375
+shader_parameter/scanlines_opacity = 0.0
 shader_parameter/scanlines_width = 0.25
 shader_parameter/grille_opacity = 0.070000003325
 shader_parameter/resolution = Vector2(640, 480)
-shader_parameter/pixelate = true
+shader_parameter/pixelate = false
 shader_parameter/roll = false
 shader_parameter/roll_speed = 8.0
 shader_parameter/roll_size = 0.0
@@ -100,7 +99,7 @@ shader_parameter/noise_speed = 1.0
 shader_parameter/static_noise_intensity = 0.02000000095
 shader_parameter/aberration = -0.009999952975
 shader_parameter/brightness = 1.4
-shader_parameter/discolor = true
+shader_parameter/discolor = false
 shader_parameter/warp_amount = 0.0800000038
 shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
@@ -203,8 +202,18 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/focus = SubResource("StyleBoxFlat_73eyv")
 
-[node name="WorldEnvironment" parent="." instance=ExtResource("7_3vxvs")]
+[node name="WorldEnvironment" parent="."]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
 environment = SubResource("Environment_ihslh")
+script = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
