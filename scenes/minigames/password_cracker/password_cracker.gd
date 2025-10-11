@@ -9,24 +9,24 @@ const NIVELES = [
 		"password": "SecurePass123",
 		"dificultad": "Fácil",
 		"pistas": [
-			"Empieza con 'S' mayúscula y tiene 13 caracteres",
-			"Contiene 'Pass' y termina con números del 1 al 3"
+			"Secure + Pass + 123 (todo junto)",
+			"Primera letra mayúscula, 13 caracteres total"
 		]
 	},
 	{
 		"password": "Cyb3r$ecurity",
 		"dificultad": "Media",
 		"pistas": [
-			"Seguridad informática con símbolo '$'",
-			"La 'e' está reemplazada por '3' (leetspeak)"
+			"Cyber Security (reemplaza 'e' por '3' y 's' por '$')",
+			"13 caracteres: Cyb3r$ecurity"
 		]
 	},
 	{
 		"password": "H@ck3rM1nd!2024",
 		"dificultad": "Difícil",
 		"pistas": [
-			"'Hacker Mind' con símbolos @ y !",
-			"Termina con 2024 y usa sustituciones"
+			"Hacker Mind 2024 (sustituye: a→@, e→3, i→1)",
+			"16 caracteres con símbolos @ y !"
 		]
 	}
 ]
@@ -131,7 +131,7 @@ func _inicializar_pistas():
 		var pista_label = Label.new()
 		pista_label.text = "🔒 Pista bloqueada"
 		pista_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
-		pista_label.add_theme_font_size_override("font_size", 16)
+		pista_label.add_theme_font_size_override("font_size", 14)
 		pista_label.name = "Pista" + str(i)
 		pistas_container.add_child(pista_label)
 
