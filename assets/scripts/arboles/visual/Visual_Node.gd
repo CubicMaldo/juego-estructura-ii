@@ -1,4 +1,6 @@
-extends  Control# Puedes usar Control si prefieres, pero Button te da interacción directa
+class_name NodoVisual
+extends  Control
+# Puedes usar Control si prefieres, pero Button te da interacción directa
 
 enum NodosJuego { INICIO = 0, DESAFIO = 1, PISTA = 2, FINAL = 3}
 var nodo: TreeNode  # Referencia al nodo lógico

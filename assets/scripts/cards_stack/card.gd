@@ -106,12 +106,12 @@ func destroy() -> void:
 	lock_put_back = true
 	_kill_tween(tween_destroy)
 
-	tween_destroy = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	tween_destroy = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 	tween_destroy.tween_property(material, "shader_parameter/dissolve_value", 0.0, 2.0).from(1.0)
-	destroyed.emit(self)
-	# Cuando termina, emitir señal y liberar
+	
+	
 	tween_destroy.finished.connect(func():
-		
+		destroyed.emit()
 		queue_free()
 	)
 

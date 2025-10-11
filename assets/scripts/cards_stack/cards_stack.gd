@@ -44,7 +44,7 @@ func _cards_setup():
 func _get_card_count() -> int:
 	return %Cards.get_child_count()
 
-func _get_card_at_index(index: int) -> Card:  # <-- CAMBIAR TIPO DE RETORNO
+func _get_card_at_index(index: int) -> Card:
 	return %Cards.get_child(index)
 
 func _initial_setup_delay() -> void:
@@ -145,7 +145,9 @@ func _schedule_card_reorder(card: Card) -> void:
 	tween_last_card.tween_callback(update_cards.bind(true))
 
 func on_card_destroyed(which: Card) -> void:
-	print("Destroyed: ", which.name)
+	if %Cards.has_node(which.get_path()):
+		%Cards.remove_child(which)
+	update_cards(true)
 # ============================================
 # VISUAL SETTINGS
 # ============================================

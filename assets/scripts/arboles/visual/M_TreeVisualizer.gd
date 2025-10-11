@@ -304,7 +304,7 @@ func _update_node_appearance(nodo: TreeNode, visual: Node) -> void:
 
 func _animate_node_appearance(visual: Node, target_color: Color, target_scale: Vector2) -> void:
 	"""Anima el cambio de apariencia del nodo"""
-	if not (visual is Control or visual is Node2D):
+	if not (visual is NodoVisual):
 		return
 	
 	var tween = create_tween()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=16 format=3 uid="uid://chrommxyoxqu4"]
 
 [ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://assets/scripts/desktop/Desktop.gd" id="1_06q4v"]
 [ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://bbplcuyivtpgx" path="res://scenes/desktop/apps/appPanel.tscn" id="2_46iw5"]
 [ext_resource type="Shader" uid="uid://dwj1gcianwteq" path="res://assets/shaders/blur.gdshader" id="3_46iw5"]
 [ext_resource type="PackedScene" uid="uid://bdiccef8alau5" path="res://scenes/desktop/buttonVisualEffects.tscn" id="6_hxdtg"]
+[ext_resource type="PackedScene" uid="uid://c3qnclp3n1mtc" path="res://scenes/world_environment.tscn" id="7_3vxvs"]
+[ext_resource type="Shader" uid="uid://yq5a4bhdrkm4" path="res://assets/shaders/vhs.gdshader" id="8_ihslh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ax2js"]
 shader = ExtResource("1_13veq")
@@ -70,6 +72,36 @@ expand_margin_left = 2.0
 expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
+
+[sub_resource type="Environment" id="Environment_ihslh"]
+background_mode = 3
+adjustment_enabled = true
+adjustment_brightness = 1.2
+adjustment_saturation = 1.45
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jw0rl"]
+shader = ExtResource("8_ihslh")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.50000002375
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.070000003325
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = true
+shader_parameter/roll = false
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 0.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.05
+shader_parameter/noise_opacity = 0.4
+shader_parameter/noise_speed = 1.0
+shader_parameter/static_noise_intensity = 0.02000000095
+shader_parameter/aberration = -0.009999952975
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 0.0800000038
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.0
 
 [node name="desktop" type="Control"]
 layout_mode = 3
@@ -161,3 +193,24 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/focus = SubResource("StyleBoxFlat_73eyv")
+
+[node name="WorldEnvironment" parent="." instance=ExtResource("7_3vxvs")]
+environment = SubResource("Environment_ihslh")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ScanLines" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_jw0rl")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -352.0
+offset_top = -198.0
+offset_right = 352.0
+offset_bottom = 198.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="CanvasLayer"]
