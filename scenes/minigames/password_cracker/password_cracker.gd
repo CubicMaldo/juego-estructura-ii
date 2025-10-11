@@ -47,9 +47,10 @@ const NIVELES = [
 @onready var btn_enviar = $Panel/VBoxContainer/InputContainer/BtnEnviar
 @onready var btn_analizar = $Panel/VBoxContainer/InputContainer/BtnAnalizar
 @onready var btn_reiniciar = $Panel/VBoxContainer/HBoxContainer/BtnReiniciar
-@onready var audio_correct = $AudioCorrect
-@onready var audio_wrong = $AudioWrong
-@onready var audio_hint = $AudioHint
+#WIP AUDIO
+#@onready var audio_correct = $AudioCorrect
+#@onready var audio_wrong = $AudioWrong
+#@onready var audio_hint = $AudioHint
 
 var nivel_actual: int = 0
 var intentos_restantes: int = 6

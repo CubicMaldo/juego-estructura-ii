@@ -5,7 +5,7 @@ extends Control
 const RESPUESTA_CORRECTA = "phishing"
 
 @onready var input_respuesta = $Panel/LineEdit
-@onready var label_resultado = $Panel/Label3
+@onready var label_resultado = $Panel/VBoxContainer/ResultadoLabel
 @onready var error_timer = $Panel/Timer
 
 func _ready():

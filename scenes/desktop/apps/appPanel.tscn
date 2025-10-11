@@ -142,5 +142,5 @@ stretch = true
 [node name="SubViewport" type="SubViewport" parent="Panel/VBoxContainer/SubViewportContainer"]
 unique_name_in_owner = true
 handle_input_locally = false
-size = Vector2i(2, 2)
+size = Vector2i(800, 720)
 render_target_update_mode = 4
