@@ -2,10 +2,9 @@ extends Control
 
 @onready var MapSubviewport = %SubViewport
 
-@onready var button_izq: Button = $VBoxContainer/HBoxContainer/ButtonIzquierda
-@onready var button_ctr: Button = $VBoxContainer/HBoxContainer/ButtonCentro
-@onready var button_der: Button = $VBoxContainer/HBoxContainer/ButtonDerecha
-
+@onready var button_izq: Button = %ButtonIzquierda
+@onready var button_ctr: Button = %ButtonCentro
+@onready var button_der: Button = %ButtonDerecha
 
 
 var arbol_visual: Control
@@ -44,16 +43,31 @@ func _on_player_moved(node: TreeNode):
 	if arbol_visual.has_method("update_current_node"):
 		arbol_visual.update_current_node(node)
 
-func _on_node_revealed(node: TreeNode):
+func _on_node_revealed(_node: TreeNode):
 	#print("🎨 Visual node revealed: ", node.tipo)
 	# Aquí agregar efectos de sonido, partículas, etc.
 	pass
 
 func _update_button_states():
-	button_izq.disabled = not Global.treeMap.can_navigate_left()
-
-	button_der.disabled = not Global.treeMap.can_navigate_right()
+	# Verificar navegación hacia abajo (evitar duplicar la comprobación)
+	var can_go_down = Global.treeMap.can_navigate_down()
+	var can_go_left = Global.treeMap.can_navigate_left()
+	var can_go_right = Global.treeMap.can_navigate_right()
 	
+	# Botones laterales
+	button_izq.disabled = not can_go_down
+	button_der.disabled = not can_go_down
+	
+	# Cambiar texto según si hay uno o dos hijos (XOR!)
+	if can_go_down:
+		if can_go_left != can_go_right:  # Solo un hijo (XOR)
+			button_izq.text = "↓"
+			button_der.text = "↓"
+		else:  # Dos hijos o ninguno
+			button_izq.text = "←"
+			button_der.text = "→"
+	
+	# Botón centro (subir)
 	button_ctr.disabled = not Global.treeMap.can_navigate_up()
 
 func _on_game_over(win: bool):

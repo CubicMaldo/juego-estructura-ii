@@ -135,7 +135,7 @@ func calculate_layout(root: TreeNode) -> Dictionary:
 # PREPARACIÓN DEL ÁRBOL
 # ------------------------------------------------------------
 
-func _prepare_tree_structure(node: TreeNode, parent: TreeNode = null, level: int = 0) -> void:
+func _prepare_tree_structure(node: TreeNode, _parent: TreeNode = null, level: int = 0) -> void:
 	var layout = _get_layout(node)
 	layout["level"] = level
 	
@@ -175,19 +175,19 @@ func _get_rightmost_child(node: TreeNode) -> TreeNode:
 # POSICIONAMIENTO INICIAL
 # ------------------------------------------------------------
 
-func _calculate_initial_positions(node: TreeNode, node_spacing: float, subtree_spacing: float) -> void:
+func _calculate_initial_positions(node: TreeNode, _node_spacing: float, _subtree_spacing: float) -> void:
 	if node == null:
 		return
 	
 	# Procesar hijos primero
 	var children = node.get_children()
 	for child in children:
-		_calculate_initial_positions(child, node_spacing, subtree_spacing)
+		_calculate_initial_positions(child, _node_spacing, _subtree_spacing)
 
 	if _is_leaf(node):
-		var effective_spacing = node_spacing
+		var effective_spacing = _node_spacing
 		if use_node_size_in_spacing:
-			effective_spacing = max(node_spacing, node_width * 1.5)
+			effective_spacing = max(_node_spacing, node_width * 1.5)
 		
 		var left_sib = _get_left_sibling(node)
 		if left_sib:
@@ -195,11 +195,11 @@ func _calculate_initial_positions(node: TreeNode, node_spacing: float, subtree_s
 		else:
 			_set_prelim(node, 0.0)
 	else:
-		_position_internal_node(node, node_spacing, subtree_spacing)
+		_position_internal_node(node, _node_spacing, _subtree_spacing)
 
 # ------------------------------------------------------------
 
-func _position_internal_node(node: TreeNode, node_spacing: float, _subtree_spacing: float) -> void:
+func _position_internal_node(node: TreeNode, _node_spacing: float, _subtree_spacing: float) -> void:
 	var leftmost := _get_leftmost_child(node)
 	var rightmost := _get_rightmost_child(node)
 	if leftmost == null or rightmost == null:
@@ -222,7 +222,7 @@ func _position_internal_node(node: TreeNode, node_spacing: float, _subtree_spaci
 
 	var left_sib = _get_left_sibling(node)
 	if left_sib != null:
-		_set_prelim(node, _get_prelim(left_sib) + node_spacing)
+		_set_prelim(node, _get_prelim(left_sib) + _node_spacing)
 		_set_modifier(node, _get_prelim(node) - mid)
 		if balance_subtrees:
 			_apportion(node, _subtree_spacing)
@@ -291,7 +291,7 @@ func _finalize_positions(node: TreeNode, mod_sum: float) -> void:
 # RECOLECCIÓN DE POSICIONES
 # ------------------------------------------------------------
 
-func _collect_positions(node: TreeNode, positions: Dictionary, level: int, level_spacing: float) -> void:
+func _collect_positions(node: TreeNode, positions: Dictionary, level: int, _level_spacing: float) -> void:
 	if node == null:
 		return
 
@@ -299,7 +299,7 @@ func _collect_positions(node: TreeNode, positions: Dictionary, level: int, level
 	if use_adaptive_vertical_spacing:
 		vertical_scale = 1.0 + vertical_scale_factor * float(_count_levels(node))
 	
-	var effective_level_spacing = level_spacing * vertical_scale
+	var effective_level_spacing = _level_spacing * vertical_scale
 	effective_level_spacing = clamp(effective_level_spacing, min_level_spacing, max_level_spacing)
 	
 	var pos: Vector2
@@ -312,7 +312,7 @@ func _collect_positions(node: TreeNode, positions: Dictionary, level: int, level
 
 	var children = node.get_children()
 	for child in children:
-		_collect_positions(child, positions, level + 1, level_spacing)
+		_collect_positions(child, positions, level + 1, _level_spacing)
 
 # ------------------------------------------------------------
 # ALINEACIÓN DE HOJAS

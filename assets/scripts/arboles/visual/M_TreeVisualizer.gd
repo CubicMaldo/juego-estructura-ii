@@ -21,7 +21,7 @@ enum NodosJuego { INICIO = 0, DESAFIO = 1, PISTA = 2, FINAL = 3 }
 
 # Señales
 signal tree_centered()
-signal zoom_changed(new_zoom: float)
+#signal zoom_changed(new_zoom: float)
 signal view_reset()
 signal tree_loaded()
 signal node_visual_revealed(node: TreeNode)
@@ -401,13 +401,13 @@ func _draw_nodes_and_lines(positions: Dictionary, offset: Vector2) -> void:
 	for nodo in positions:
 		_create_connections(nodo, positions, offset)
 
-func _create_visual_node(nodo: TreeNode, position: Vector2) -> Node:
+func _create_visual_node(nodo: TreeNode, _position: Vector2) -> Node:
 	if not nodo_escena:
 		push_error("nodo_escena no está asignado")
 		return null
 	
 	var nodo_visual = nodo_escena.instantiate()
-	nodo_visual.position = position
+	nodo_visual.position = _position
 	nodos_container.add_child(nodo_visual)
 	
 	# Guardar mapeo

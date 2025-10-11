@@ -1,6 +1,5 @@
 class_name TreeAppController
 extends Node
-
 ## Orchestrates the different systems without coupling them together
 ## This is the ONLY place where systems interact
 
@@ -60,6 +59,16 @@ func navigate_up() -> bool:
 		return true
 	return false
 
+func navigate_down() -> bool:
+	if can_navigate_right():
+		navigate_right()
+		return true
+	elif can_navigate_left():
+		navigate_left()
+		return true
+	else: 
+		return false
+
 func _handle_navigation() -> void:
 	var current = navigator.current_node
 	
@@ -76,8 +85,7 @@ func _handle_navigation() -> void:
 	player_moved.emit(current)
 
 #JUGADOR MOVIMIENTO
-func _on_player_moved(old_node: TreeNode, new_node: TreeNode) -> void:
-	print("\n=== Player moved from ", _node_type_name(old_node), " to ", _node_type_name(new_node), " ===")
+func _on_player_moved(_old_node: TreeNode, new_node: TreeNode) -> void:
 	visibility.move_to_node(new_node)
 	#WIP Agregar clase que maneje juegos segun tipo aqui
 	if new_node.tipo == 2:
@@ -115,6 +123,9 @@ func can_navigate_right() -> bool:
 
 func can_navigate_up() -> bool:
 	return navigator.can_move_to_parent()
+
+func can_navigate_down() -> bool:
+	return can_navigate_right() or can_navigate_left()
 
 func is_node_visible(node: TreeNode) -> bool:
 	return visibility.is_discovered(node)

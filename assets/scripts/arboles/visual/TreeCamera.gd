@@ -55,15 +55,15 @@ func set_target_zoom(new_zoom: float) -> void:
 func get_current_zoom() -> float:
 	return zoom_factor
 
-func center_on_position(position: Vector2, duration: float = 0.5) -> void:
+func center_on_position(_position: Vector2, duration: float = 0.5) -> void:
 	if nodos_container == null or lineas_node == null:
 		push_warning("Containers not set in TreeCamera")
 		return
 	
 	var tween = _create_tween()
 	if tween:
-		tween.tween_property(nodos_container, "position", position, duration)
-		tween.tween_property(lineas_node, "position", position, duration)
+		tween.tween_property(nodos_container, "position", _position, duration)
+		tween.tween_property(lineas_node, "position", _position, duration)
 
 func fit_to_bounds(bounds: Rect2, viewport_size: Vector2) -> void:
 	if bounds.size == Vector2.ZERO:
