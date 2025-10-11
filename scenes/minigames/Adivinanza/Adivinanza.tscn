@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bcqxfxlkk1o68"]
 
-[ext_resource type="Theme" uid="uid://dphug288uwuyp" path="res://scenes/minigames/Adivinanza.tres" id="1_rrbmy"]
-[ext_resource type="Script" uid="uid://dr1bqlf1tggdu" path="res://scenes/minigames/adivinanza.gd" id="2_3drhf"]
+[ext_resource type="Theme" uid="uid://dphug288uwuyp" path="res://scenes/minigames/Adivinanza/Adivinanza.tres" id="1_rrbmy"]
+[ext_resource type="Script" uid="uid://dr1bqlf1tggdu" path="res://scenes/minigames/Adivinanza/adivinanza.gd" id="2_3drhf"]
 
 [node name="Adivinanza" type="Control"]
 layout_mode = 3

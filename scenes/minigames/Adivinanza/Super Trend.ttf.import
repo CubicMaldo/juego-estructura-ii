@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://dsjjl72xcpw20"
-path="res://.godot/imported/Super Trend.ttf-76fdb17796d97051721f16325d514ff6.fontdata"
+path="res://.godot/imported/Super Trend.ttf-1857a0686aefe0677f80dd8ca23a8585.fontdata"
 
 [deps]
 
-source_file="res://scenes/minigames/Super Trend.ttf"
-dest_files=["res://.godot/imported/Super Trend.ttf-76fdb17796d97051721f16325d514ff6.fontdata"]
+source_file="res://scenes/minigames/Adivinanza/Super Trend.ttf"
+dest_files=["res://.godot/imported/Super Trend.ttf-1857a0686aefe0677f80dd8ca23a8585.fontdata"]
 
 [params]
 
