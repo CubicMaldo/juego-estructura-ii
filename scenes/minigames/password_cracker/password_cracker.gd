@@ -74,6 +74,21 @@ func _ready():
 	_inicializar_pistas()
 	timer_juego.start()
 	btn_reiniciar.visible = false
+	_mostrar_bienvenida()
+	
+	# Conectar Enter key para enviar
+	input_password.text_submitted.connect(_on_enter_pressed)
+
+func _mostrar_bienvenida():
+	label_resultado.text = "🎯 ¡Descifra las contraseñas!"
+	label_resultado.add_theme_color_override("font_color", Color(0.2, 0.8, 1))
+	await get_tree().create_timer(2.0).timeout
+	if not game_over:
+		label_resultado.text = ""
+
+func _on_enter_pressed(_text: String):
+	if not game_over and btn_enviar.disabled == false:
+		_on_btn_enviar_pressed()
 
 func _process(delta):
 	if not game_over and timer_juego.time_left > 0:
@@ -147,10 +162,15 @@ func _on_btn_enviar_pressed() -> void:
 		_mostrar_mensaje("❌ Debes escribir una contraseña", Color(1, 0.5, 0))
 		return
 	
+	intentos_totales += 1
+	
 	if password_intento == password_actual:
 		_password_correcta()
 	else:
 		_password_incorrecta()
+		
+	# Limpiar input después de intentar
+	input_password.text = ""
 
 func _on_btn_analizar_pressed() -> void:
 	if game_over or analisis_disponibles <= 0:
@@ -163,18 +183,21 @@ func _on_btn_analizar_pressed() -> void:
 		return
 	
 	analisis_disponibles -= 1
+	analisis_usados += 1
 	btn_analizar.text = "🔍 Analizar (" + str(analisis_disponibles) + ")"
 	
 	if analisis_disponibles <= 0:
 		btn_analizar.disabled = true
 	
 	var similitud = _calcular_similitud(password_intento, password_actual)
-	_mostrar_similitud(similitud)
+	var caracteres_correctos = _contar_caracteres_correctos(password_intento, password_actual)
+	_mostrar_similitud(similitud, caracteres_correctos)
 	
 	# Bonus de puntos por usar análisis inteligentemente
 	if similitud > 50:
 		puntos += 10
 		_actualizar_estadisticas()
+		_mostrar_efecto_puntos("+10", Color(0, 1, 0.5))
 
 func _calcular_similitud(intento: String, correcta: String) -> float:
 	var coincidencias: int = 0
@@ -189,8 +212,18 @@ func _calcular_similitud(intento: String, correcta: String) -> float:
 	var porcentaje = (float(coincidencias) / float(correcta.length())) * 100.0
 	return porcentaje
 
-func _mostrar_similitud(porcentaje: float):
-	similitud_label.text = "Similitud: %.1f%% correcto" % porcentaje
+func _contar_caracteres_correctos(intento: String, correcta: String) -> int:
+	var coincidencias: int = 0
+	var longitud_min = min(intento.length(), correcta.length())
+	
+	for i in range(longitud_min):
+		if intento[i] == correcta[i]:
+			coincidencias += 1
+	
+	return coincidencias
+
+func _mostrar_similitud(porcentaje: float, caracteres_correctos: int = 0):
+	similitud_label.text = "Similitud: %.1f%% (%d caracteres correctos)" % [porcentaje, caracteres_correctos]
 	progreso_bar.value = porcentaje
 	
 	# Color según el porcentaje
@@ -211,36 +244,73 @@ func _mostrar_similitud(porcentaje: float):
 	tween.tween_property(progreso_bar, "scale", original_scale, 0.2)
 
 func _password_correcta():
+	# Incrementar combo
+	combo_racha += 1
+	
 	# Calcular puntos por el nivel
 	var bonus_intentos = intentos_restantes * 50
 	var bonus_tiempo = max(0, 300 - int(tiempo_transcurrido)) * 2
 	var bonus_pistas = (pistas_actuales.size() - pistas_reveladas) * 30
-	var puntos_nivel = 500 + bonus_intentos + bonus_tiempo + bonus_pistas
+	var bonus_combo = combo_racha * 20
+	var puntos_nivel = 500 + bonus_intentos + bonus_tiempo + bonus_pistas + bonus_combo
 	
 	puntos += puntos_nivel
 	_actualizar_estadisticas()
 	
-	label_resultado.text = "✅ ¡ACCESO CONCEDIDO! 🎉\n+%d puntos" % puntos_nivel
+	var mensaje_combo = ""
+	if combo_racha > 1:
+		mensaje_combo = "\n🔥 COMBO x%d! (+%d)" % [combo_racha, bonus_combo]
+	
+	label_resultado.text = "✅ ¡ACCESO CONCEDIDO! 🎉\n+%d puntos%s" % [puntos_nivel, mensaje_combo]
 	label_resultado.add_theme_color_override("font_color", Color(0, 1, 0))
+	
+	# Efecto de partículas/estrellas
+	_crear_efecto_victoria()
 	
 	# Animación de éxito
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	tween.tween_property(label_resultado, "scale", Vector2(1.2, 1.2), 0.5)
 	
-	# Pasar al siguiente nivel después de 2 segundos
-	await get_tree().create_timer(2.0).timeout
+	# Pasar al siguiente nivel después de 2.5 segundos
+	await get_tree().create_timer(2.5).timeout
 	nivel_actual += 1
 	_cargar_nivel(nivel_actual)
 
+func _crear_efecto_victoria():
+	# Efecto visual de victoria
+	for i in range(3):
+		var tween = create_tween()
+		tween.tween_property($Panel, "modulate", Color(1, 1.2, 1), 0.15)
+		tween.tween_property($Panel, "modulate", Color(1, 1, 1), 0.15)
+		await tween.finished
+
+func _mostrar_efecto_puntos(texto: String, color: Color):
+	var label_temp = Label.new()
+	label_temp.text = texto
+	label_temp.add_theme_font_size_override("font_size", 24)
+	label_temp.add_theme_color_override("font_color", color)
+	label_temp.position = puntos_label.position + Vector2(80, -20)
+	add_child(label_temp)
+	
+	var tween = create_tween()
+	tween.tween_property(label_temp, "position:y", label_temp.position.y - 40, 1.0)
+	tween.parallel().tween_property(label_temp, "modulate:a", 0.0, 1.0)
+	await tween.finished
+	label_temp.queue_free()
+
 func _password_incorrecta():
+	combo_racha = 0  # Resetear combo al fallar
 	intentos_restantes -= 1
 	_actualizar_intentos()
 	
 	if intentos_restantes <= 0:
 		_game_over()
 	else:
-		_mostrar_mensaje("❌ Contraseña incorrecta. Intentos restantes: " + str(intentos_restantes), Color(1, 0, 0))
+		var mensaje_extra = ""
+		if intentos_restantes <= 2:
+			mensaje_extra = " ⚠️ ¡Cuidado!"
+		_mostrar_mensaje("❌ Contraseña incorrecta. Vidas: " + str(intentos_restantes) + mensaje_extra, Color(1, 0, 0))
 		
 		# Efecto de sacudida en el input
 		var tween = create_tween()
@@ -249,11 +319,20 @@ func _password_incorrecta():
 		tween.tween_property(input_password, "position:x", original_pos.x - 10, 0.05)
 		tween.tween_property(input_password, "position:x", original_pos.x + 5, 0.05)
 		tween.tween_property(input_password, "position:x", original_pos.x, 0.05)
+		
+		# Efecto de parpadeo rojo en el panel
+		_efecto_error_panel()
 
 func _game_over():
 	game_over = true
 	timer_juego.stop()
-	label_resultado.text = "🔒 BLOQUEADO - Sin vidas\nLa contraseña era: " + password_actual
+	
+	var estadisticas = "\n\n📊 Estadísticas:\n"
+	estadisticas += "Intentos totales: %d\n" % intentos_totales
+	estadisticas += "Análisis usados: %d\n" % analisis_usados
+	estadisticas += "Pistas usadas: %d" % pistas_reveladas
+	
+	label_resultado.text = "🔒 BLOQUEADO - Sin vidas\nLa contraseña era: " + password_actual + estadisticas
 	label_resultado.add_theme_color_override("font_color", Color(1, 0, 0))
 	btn_enviar.disabled = true
 	btn_pista.disabled = true
@@ -266,10 +345,35 @@ func _game_over():
 	tween.tween_property($Panel, "modulate", Color(1, 0.5, 0.5), 0.3)
 	tween.tween_property($Panel, "modulate", Color(1, 1, 1), 0.3)
 
+func _efecto_error_panel():
+	var tween = create_tween()
+	tween.tween_property($Panel, "modulate", Color(1, 0.7, 0.7), 0.1)
+	tween.tween_property($Panel, "modulate", Color(1, 1, 1), 0.1)
+
 func _victoria_total():
 	game_over = true
 	timer_juego.stop()
-	label_resultado.text = "🏆 ¡TODOS LOS NIVELES COMPLETADOS! 🏆\nPuntuación Final: %d\nTiempo: %02d:%02d" % [puntos, int(tiempo_transcurrido / 60), int(tiempo_transcurrido) % 60]
+	
+	if puntos > mejor_puntuacion:
+		mejor_puntuacion = puntos
+	
+	var calificacion = ""
+	if puntos >= 2500:
+		calificacion = "🏆 PERFECTO"
+	elif puntos >= 2000:
+		calificacion = "🥇 EXCELENTE"
+	elif puntos >= 1500:
+		calificacion = "🥈 MUY BIEN"
+	else:
+		calificacion = "🥉 COMPLETADO"
+	
+	var estadisticas = "\n\n📊 Estadísticas Finales:\n"
+	estadisticas += "Intentos totales: %d\n" % intentos_totales
+	estadisticas += "Análisis usados: %d\n" % analisis_usados
+	estadisticas += "Precisión: %.1f%%\n" % ((3.0 / intentos_totales) * 100.0)
+	estadisticas += "Calificación: %s" % calificacion
+	
+	label_resultado.text = "🏆 ¡TODOS LOS NIVELES COMPLETADOS! 🏆\nPuntuación Final: %d\nTiempo: %02d:%02d%s" % [puntos, int(tiempo_transcurrido / 60), int(tiempo_transcurrido) % 60, estadisticas]
 	label_resultado.add_theme_color_override("font_color", Color(1, 0.84, 0))
 	btn_enviar.disabled = true
 	btn_pista.disabled = true
@@ -319,12 +423,16 @@ func _on_btn_reiniciar_pressed() -> void:
 	puntos = 0
 	tiempo_transcurrido = 0.0
 	game_over = false
+	combo_racha = 0
+	intentos_totales = 0
+	analisis_usados = 0
 	btn_reiniciar.visible = false
 	$Panel.modulate = Color(1, 1, 1)
 	label_resultado.scale = Vector2(1, 1)
 	_cargar_nivel(nivel_actual)
 	_actualizar_estadisticas()
 	timer_juego.start()
+	_mostrar_bienvenida()
 
 func _on_timer_timeout() -> void:
 	if not game_over:
