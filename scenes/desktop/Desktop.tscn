@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://bxrjf5byddb2h" path="res://resources/apps/TreeApp.tres" id="5_jw0rl"]
 [ext_resource type="Resource" uid="uid://da4a2imuy21fd" path="res://resources/apps/CardGame.tres" id="6_blv04"]
 [ext_resource type="PackedScene" uid="uid://bdiccef8alau5" path="res://scenes/desktop/buttonVisualEffects.tscn" id="6_hxdtg"]
+[ext_resource type="Resource" uid="uid://d7h9j2k4m6p8q" path="res://resources/apps/PasswordCrackerApp.tres" id="7_pwdcrk"]
 [ext_resource type="PackedScene" uid="uid://c3qnclp3n1mtc" path="res://scenes/world_environment.tscn" id="7_3vxvs"]
 [ext_resource type="Shader" uid="uid://yq5a4bhdrkm4" path="res://assets/shaders/vhs.gdshader" id="8_ihslh"]
 
@@ -153,6 +154,10 @@ appStats = ExtResource("5_jw0rl")
 [node name="App2" parent="ColorRect/MarginContainer/AppContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 appStats = ExtResource("6_blv04")
+
+[node name="App3" parent="ColorRect/MarginContainer/AppContainer" instance=ExtResource("2_06q4v")]
+layout_mode = 2
+appStats = ExtResource("7_pwdcrk")
 
 [node name="Taskbar" type="Panel" parent="."]
 material = SubResource("ShaderMaterial_rvpx8")
