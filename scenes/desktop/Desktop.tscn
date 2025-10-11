@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=17 format=3 uid="uid://chrommxyoxqu4"]
 
 [ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://assets/scripts/desktop/Desktop.gd" id="1_06q4v"]
 [ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
@@ -75,20 +75,14 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="Environment" id="Environment_ihslh"]
-background_mode = 3
-adjustment_enabled = true
-adjustment_brightness = 1.2
-adjustment_saturation = 1.45
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jw0rl"]
 shader = ExtResource("8_ihslh")
 shader_parameter/overlay = true
-shader_parameter/scanlines_opacity = 0.0
+shader_parameter/scanlines_opacity = 0.4
 shader_parameter/scanlines_width = 0.25
-shader_parameter/grille_opacity = 0.070000003325
+shader_parameter/grille_opacity = 0.0
 shader_parameter/resolution = Vector2(640, 480)
-shader_parameter/pixelate = false
+shader_parameter/pixelate = true
 shader_parameter/roll = false
 shader_parameter/roll_speed = 8.0
 shader_parameter/roll_size = 0.0
@@ -201,19 +195,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/focus = SubResource("StyleBoxFlat_73eyv")
-
-[node name="WorldEnvironment" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-environment = SubResource("Environment_ihslh")
-script = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
