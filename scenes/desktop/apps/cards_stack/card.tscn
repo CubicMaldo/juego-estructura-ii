@@ -1,8 +1,8 @@
 [gd_scene load_steps=16 format=3 uid="uid://vm7jfk3vjddq"]
 
-[ext_resource type="Shader" uid="uid://w8wjhjsa5ntp" path="res://scenes/desktop/apps/cards_stack/dissolve.gdshader" id="1_erbhb"]
+[ext_resource type="Shader" uid="uid://w8wjhjsa5ntp" path="res://assets/shaders/dissolve.gdshader" id="1_erbhb"]
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="1_hrtqo"]
-[ext_resource type="Script" uid="uid://dldh5i432g78j" path="res://assets/scripts/cards_stack/card.gd" id="1_s7h5d"]
+[ext_resource type="Script" uid="uid://dldh5i432g78j" path="res://assets/scripts/cards_stack/Card.gd" id="1_s7h5d"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_oqx1n"]
 
@@ -80,8 +80,8 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pfl3o"]
-size = Vector2(715, 388)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_erbhb"]
+size = Vector2(459, 271)
 
 [node name="Button" type="Button" node_paths=PackedStringArray("texture_node")]
 material = SubResource("ShaderMaterial_px6tc")
@@ -90,10 +90,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -187.5
-offset_top = -105.0
-offset_right = 187.5
-offset_bottom = 105.0
+offset_left = -237.75
+offset_top = -144.75
+offset_right = 237.75
+offset_bottom = 144.75
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(187, 105)
@@ -109,23 +109,33 @@ texture_node = NodePath("SubViewportContainer")
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 material = SubResource("ShaderMaterial_jkqhe")
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.875
+offset_top = -147.875
+offset_right = 240.875
+offset_bottom = 147.875
 grow_horizontal = 2
 grow_vertical = 2
+stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 transparent_bg = true
 handle_input_locally = false
-size = Vector2i(746, 418)
+size = Vector2i(481, 295)
 render_target_update_mode = 4
 
 [node name="Card" type="Panel" parent="SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
 self_modulate = Color(1, 0.141176, 0.270588, 1)
-offset_right = 746.0
-offset_bottom = 418.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(246.5, 137)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gt26c")
@@ -162,7 +172,6 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_o6dlx")
 
 [node name="Panel3" type="Panel" parent="SubViewportContainer/SubViewport/Card/MarginContainer/HBoxContainer/VBoxContainer3/PanelContainer"]
-custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.75
@@ -218,11 +227,11 @@ theme_override_font_sizes/font_size = 32
 text = "akjskajskajksjakjskajksja"
 autowrap_mode = 1
 
-[node name="DestroyArea" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DestroyArea"]
-position = Vector2(188, 106)
-shape = SubResource("RectangleShape2D_pfl3o")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(236.25, 146.25)
+shape = SubResource("RectangleShape2D_erbhb")
 
 [connection signal="button_down" from="." to="." method="_on_button_down"]
 [connection signal="button_up" from="." to="." method="_on_button_up"]

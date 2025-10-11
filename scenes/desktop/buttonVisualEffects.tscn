@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bdiccef8alau5"]
 
-[ext_resource type="Script" uid="uid://bhswf0vket2g4" path="res://assets/scripts/desktop/buttonVisualsEffects.gd" id="1_xgj7b"]
+[ext_resource type="Script" uid="uid://bhswf0vket2g4" path="res://assets/scripts/desktop/ButtonVisuals.gd" id="1_xgj7b"]
 [ext_resource type="Texture2D" uid="uid://cr7pw0ennxyuk" path="res://assets/textures/recyclebin.png" id="2_3obrn"]
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="3_dfs0x"]
 

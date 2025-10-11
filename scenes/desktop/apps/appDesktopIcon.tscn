@@ -1,26 +1,38 @@
-[gd_scene load_steps=8 format=3 uid="uid://dyre0wtdeeh7c"]
+[gd_scene load_steps=9 format=3 uid="uid://dyre0wtdeeh7c"]
 
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="1_esngw"]
 [ext_resource type="Texture2D" uid="uid://cr7pw0ennxyuk" path="res://assets/textures/recyclebin.png" id="1_gt1af"]
-[ext_resource type="Script" uid="uid://6gjs30jihdp" path="res://assets/scripts/desktop/desktop_apps.gd" id="1_uktdj"]
-[ext_resource type="PackedScene" uid="uid://s68a6a8aeg3c" path="res://scenes/tree/TreeApp.tscn" id="2_4eibx"]
+[ext_resource type="Script" uid="uid://6gjs30jihdp" path="res://assets/scripts/desktop/AppsDesktop.gd" id="1_uktdj"]
+[ext_resource type="Texture2D" uid="uid://n4tx0g7o53sh" path="res://icon.svg" id="4_hpe5y"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rvyab"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpe5y"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.225, 0.225, 0.225, 0.6)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.38928655, 0.3892867, 0.38928637, 0.57254905)
-corner_radius_top_left = 4
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c2ok8"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uktdj"]
 resource_local_to_scene = true
@@ -49,13 +61,33 @@ offset_bottom = 48.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(48, 48)
-theme_override_styles/focus = SubResource("StyleBoxFlat_rvyab")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hpe5y")
+theme_override_styles/focus = SubResource("StyleBoxFlat_c2ok8")
 script = ExtResource("1_uktdj")
-app_to_open = ExtResource("2_4eibx")
+hover_scale = Vector2(1.2, 1.2)
 texture_node = NodePath("AppTexture")
 shadow_node = NodePath("AppShadow")
 
+[node name="AppTexture" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_uktdj")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_hpe5y")
+expand_mode = 2
+stretch_mode = 4
+
 [node name="AppShadow" type="TextureRect" parent="."]
+visible = false
 modulate = Color(0, 0, 0, 1)
 self_modulate = Color(1, 1, 1, 0.41568628)
 show_behind_parent = true
@@ -73,25 +105,8 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_gt1af")
 
-[node name="AppTexture" type="TextureRect" parent="."]
-material = SubResource("ShaderMaterial_uktdj")
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -48.0
-offset_top = -52.0
-offset_right = 48.0
-offset_bottom = 44.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.5, 1.5)
-pivot_offset = Vector2(48, 48)
-texture = ExtResource("1_gt1af")
-
 [node name="DestroyArea" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DestroyArea"]
 position = Vector2(47.5, 48.5)

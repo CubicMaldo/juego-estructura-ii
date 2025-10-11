@@ -66,6 +66,8 @@ func _save_original_positions() -> void:
 # ============================================
 
 func tween_bg_color(new_color: Color) -> void:
+	new_color = new_color.darkened(0.5)
+	
 	_kill_tween_if_running(tween_bg)
 	tween_bg = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	tween_bg.tween_property($BG, "color", new_color, anim_duration * 2.0)
@@ -147,7 +149,12 @@ func _schedule_card_reorder(card: Card) -> void:
 func on_card_destroyed(which: Card) -> void:
 	if %Cards.has_node(which.get_path()):
 		%Cards.remove_child(which)
+
+	if %Cards.get_children().is_empty():
+		return
+	
 	update_cards(true)
+	tween_bg_color(first_card.color)
 # ============================================
 # VISUAL SETTINGS
 # ============================================

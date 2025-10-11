@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://s68a6a8aeg3c"]
+[gd_scene load_steps=9 format=3 uid="uid://s68a6a8aeg3c"]
 
-[ext_resource type="Script" uid="uid://cygv0ixcyc63q" path="res://assets/scripts/arboles/player_interactions/treeMapManager.gd" id="1_q32y7"]
+[ext_resource type="Script" uid="uid://cygv0ixcyc63q" path="res://assets/scripts/arboles/player_interactions/TreeMapManager.gd" id="1_q32y7"]
 [ext_resource type="Shader" uid="uid://cfapckc8ogxkp" path="res://assets/shaders/moving_noise.gdshader" id="2_6l6fy"]
-[ext_resource type="Script" uid="uid://dhp345e04qi3y" path="res://assets/scripts/arboles/player_interactions/boton_puntero.gd" id="2_piajr"]
+[ext_resource type="Script" uid="uid://dhp345e04qi3y" path="res://assets/scripts/arboles/player_interactions/ButtonPointer.gd" id="2_piajr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_piajr"]
 content_margin_left = 12.0
@@ -44,6 +44,11 @@ shader_parameter/octaves = 6
 shader_parameter/fbm_lacunarity = 2.0
 shader_parameter/fbm_gain = 0.5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6l6fy"]
+bg_color = Color(0.1, 0.1, 0.1, 0.9019608)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_piajr"]
+
 [node name="Tree_App" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -78,7 +83,7 @@ metadata/_edit_lock_ = true
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/VBoxContainer/PanelContainer/SubViewportContainer"]
 unique_name_in_owner = true
 handle_input_locally = false
-size = Vector2i(1856, 911)
+size = Vector2i(1856, 919)
 render_target_update_mode = 4
 
 [node name="ColorRect2" type="ColorRect" parent="PanelContainer/VBoxContainer/PanelContainer/SubViewportContainer/SubViewport"]
@@ -101,38 +106,58 @@ color = Color(0.07058824, 0.09019608, 0.10980392, 1)
 [node name="TreeMap" type="Control" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_constants/margin_top = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
 alignment = 1
 
-[node name="ButtonIzquierda" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="ButtonIzquierda" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 64)
 layout_mode = 2
+size_flags_horizontal = 9
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
 theme_override_font_sizes/font_size = 64
-text = "←"
+theme_override_styles/normal = SubResource("StyleBoxFlat_6l6fy")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_piajr")
+text = "↓"
+clip_text = true
 script = ExtResource("2_piajr")
 
-[node name="ButtonCentro" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="ButtonCentro" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 64)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_6l6fy")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_piajr")
 text = "↑"
+clip_text = true
 script = ExtResource("2_piajr")
 direccion = "Centro"
 
-[node name="ButtonDerecha" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="ButtonDerecha" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 64)
 layout_mode = 2
+size_flags_horizontal = 9
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
 theme_override_font_sizes/font_size = 64
-text = "→"
+theme_override_styles/normal = SubResource("StyleBoxFlat_6l6fy")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_piajr")
+text = "↓"
+clip_text = true
 script = ExtResource("2_piajr")
 direccion = "Derecha"
 
-[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ButtonIzquierda" to="PanelContainer/VBoxContainer/HBoxContainer/ButtonIzquierda" method="_on_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ButtonCentro" to="PanelContainer/VBoxContainer/HBoxContainer/ButtonCentro" method="_on_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ButtonDerecha" to="PanelContainer/VBoxContainer/HBoxContainer/ButtonDerecha" method="_on_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ButtonIzquierda" to="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ButtonIzquierda" method="_on_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ButtonCentro" to="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ButtonCentro" method="_on_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ButtonDerecha" to="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/ButtonDerecha" method="_on_pressed"]

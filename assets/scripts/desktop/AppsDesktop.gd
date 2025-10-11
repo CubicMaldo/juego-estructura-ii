@@ -13,9 +13,9 @@ class_name AppButton
 @export var drag_threshold: float = 20.0
 
 @export_category("App Settings")
-@export var app_to_open: PackedScene
+@export var appStats : AppStats
 
-signal open_app(app_ref: PackedScene)
+signal open_app(app_ref: PackedScene,app_stats : AppStats)
 
 var displacement: float = 0.0 
 var oscillator_velocity: float = 0.0
@@ -36,6 +36,7 @@ var clicked_times_on_focus: int = 0
 
 func _ready() -> void:
 	super._ready()
+	$AppTexture.texture = appStats.icon
 	collision_shape.set_deferred("disabled", true)
 	
 	# Conectar señales adicionales
@@ -119,7 +120,7 @@ func _on_button_focus_exited() -> void:
 	clicked_times_on_focus = 0
 
 func _clicked_twice() -> void:
-	open_app.emit(app_to_open)
+	open_app.emit(appStats.scene,appStats)	
 	animate_scale(Vector2(1.2, 1.2), 0.5)
 
 ## Método heredado y personalizado para destruir el botón
