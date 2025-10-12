@@ -1,10 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=23 format=3 uid="uid://chrommxyoxqu4"]
 
 [ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://assets/scripts/desktop/Desktop.gd" id="1_06q4v"]
 [ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
 [ext_resource type="PackedScene" uid="uid://dyre0wtdeeh7c" path="res://scenes/desktop/apps/appDesktopIcon.tscn" id="2_06q4v"]
 [ext_resource type="PackedScene" uid="uid://bbplcuyivtpgx" path="res://scenes/desktop/apps/appPanel.tscn" id="2_46iw5"]
 [ext_resource type="Shader" uid="uid://dwj1gcianwteq" path="res://assets/shaders/blur.gdshader" id="3_46iw5"]
+[ext_resource type="Script" uid="uid://sq4vot24ecr1" path="res://assets/scripts/debug/NavigationDebugger.gd" id="4_77w8n"]
 [ext_resource type="Resource" uid="uid://bxrjf5byddb2h" path="res://resources/apps/TreeApp.tres" id="5_jw0rl"]
 [ext_resource type="Resource" uid="uid://da4a2imuy21fd" path="res://resources/apps/CardGame.tres" id="6_blv04"]
 [ext_resource type="Resource" uid="uid://c3ex0nu2yuhy" path="res://resources/apps/PasswordCrackerApp.tres" id="7_pwdcrk"]
@@ -145,6 +146,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.7750634, 0.7750634, 0.7750634, 1)
+script = ExtResource("4_77w8n")
 
 [node name="DesktopMargin" type="MarginContainer" parent="ColorRect"]
 layout_mode = 1
