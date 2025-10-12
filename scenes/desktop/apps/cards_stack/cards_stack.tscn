@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://d0mx4seqmfq4d"]
+[gd_scene load_steps=14 format=3 uid="uid://d0mx4seqmfq4d"]
 
-[ext_resource type="Script" uid="uid://b78r2ssceaj43" path="res://assets/scripts/cards_stack/CardStack.gd" id="1_ba6y3"]
+[ext_resource type="Script" uid="uid://b78r2ssceaj43" path="res://assets/scripts/cards_stack/interactions/CardStack.gd" id="1_ba6y3"]
 [ext_resource type="PackedScene" uid="uid://vm7jfk3vjddq" path="res://scenes/desktop/apps/cards_stack/card.tscn" id="1_bx0j3"]
 [ext_resource type="Shader" uid="uid://cfapckc8ogxkp" path="res://assets/shaders/moving_noise.gdshader" id="2_5wunl"]
-[ext_resource type="Script" uid="uid://b5eftaf7816mp" path="res://assets/scripts/cards_stack/DestroyArea.gd" id="3_ec1ar"]
+[ext_resource type="Resource" uid="uid://devxoe3vgxys7" path="res://resources/cards/PhishingDatabase.tres" id="2_ulwbx"]
+[ext_resource type="Script" uid="uid://b5eftaf7816mp" path="res://assets/scripts/cards_stack/interactions/AnswerArea.gd" id="3_ec1ar"]
 [ext_resource type="Texture2D" uid="uid://n4tx0g7o53sh" path="res://icon.svg" id="4_21vi3"]
 
 [sub_resource type="Gradient" id="Gradient_21vi3"]
@@ -36,7 +37,7 @@ texture = ExtResource("4_21vi3")
 region_rect = Rect2(0.5398445, 0, 128.08957, 128)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_21vi3"]
-size = Vector2(79.75, 1243.5)
+size = Vector2(80, 1243.5)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lpt7s"]
 texture = ExtResource("4_21vi3")
@@ -44,24 +45,19 @@ texture = ExtResource("4_21vi3")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ec1ar"]
 size = Vector2(77, 1241)
 
-[node name="CardsStack" type="Control"]
+[node name="InApp" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="InApp" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 script = ExtResource("1_ba6y3")
+card_database = ExtResource("2_ulwbx")
+cards_per_game = 5
+card_template = ExtResource("1_bx0j3")
 
-[node name="BG" type="ColorRect" parent="InApp"]
+[node name="BG" type="ColorRect" parent="."]
 self_modulate = Color(1, 1, 1, 0.541176)
 layout_mode = 1
 anchors_preset = 15
@@ -71,7 +67,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.3217278, 0.321728, 0.32172796, 1)
 
-[node name="TextureRect" type="TextureRect" parent="InApp/BG"]
+[node name="TextureRect" type="TextureRect" parent="BG"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -81,7 +77,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_ulwbx")
 
-[node name="ColorRect" type="ColorRect" parent="InApp/BG"]
+[node name="ColorRect" type="ColorRect" parent="BG"]
 material = SubResource("ShaderMaterial_ec1ar")
 layout_mode = 1
 anchors_preset = 15
@@ -91,7 +87,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.07058824, 0.09019608, 0.10980392, 1)
 
-[node name="TopPoint" type="Control" parent="InApp"]
+[node name="TopPoint" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -103,87 +99,50 @@ offset_bottom = 120.0
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="PanelKill" type="Panel" parent="InApp"]
-visible = false
+[node name="PanelKill" type="Panel" parent="."]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -625.5
-offset_right = 83.0
-offset_bottom = 625.5
+anchors_preset = 9
+anchor_bottom = 1.0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_tiax0")
 script = ExtResource("3_ec1ar")
+is_legitimate = false
 
-[node name="Area2D" type="Area2D" parent="InApp/PanelKill"]
-visible = false
+[node name="Area2D" type="Area2D" parent="PanelKill"]
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InApp/PanelKill/Area2D"]
-position = Vector2(41.125, 623.75)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PanelKill/Area2D"]
+position = Vector2(-53.9375, 623.75)
 shape = SubResource("RectangleShape2D_21vi3")
 metadata/_edit_lock_ = true
 
-[node name="PanelKeep" type="Panel" parent="InApp"]
-visible = false
+[node name="PanelKeep" type="Panel" parent="."]
 layout_mode = 1
-anchors_preset = 6
+anchors_preset = 11
 anchor_left = 1.0
-anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -83.0
-offset_top = -605.0
-offset_bottom = 646.0
+anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_lpt7s")
 script = ExtResource("3_ec1ar")
 
-[node name="Area2D" type="Area2D" parent="InApp/PanelKeep"]
-visible = false
+[node name="Area2D" type="Area2D" parent="PanelKeep"]
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InApp/PanelKeep/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PanelKeep/Area2D"]
 position = Vector2(42.5, 624.5)
 shape = SubResource("RectangleShape2D_ec1ar")
 metadata/_edit_lock_ = true
 
-[node name="Cards" type="Control" parent="InApp"]
+[node name="Cards" type="Control" parent="."]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = 99.999756
-offset_right = 20.0
-offset_bottom = 140.00024
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button5" parent="InApp/Cards" instance=ExtResource("1_bx0j3")]
-layout_mode = 1
-color = Color(0.3372549, 0.8, 0.9490196, 1)
-
-[node name="Button4" parent="InApp/Cards" instance=ExtResource("1_bx0j3")]
-layout_mode = 1
-color = Color(0.9490196, 0.7882353, 0.29803923, 1)
-
-[node name="Button3" parent="InApp/Cards" instance=ExtResource("1_bx0j3")]
-layout_mode = 1
-color = Color(0.92156863, 0.34117648, 0.34117648, 1)
-
-[node name="Button2" parent="InApp/Cards" instance=ExtResource("1_bx0j3")]
-layout_mode = 1
-color = Color(0.15294118, 0.68235296, 0.3764706, 1)
-
-[node name="Button" parent="InApp/Cards" instance=ExtResource("1_bx0j3")]
-layout_mode = 1
-color = Color(0.3372549, 0.8, 0.9490196, 1)
-
-[connection signal="area_entered" from="InApp/PanelKill/Area2D" to="InApp/PanelKill" method="_on_area_2d_area_entered"]
-[connection signal="area_entered" from="InApp/PanelKeep/Area2D" to="InApp/PanelKeep" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="PanelKill/Area2D" to="PanelKill" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="PanelKeep/Area2D" to="PanelKeep" method="_on_area_2d_area_entered"]

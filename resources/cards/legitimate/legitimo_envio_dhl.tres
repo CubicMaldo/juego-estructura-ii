@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="PhishingCard" load_steps=2 format=3 uid="uid://dakm0sedyk8sq"]
+
+[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://assets/scripts/cards_stack/PhishingCard.gd" id="1_4hrsr"]
+
+
+[resource]
+script = ExtResource("1_4hrsr")
+card_title = "📦 Actualización de Envío"
+card_color = Color(0.35, 0.75, 0.85, 1)
+sender_name = "DHL Express"
+sender_email = "tracking@dhl.com.mx"
+subject = "Tu paquete llegará mañana - Rastreo #DHL7834921"
+email_body = "Hola,
+
+Tu paquete está en camino y llegará mañana entre 9:00 AM y 6:00 PM.
+
+Número de rastreo: DHL7834921
+Estado actual: En tránsito - Último escaneo en Centro de Distribución
+
+Puedes rastrear tu envío en tiempo real:
+www.dhl.com.mx/rastreo
+
+Si nadie está disponible para recibir el paquete:
+- Se intentará entrega nuevamente
+- Puedes reprogramar en línea
+- Recoger en oficina DHL más cercana
+
+Para más información, contacta a servicio al cliente:
+Tel: 01-800-765-6345
+
+Saludos,
+Equipo de Logística DHL"
+has_attachments = false
+is_phishing = false
+difficulty = 2
+points_correct = 100
+points_incorrect = -50
+explanation = "Email LEGÍTIMO de mensajería:
+- Dominio oficial verificado de DHL
+- Número de rastreo específico y verificable
+- Proporciona información clara sin solicitar datos
+- Incluye contacto oficial del servicio
+- No crea urgencia ni pide pagos
+- Tono profesional y opciones claras"
+card_id = "legit_004"
+category = "shipping"

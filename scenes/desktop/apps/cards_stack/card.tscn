@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://w8wjhjsa5ntp" path="res://assets/shaders/dissolve.gdshader" id="1_erbhb"]
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="1_hrtqo"]
-[ext_resource type="Script" uid="uid://dldh5i432g78j" path="res://assets/scripts/cards_stack/Card.gd" id="1_s7h5d"]
+[ext_resource type="Script" uid="uid://b8w3wxcgq7mpk" path="res://assets/scripts/cards_stack/interactions/Card.gd" id="1_s7h5d"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_oqx1n"]
 
@@ -202,14 +202,14 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gfi84")
 
-[node name="Top_TEXT" type="Label" parent="SubViewportContainer/SubViewport/Card/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+[node name="Title" type="Label" parent="SubViewportContainer/SubViewport/Card/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 32
 text = "xxxxxxxxxxx"
-autowrap_mode = 1
+autowrap_mode = 2
 
 [node name="PanelContainer2" type="PanelContainer" parent="SubViewportContainer/SubViewport/Card/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -217,15 +217,15 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gfi84")
 
-[node name="Lower_TEXT" type="Label" parent="SubViewportContainer/SubViewport/Card/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer2"]
+[node name="Subject" type="Label" parent="SubViewportContainer/SubViewport/Card/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 22
 text = "akjskajskajksjakjskajksja"
-autowrap_mode = 1
+autowrap_mode = 2
 
 [node name="Area2D" type="Area2D" parent="."]
 

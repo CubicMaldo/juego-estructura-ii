@@ -132,7 +132,7 @@ func _inicializar_pistas():
 		var pista_label = Label.new()
 		pista_label.text = "🔒 Pista bloqueada"
 		pista_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
-		pista_label.add_theme_font_size_override("font_size", 14)
+		pista_label.add_theme_font_size_override("font_size", 32)
 		pista_label.name = "Pista" + str(i)
 		pistas_container.add_child(pista_label)
 

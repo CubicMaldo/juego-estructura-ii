@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="PhishingCard" load_steps=2 format=3 uid="uid://f6sgrh5gem2p"]
+
+[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://assets/scripts/cards_stack/PhishingCard.gd" id="1_4hrsr"]
+
+
+[resource]
+script = ExtResource("1_4hrsr")
+card_title = "🚨 Paquete Retenido"
+card_color = Color(0.92, 0.25, 0.25, 1)
+sender_name = "Servicio Postal"
+sender_email = "notificaciones@correos-mx.online"
+subject = "URGENTE - Paquete retenido en aduana - Pague impuestos"
+email_body = "Estimado cliente,
+
+Su paquete con número de rastreo MX-2025-4738 ha sido RETENIDO en la aduana.
+
+Para liberar su envío debe pagar los impuestos de importación INMEDIATAMENTE:
+
+Monto a pagar: $89.99 USD
+
+>>> PAGAR IMPUESTOS AHORA <<<
+
+Ingrese los datos de su tarjeta para completar el pago:
+- Número de tarjeta
+- Fecha de vencimiento
+- CVV
+
+Si no paga en 24 HORAS, su paquete será DEVUELTO al remitente o DESTRUIDO.
+
+Referencia: ADN-2025-MX-4738
+
+Departamento de Aduanas
+Servicio Postal Mexicano"
+has_attachments = false
+is_phishing = true
+difficulty = 2
+points_correct = 100
+points_incorrect = -50
+phishing_indicators = ["Dominio falso: correos-mx.online (oficial es correosdemexico.gob.mx)", "Solicita datos de tarjeta por email", "Servicios postales NO piden pagos directos por email", "Urgencia artificial de 24 horas", "Amenaza con destruir el paquete"]
+explanation = "¡PHISHING de paquete falso! Técnicas de estafa:
+- Dominio no oficial con extensión .online
+- Los servicios postales NUNCA solicitan datos de tarjeta por email
+- Crea urgencia falsa y amenazas
+- El proceso real de aduanas es diferente y verificable
+- Intenta robar información de tarjeta de crédito
+
+SIEMPRE verifica directamente en el sitio oficial del servicio postal"
+card_id = "phishing_006"
+category = "shipping_scam"

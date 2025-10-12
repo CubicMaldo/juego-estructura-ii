@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="PhishingCard" load_steps=2 format=3 uid="uid://hhjwpbavh7hn"]
+
+[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://resources/cards/PhishingCard.gd" id="1_4hrsr"]
+
+[resource]
+script = ExtResource("1_4hrsr")
+card_title = "🔧 Soporte Técnico Microsoft"
+card_color = Color(0.9, 0.15, 0.15, 1)
+sender_name = "Microsoft Support Team"
+sender_email = "support@microsoft-security.support"
+subject = "ALERTA: Virus detectado en su computadora"
+email_body = "Estimado usuario de Windows,
+
+Nuestro sistema ha detectado 5 VIRUS CRÍTICOS en su computadora.
+
+Estos virus pueden:
+- Robar contraseñas
+- Acceder a su información bancaria  
+- Dañar archivos permanentemente
+
+ACTÚE AHORA:
+Llame INMEDIATAMENTE al: +1-800-555-0123
+(Disponible 24/7)
+
+Un técnico certificado limpiará su PC de forma remota.
+
+Costo del servicio: $199.99 (Descuento especial hoy)
+
+No apague su computadora.
+
+Microsoft Security Team
+Ticket #MS-2025-9847"
+has_attachments = false
+is_phishing = true
+difficulty = 2
+points_correct = 100
+points_incorrect = -50
+phishing_indicators = ["Dominio falso: microsoft-security.support no es oficial", "Microsoft NO envía alertas de virus por email", "Solicita llamar a un número no verificado", "Pide pago por soporte técnico no solicitado", "Crea pánico y urgencia"]
+explanation = "¡ESTAFA DE SOPORTE TÉCNICO! Técnicas usadas:
+- Dominio no oficial de Microsoft
+- Microsoft NO detecta virus en tu PC por email
+- El número de teléfono conecta con estafadores
+- Intentan acceso remoto para robar datos
+- Cobran por 'servicios' falsos
+- Usa tácticas de miedo (virus, robo de datos)"
+card_id = "phishing_004"
+category = "tech_support_scam"

@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="PhishingCard" load_steps=2 format=3 uid="uid://djau8ua8ipp5s"]
+
+[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://assets/scripts/cards_stack/PhishingCard.gd" id="1_4hrsr"]
+
+[resource]
+script = ExtResource("1_4hrsr")
+card_color = Color(0.25, 0.7, 0.4, 1)
+card_title = "📱 Actualización de Aplicación"
+subject = "Nueva versión disponible - WhatsApp 2.25.3"
+sender_name = "WhatsApp"
+sender_email = "noreply@whatsapp.com"
+email_body = "Hola,
+
+Una nueva versión de WhatsApp está disponible con mejoras de seguridad y nuevas funciones.
+
+Versión: 2.25.3
+Tamaño: 45 MB
+
+Novedades:
+• Mejoras en privacidad de chats
+• Corrección de errores
+• Optimización de batería
+• Nuevos emojis
+
+Puedes actualizar desde:
+- Google Play Store
+- Apple App Store
+- Configuración > Actualizaciones
+
+Esta actualización es opcional, pero se recomienda para mejor seguridad.
+
+Equipo de WhatsApp
+
+---
+Este es un mensaje automático. Para soporte, visita:
+https://faq.whatsapp.com"
+difficulty = 2
+explanation = "Email LEGÍTIMO de actualización de app:
+- Dominio oficial @whatsapp.com verificado
+- NO incluye enlaces directos de descarga (seguro)
+- Dirige a tiendas oficiales (Play Store/App Store)
+- Menciona que la actualización es opcional
+- Proporciona enlace oficial de soporte
+- No solicita información personal
+
+Las apps legítimas se actualizan desde las tiendas oficiales"
+card_id = "legit_006"
+category = "software"

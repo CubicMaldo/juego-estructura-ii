@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="PhishingCard" load_steps=2 format=3 uid="uid://xma64k38g4sf"]
+
+[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://resources/cards/PhishingCard.gd" id="1_4hrsr"]
+
+[resource]
+script = ExtResource("1_4hrsr")
+card_title = "💼 Oferta de Empleo"
+card_color = Color(0.88, 0.3, 0.3, 1)
+sender_name = "Recursos Humanos Google"
+sender_email = "jobs@google-recruitment.net"
+subject = "Has sido preseleccionado para trabajar en Google"
+email_body = "¡Felicidades!
+
+Has sido PRESELECCIONADO para una posición en Google Inc.
+
+Puesto: Desarrollador Senior
+Ubicación: Trabajo remoto desde casa
+Salario: $85,000 USD anuales + beneficios
+Inicio: Inmediato
+
+¿Por qué fuiste seleccionado?
+Tu perfil en LinkedIn llamó nuestra atención.
+
+NO REQUIERES ENTREVISTA. Solo completa:
+
+1. Formulario de datos personales
+2. Copia de identificación oficial
+3. Pago de $150 USD (certificación de antecedentes)
+
+>>> ACEPTAR OFERTA AHORA <<<
+
+Esta oferta expira en 24 HORAS.
+
+Solo 5 posiciones disponibles.
+
+Actúa RÁPIDO o perderás esta oportunidad.
+
+Departamento de Recursos Humanos
+Google Inc."
+has_attachments = false
+is_phishing = true
+difficulty = 2
+points_correct = 100
+points_incorrect = -50
+phishing_indicators = ["Dominio falso: google-recruitment.net (oficial es careers.google.com)", "Sin entrevista = FALSO (empresas legítimas siempre entrevistan)", "Solicita pago por 'certificación' (estafa común)", "Urgencia artificial de 24 horas", "Oferta demasiado buena sin proceso", "No menciona departamento específico"]
+explanation = "¡ESTAFA DE EMPLEO FALSO! Características fraudulentas:
+- Google NUNCA usa google-recruitment.net
+- Empresas legítimas SIEMPRE hacen entrevistas
+- NINGÚN empleo real cobra por 'certificaciones'
+- El proceso de Google es largo y riguroso
+- Urgencia falsa para evitar que investigues
+- Intenta robar datos personales y dinero
+
+Trabajos reales en Google: careers.google.com"
+card_id = "phishing_010"
+category = "employment_scam"

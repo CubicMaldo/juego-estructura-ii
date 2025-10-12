@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="PhishingCard" load_steps=2 format=3 uid="uid://dqpea7n7cj7uu"]
+
+[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://resources/cards/PhishingCard.gd" id="1_4hrsr"]
+
+[resource]
+script = ExtResource("1_4hrsr")
+card_title = "🏥 Resultados de Laboratorio"
+card_color = Color(0.3, 0.7, 0.65, 1)
+sender_name = "Laboratorios Chopo"
+sender_email = "resultados@labschopo.com.mx"
+subject = "Resultados disponibles - Folio: CH-2025-3847"
+email_body = "Estimado(a) paciente,
+
+Sus resultados de laboratorio ya están disponibles.
+
+Folio: CH-2025-3847
+Fecha de toma: 10 de Marzo, 2025
+Tipo de estudio: Química sanguínea completa
+
+Para consultar sus resultados:
+
+Opción 1:
+• Ingrese a: www.labschopo.com.mx
+• Usuario: Su número de folio
+• Contraseña: Fecha de nacimiento (ddmmaaaa)
+
+Opción 2:
+• Descargue la app 'Mi Chopo'
+• Consulte con su folio
+
+Opción 3:
+• Recoja resultados impresos en sucursal
+
+IMPORTANTE:
+Sus resultados tienen validez de 30 días.
+Para interpretación médica, consulte a su doctor.
+
+¿Dudas?
+Tel: 01-800-507-4376
+Lunes a Domingo, 7am-10pm
+
+Laboratorios Chopo
+Salud al alcance de todos"
+has_attachments = false
+is_phishing = false
+difficulty = 2
+points_correct = 100
+points_incorrect = -50
+explanation = "Email LEGÍTIMO de laboratorio médico:
+- Dominio oficial de Laboratorios Chopo
+- Proporciona número de folio verificable
+- Múltiples opciones para acceder (seguridad)
+- No incluye resultados en el email (protección de datos)
+- Teléfono oficial de contacto verificable
+- Instrucciones claras sin urgencia
+- Respeta confidencialidad médica
+
+Siempre verifica que los resultados médicos se consulten en portales oficiales"
+card_id = "legit_010"
+category = "healthcare"

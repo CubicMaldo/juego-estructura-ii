@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="PhishingCard" load_steps=2 format=3 uid="uid://bak3fn4gnlx4c"]
+
+[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://resources/cards/PhishingCard.gd" id="1_4hrsr"]
+
+[resource]
+script = ExtResource("1_4hrsr")
+card_title = "🎉 ¡GANADOR!"
+card_color = Color(0.95, 0.6, 0.1, 1)
+sender_name = "Lotería Nacional"
+sender_email = "premios@loterianacional-premio.xyz"
+subject = "¡Felicidades! Has ganado $50,000 USD"
+email_body = "¡¡¡FELICITACIONES!!!
+
+Usted ha sido seleccionado como GANADOR de nuestro sorteo anual.
+
+Premio: $50,000 USD (Cincuenta mil dólares)
+
+Para reclamar su premio, debe:
+1. Proporcionar datos personales (nombre, dirección, cédula)
+2. Pagar impuestos de procesamiento ($500 USD)
+3. Enviar copia de identificación
+
+Responda este correo en las próximas 48 horas o perderá su premio.
+
+¡No pierda esta oportunidad única!
+
+Departamento de Premios"
+has_attachments = false
+is_phishing = true
+difficulty = 1
+points_correct = 75
+points_incorrect = -40
+phishing_indicators = ["Dominio sospechoso con extensión .xyz", "Solicita pago de 'impuestos' por adelantado", "Pide información personal sensible", "No participaste en ningún sorteo", "Urgencia para evitar que pienses"]
+explanation = "¡PHISHING CLÁSICO! Estafa de 'premio falso':
+- Dominio no oficial (.xyz es bandera roja)
+- Solicita pagar para recibir premio (los premios reales no requieren pago)
+- Pide datos personales sensibles
+- No hay forma legítima de haber participado en este sorteo
+- Crea urgencia falsa (48 horas)"
+card_id = "phishing_002"
+category = "scam"
