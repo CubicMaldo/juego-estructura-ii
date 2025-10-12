@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=22 format=3 uid="uid://chrommxyoxqu4"]
 
 [ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://assets/scripts/desktop/Desktop.gd" id="1_06q4v"]
 [ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
@@ -7,9 +7,11 @@
 [ext_resource type="Shader" uid="uid://dwj1gcianwteq" path="res://assets/shaders/blur.gdshader" id="3_46iw5"]
 [ext_resource type="Resource" uid="uid://bxrjf5byddb2h" path="res://resources/apps/TreeApp.tres" id="5_jw0rl"]
 [ext_resource type="Resource" uid="uid://da4a2imuy21fd" path="res://resources/apps/CardGame.tres" id="6_blv04"]
-[ext_resource type="PackedScene" uid="uid://bdiccef8alau5" path="res://scenes/desktop/buttonVisualEffects.tscn" id="6_hxdtg"]
 [ext_resource type="Resource" uid="uid://c3ex0nu2yuhy" path="res://resources/apps/PasswordCrackerApp.tres" id="7_pwdcrk"]
 [ext_resource type="Shader" uid="uid://yq5a4bhdrkm4" path="res://assets/shaders/vhs.gdshader" id="8_ihslh"]
+[ext_resource type="Script" uid="uid://v2pknxn671xc" path="res://assets/scripts/desktop/taskbarIcon.gd" id="9_77w8n"]
+[ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="10_77w8n"]
+[ext_resource type="Texture2D" uid="uid://n4tx0g7o53sh" path="res://icon.svg" id="11_3iu53"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ax2js"]
 shader = ExtResource("1_13veq")
@@ -58,7 +60,19 @@ shader_parameter/lighting = 0.4
 shader_parameter/spin_amount = 0.25
 shader_parameter/pixel_filter = 740.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_73eyv"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpe5y"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c2ok8"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -74,6 +88,19 @@ expand_margin_left = 2.0
 expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lswqd"]
+resource_local_to_scene = true
+shader = ExtResource("10_77w8n")
+shader_parameter/rect_size = Vector2(0, 0)
+shader_parameter/fov = 40.0000018525
+shader_parameter/cull_back = true
+shader_parameter/y_rot = 0.0
+shader_parameter/x_rot = 0.0
+shader_parameter/inset = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uktdj"]
+size = Vector2(63, 81)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jw0rl"]
 shader = ExtResource("8_ihslh")
@@ -166,6 +193,7 @@ offset_right = 956.0
 offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fuoj2")
 
 [node name="MargenBar" type="MarginContainer" parent="Taskbar"]
@@ -176,25 +204,54 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_right = 12
 metadata/_edit_lock_ = true
 
-[node name="TaskHBox" type="HBoxContainer" parent="Taskbar/MargenBar"]
+[node name="TaskBar" type="HBoxContainer" parent="Taskbar/MargenBar"]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_constants/separation = 12
 metadata/_edit_lock_ = true
 
-[node name="Button4" parent="Taskbar/MargenBar/TaskHBox" instance=ExtResource("6_hxdtg")]
-layout_mode = 2
-
-[node name="Button3" type="Button" parent="Taskbar/MargenBar/TaskHBox"]
-modulate = Color(0, 0, 4.165, 1)
+[node name="App" type="Button" parent="Taskbar/MargenBar/TaskBar" node_paths=PackedStringArray("texture_node")]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/focus = SubResource("StyleBoxFlat_73eyv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hpe5y")
+theme_override_styles/focus = SubResource("StyleBoxFlat_c2ok8")
+script = ExtResource("9_77w8n")
+enable_drag = false
+texture_node = NodePath("AppTexture")
+
+[node name="AppTexture" type="TextureRect" parent="Taskbar/MargenBar/TaskBar/App"]
+material = SubResource("ShaderMaterial_lswqd")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 32)
+texture = ExtResource("11_3iu53")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="DestroyArea" type="Area2D" parent="Taskbar/MargenBar/TaskBar/App"]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Taskbar/MargenBar/TaskBar/App/DestroyArea"]
+position = Vector2(47.5, 48.5)
+shape = SubResource("RectangleShape2D_uktdj")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -213,3 +270,9 @@ mouse_filter = 2
 metadata/_edit_lock_ = true
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="CanvasLayer"]
+
+[connection signal="focus_exited" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_focus_exited"]
+[connection signal="gui_input" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_gui_input"]
+[connection signal="mouse_entered" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_mouse_exited"]
+[connection signal="pressed" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_pressed"]

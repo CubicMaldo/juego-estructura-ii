@@ -11,6 +11,7 @@ var navigator: PlayerNavigator
 var visibility: VisibilityTracker
 
 var score: int = 0
+var _awaiting_challenge_input: bool = false
 
 
 func _init():
@@ -42,24 +43,36 @@ func setup_game(seed_value: int = -1) -> void:
 	TreeDebugger.print_tree_with_visibility(tree, visibility, navigator.current_node)
 
 func navigate_left() -> bool:
+	if _awaiting_challenge_input:
+		print("⚠️ Debes responder el reto antes de moverte nuevamente.")
+		return false
 	if navigator.move_left():
 		_handle_navigation()
 		return true
 	return false
 
 func navigate_right() -> bool:
+	if _awaiting_challenge_input:
+		print("⚠️ Debes responder el reto antes de moverte nuevamente.")
+		return false
 	if navigator.move_right():
 		_handle_navigation()
 		return true
 	return false
 
 func navigate_up() -> bool:
+	if _awaiting_challenge_input:
+		print("⚠️ Debes responder el reto antes de moverte nuevamente.")
+		return false
 	if navigator.move_to_parent():
 		_handle_navigation()
 		return true
 	return false
 
 func navigate_down() -> bool:
+	if _awaiting_challenge_input:
+		print("⚠️ Debes responder el reto antes de moverte nuevamente.")
+		return false
 	if can_navigate_right():
 		navigate_right()
 		return true
@@ -81,6 +94,9 @@ func _handle_navigation() -> void:
 	# Check for game end
 	if current.tipo == Arbol.NodosJuego.FINAL:
 		game_over.emit(true)
+
+	if current.tipo == 1:
+		_trigger_challenge_prompt(current)
 	
 	player_moved.emit(current)
 
@@ -91,6 +107,8 @@ func _on_player_moved(_old_node: TreeNode, new_node: TreeNode) -> void:
 	if new_node.tipo == 2:
 		visibility.forced_discovery(tree.obtener_hoja_mas_profunda())
 	TreeDebugger.print_tree_with_visibility(tree, visibility, navigator.current_node)
+	if new_node.tipo == 1:
+		_trigger_challenge_prompt(new_node)
 
 func _on_node_visited(node: TreeNode) -> void:
 	# Award points based on node type
@@ -129,3 +147,43 @@ func can_navigate_down() -> bool:
 
 func is_node_visible(node: TreeNode) -> bool:
 	return visibility.is_discovered(node)
+
+func _trigger_challenge_prompt(node: TreeNode) -> void:
+	if _awaiting_challenge_input:
+		return
+
+	_awaiting_challenge_input = true
+	print("\n=== DESAFÍO ENCONTRADO ===")
+	print("Nodo: ", node.nombre if node and node.has_method("get_nombre") else node)
+	print("Debes responder en la consola para continuar.")
+	var prompt := "Ingresa tu respuesta y presiona Enter: "
+	if Engine.has_singleton("Console"):
+		Engine.get_singleton("Console").request_input(prompt, _on_challenge_response)
+	else:
+		_print_and_capture_response(prompt)
+
+func _print_and_capture_response(prompt: String) -> void:
+	print(prompt)
+	var response := get_console_input()
+	_on_challenge_response(response)
+
+func get_console_input() -> String:
+	var input_line := ""
+	if OS.is_debug_build():
+		var stdin := Engine.get_singleton("STDIN") if Engine.has_singleton("STDIN") else null
+		if stdin and stdin.has_method("get_line"):
+			input_line = stdin.call("get_line").strip_edges()
+		else:
+			input_line = "respuesta"
+	else:
+		input_line = "respuesta"
+	return input_line
+
+func _on_challenge_response(response: String) -> void:
+	print("Respuesta recibida: ", response)
+	AwaitingChallengeTimer.new().defer_reset(self)
+
+class AwaitingChallengeTimer:
+	func defer_reset(controller: TreeAppController) -> void:
+		controller._awaiting_challenge_input = false
+		print("Puedes continuar explorando el árbol.\n")

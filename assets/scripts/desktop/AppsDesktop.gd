@@ -11,6 +11,13 @@ class_name AppButton
 
 @export_category("Drag Settings")
 @export var drag_threshold: float = 20.0
+@export var enable_drag: bool = true:
+	set(value):
+		enable_drag = value
+		if not enable_drag:
+			_reset_drag_state()
+	get:
+		return enable_drag
 
 @export_category("App Settings")
 @export var appStats : AppStats
@@ -36,7 +43,9 @@ var clicked_times_on_focus: int = 0
 
 func _ready() -> void:
 	super._ready()
-	$AppTexture.texture = appStats.icon
+	if appStats != null:
+		$AppTexture.texture = appStats.icon
+	
 	collision_shape.set_deferred("disabled", true)
 	
 	# Conectar señales adicionales
@@ -45,11 +54,14 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	super._process(_delta)
-	_rotate_velocity(_delta)
-	_follow_mouse(_delta)
-	_check_drag_threshold()
+	if enable_drag:
+		_rotate_velocity(_delta)
+		_follow_mouse(_delta)
+		_check_drag_threshold()
 
 func _check_drag_threshold() -> void:
+	if not enable_drag:
+		return
 	if mouse_pressed and not drag_started:
 		var current_mouse_pos = get_global_mouse_position()
 		var distance = press_position.distance_to(current_mouse_pos)
@@ -76,6 +88,8 @@ func _rotate_velocity(_delta: float) -> void:
 	rotation = displacement
 
 func _follow_mouse(_delta: float) -> void:
+	if not enable_drag:
+		return
 	if not following_mouse: return
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	global_position = mouse_pos - (size / 2.0)
@@ -85,6 +99,8 @@ func _on_gui_input(event: InputEvent) -> void:
 	_handle_mouse_click(event)
 
 func _handle_mouse_click(event: InputEvent) -> void:
+	if not enable_drag:
+		return
 	if not event is InputEventMouseButton: return
 	if event.button_index != MOUSE_BUTTON_LEFT: return
 	
@@ -116,7 +132,7 @@ func _on_button_pressed() -> void:
 	clicked_times_on_focus = 0
 
 func _on_button_focus_exited() -> void:
-	following_mouse = false
+	_reset_drag_state()
 	clicked_times_on_focus = 0
 
 func _clicked_twice() -> void:
@@ -126,3 +142,12 @@ func _clicked_twice() -> void:
 ## Método heredado y personalizado para destruir el botón
 func destroy() -> void:
 	apply_dissolve_effect(2.0)
+
+func _reset_drag_state() -> void:
+	following_mouse = false
+	drag_started = false
+	mouse_pressed = false
+	if not is_inside_tree():
+		return
+	if is_instance_valid(collision_shape):
+		collision_shape.set_deferred("disabled", true)

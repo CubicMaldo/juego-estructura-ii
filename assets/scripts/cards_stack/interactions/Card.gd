@@ -34,6 +34,7 @@ var tween_destroy: Tween
 @onready var original_position: Vector2 = global_position
 @onready var viewport_material: ShaderMaterial = $SubViewportContainer.material
 @onready var card_sprite = $SubViewportContainer/SubViewport/Card
+var dissolve_material: ShaderMaterial
 
 # ============================================================
 # LIFECYCLE
@@ -41,17 +42,22 @@ var tween_destroy: Tween
 
 func _ready() -> void:
 	set_process(false)
-	# Cada carta necesita su propia copia del material para evitar compartir parámetros
-	_duplicate_viewport_material()
+	# Cada carta necesita su propia copia de materiales para evitar compartir parámetros
+	_duplicate_card_materials()
 	call_deferred("_update_pivot")
 
-func _duplicate_viewport_material() -> void:
+func _duplicate_card_materials() -> void:
+	# Copiar material de dissolve asignado al botón (self)
+	if material:
+		dissolve_material = material.duplicate(true)
+		dissolve_material.resource_local_to_scene = true
+		dissolve_material.set_shader_parameter("dissolve_value", 1.0)
+		material = dissolve_material
 	if viewport_material:
 		viewport_material = viewport_material.duplicate(true)
 		viewport_material.resource_local_to_scene = true
 		$SubViewportContainer.material = viewport_material
-		$SubViewportContainer.use_parent_material = false
-		viewport_material.set_shader_parameter("dissolve_value", 1.0)
+	$SubViewportContainer.use_parent_material = true
 
 func _update_pivot() -> void:
 	# Centrar el pivot para que la escala crezca desde el centro
@@ -141,9 +147,11 @@ func destroy() -> void:
 	await normalize_tween.finished
 
 	# Refrescar material y garantizar dissolve completo visible antes de animar
-	var dissolve_material := viewport_material
-	if dissolve_material:
-		dissolve_material.set_shader_parameter("dissolve_value", 1.0)
+	var dissolve_target: ShaderMaterial = dissolve_material if dissolve_material else null
+	if dissolve_target == null and material and material is ShaderMaterial:
+		dissolve_target = material
+	if dissolve_target:
+		dissolve_target.set_shader_parameter("dissolve_value", 1.0)
 	
 	# Flash corto para enfatizar el error antes del shake
 	var flash_tween := create_tween()
@@ -163,8 +171,8 @@ func destroy() -> void:
 	tween_destroy = create_tween().set_parallel(true)
 	tween_destroy.tween_property(self, "scale", Vector2(0.85, 0.6), 0.7).set_delay(0.05).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 	tween_destroy.tween_property(self, "rotation_degrees", randf_range(-12.0, 12.0), 0.7).set_delay(0.05).set_ease(Tween.EASE_OUT)
-	if dissolve_material:
-		tween_destroy.tween_property(dissolve_material, "shader_parameter/dissolve_value", 0.0, 0.9).from(1.0).set_delay(0.05).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
+	if dissolve_target:
+		tween_destroy.tween_property(dissolve_target, "shader_parameter/dissolve_value", 0.0, 0.9).from(1.0).set_delay(0.05).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
 	tween_destroy.tween_property(self, "modulate:a", 0.0, 0.25).set_delay(0.7)
 
 	tween_destroy.finished.connect(func():
