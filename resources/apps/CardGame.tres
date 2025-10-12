@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("3_l1xq4")
 scene = ExtResource("2_k8k36")
-size = Vector2(1080, 600)
+size = Vector2(720, 600)
 app_name = "Caught a Phis"
 icon = ExtResource("1_xg6uk")
 metadata/_custom_type_script = "uid://idvitonl6kt2"

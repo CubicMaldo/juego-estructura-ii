@@ -16,6 +16,8 @@ func _ready():
 	# Connect to game events
 	Global.treeMap.player_moved.connect(_on_player_moved)
 	Global.treeMap.game_over.connect(_on_game_over)
+	Global.treeMap.challenge_started.connect(_on_challenge_started)
+	Global.treeMap.challenge_finished.connect(_on_challenge_finished)
 	
 	# Setup visual tree CON VisibilityTracker
 	arbol_visual = preload("res://scenes/tree/ArbolVisual.tscn").instantiate()
@@ -75,3 +77,9 @@ func _on_game_over(win: bool):
 		print("🎉 You won! Score: ", Global.treeMap.score)
 	else:
 		print("💀 Game Over! Score: ", Global.treeMap.score)
+
+func _on_challenge_started(_node: TreeNode) -> void:
+	_update_button_states()
+
+func _on_challenge_finished(_node: TreeNode, _win: bool) -> void:
+	_update_button_states()

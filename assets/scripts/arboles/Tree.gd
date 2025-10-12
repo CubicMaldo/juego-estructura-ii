@@ -1,5 +1,7 @@
 class_name Arbol
 
+const appDatabase = preload("res://assets/scripts/arboles/AppDatabase.gd")
+
 ## Pure tree generation - no game state, no visibility logic
 
 var raiz: TreeNode = null
@@ -12,6 +14,60 @@ enum NodosJuego { INICIO = 0, DESAFIO = 1, PISTA = 2, FINAL = 3}
 @export var _cantidad_ramas = 4
 
 var rng := RandomNumberGenerator.new()
+var _app_resources: Array[AppStats] = []
+var _app_index := 0
+var _app_db: AppDatabase = null
+var _app_counters := {}
+
+func set_available_app_resources(apps: Array) -> void:
+	_app_db = null
+	_app_resources.clear()
+	for app in apps:
+		if app is AppStats:
+			_app_resources.append(app)
+	_app_index = 0
+	if _app_resources.is_empty() and not apps.is_empty():
+		push_warning("Ningún recurso proporcionado es de tipo AppStats; los nodos no tendrán apps asociadas.")
+
+func get_available_app_resources() -> Array[AppStats]:
+	return _app_resources.duplicate()
+
+func set_app_database(database: AppDatabase) -> void:
+	_app_db = database
+	_app_counters = {
+		NodosJuego.DESAFIO: 0,
+		NodosJuego.PISTA: 0,
+		NodosJuego.FINAL: 0
+	}
+	_app_index = 0
+	if _app_db == null:
+		return
+	if (_app_db.desafio_apps.is_empty() and _app_db.pista_apps.is_empty() and _app_db.meta_apps.is_empty()):
+		push_warning("El AppDatabase no tiene recursos asignados; los nodos no tendrán apps asociadas.")
+
+func _next_app_resource(tipo: int) -> AppStats:
+	if _app_db != null:
+		var pool: Array[AppStats] = []
+		match tipo:
+			NodosJuego.DESAFIO:
+				pool = _app_db.desafio_apps
+			NodosJuego.PISTA:
+				pool = _app_db.pista_apps
+			NodosJuego.FINAL:
+				pool = _app_db.meta_apps
+			_:
+				pool = []
+		if pool.is_empty():
+			return null
+		var idx: int = _app_counters.get(tipo, 0)
+		_app_counters[tipo] = idx + 1
+		return pool[idx % pool.size()]
+
+	if _app_resources.is_empty():
+		return null
+	var resource := _app_resources[_app_index % _app_resources.size()]
+	_app_index += 1
+	return resource
 
 func generar_arbol_controlado(semilla: int = -1) -> void:
 	if semilla == -1:
@@ -19,15 +75,16 @@ func generar_arbol_controlado(semilla: int = -1) -> void:
 		print("Semilla:", rng.seed)
 	else:
 		rng.seed = semilla
+	_app_index = 0
 	
 	# 1. Generar el camino principal
-	raiz = TreeNode.new(NodosJuego.INICIO)
+	raiz = TreeNode.new(NodosJuego.INICIO, null, _next_app_resource(NodosJuego.INICIO))
 	
 	var actual = raiz
 	var longitud = rng.randi_range(_longitud_minima, _longitud_maxima)
 	
 	for i in range(1, longitud):
-		var nuevo = TreeNode.new(NodosJuego.DESAFIO, actual)
+		var nuevo = TreeNode.new(NodosJuego.DESAFIO, actual, _next_app_resource(NodosJuego.DESAFIO))
 		if rng.randf() < 0.5:
 			actual.izquierdo = nuevo
 		else:
@@ -42,6 +99,7 @@ func generar_arbol_controlado(semilla: int = -1) -> void:
 	var hoja_profunda = obtener_hoja_mas_profunda()
 	if hoja_profunda != null:
 		hoja_profunda.tipo = NodosJuego.FINAL
+		hoja_profunda.app_resource = _next_app_resource(NodosJuego.FINAL)
 	
 	# 4. Colocar pistas
 	_colocar_pistas()
@@ -62,7 +120,7 @@ func _agregar_ramas(i: int) -> void:
 		return
 
 	# Crear raíz de rama falsa
-	var nuevo = TreeNode.new(NodosJuego.DESAFIO, padre)
+	var nuevo = TreeNode.new(NodosJuego.DESAFIO, padre, _next_app_resource(NodosJuego.DESAFIO))
 	if padre.derecho == null:
 		padre.derecho = nuevo
 	elif padre.izquierdo == null:
@@ -74,7 +132,7 @@ func _agregar_ramas(i: int) -> void:
 	var profundidad = rng.randi_range(1, 3)
 	var actual = nuevo
 	for j in range(profundidad):
-		var hijo = TreeNode.new(NodosJuego.DESAFIO, actual)
+		var hijo = TreeNode.new(NodosJuego.DESAFIO, actual, _next_app_resource(NodosJuego.DESAFIO))
 		if rng.randf() < 0.5:
 			actual.izquierdo = hijo
 		else:
@@ -91,6 +149,7 @@ func _colocar_pistas() -> void:
 
 	for i in range(max_pistas):
 		hojas[i].tipo = NodosJuego.PISTA
+		hojas[i].app_resource = _next_app_resource(NodosJuego.PISTA)
 
 func obtener_hoja_mas_profunda() -> TreeNode: 
 	var result = _buscar_hoja_profunda(raiz, 0)

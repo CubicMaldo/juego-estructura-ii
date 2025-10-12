@@ -28,6 +28,7 @@ var current_score: int = 0
 var correct_answers: int = 0
 var incorrect_answers: int = 0
 var cards_answered: int = 0
+var _challenge_result_sent: bool = false
 
 # Tweens
 var tween: Tween
@@ -312,7 +313,7 @@ func on_card_answered(is_correct: bool, card_data_param: PhishingCard) -> void:
 		correct_answers,
 		incorrect_answers
 	])
-	
+	print("Cartas respondidas: %d / %d" % [cards_answered, cards_per_game])
 	# Verificar si terminó el juego
 	if cards_answered >= cards_per_game:
 		_finish_game()
@@ -329,9 +330,11 @@ func _finish_game() -> void:
 	print("❌ Cartas Falladas: %d" % incorrect_answers)
 	print("📧 Total de Cartas: %d" % cards_answered)
 	
-	if correct_answers > 0:
-		var accuracy = (float(correct_answers) / float(cards_answered)) * 100.0
-		print("🎯 Precisión: %.1f%%" % accuracy)
+	var accuracy: float = 0.0
+	if cards_answered > 0:
+		accuracy = (float(correct_answers) / float(cards_answered)) * 100.0
+	print("🎯 Precisión: %.1f%%" % accuracy)
+	_report_challenge_result(accuracy >= 70.0)
 	
 	print("=".repeat(50) + "\n")
 
@@ -341,6 +344,7 @@ func reset_game() -> void:
 	correct_answers = 0
 	incorrect_answers = 0
 	cards_answered = 0
+	_challenge_result_sent = false
 	
 	# Limpiar y recargar cartas
 	await _clear_existing_cards()
@@ -357,3 +361,15 @@ func answer_legitimate() -> void:
 	if first_card and first_card.card_data:
 		first_card.check_answer(false)
 		first_card.destroy()
+
+func _report_challenge_result(win: bool) -> void:
+	if _challenge_result_sent:
+		return
+	_challenge_result_sent = true
+	var notifier = null
+	if has_meta("tree_challenge_notifier"):
+		notifier = get_meta("tree_challenge_notifier")
+	if notifier is Callable and notifier.is_valid():
+		notifier.call(win)
+	elif Global.has_method("report_challenge_result"):
+		Global.report_challenge_result(win)

@@ -54,7 +54,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ba6y3")
 card_database = ExtResource("2_ulwbx")
-cards_per_game = 5
+cards_per_game = 1
 card_template = ExtResource("1_bx0j3")
 
 [node name="BG" type="ColorRect" parent="."]

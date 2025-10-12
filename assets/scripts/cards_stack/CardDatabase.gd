@@ -55,12 +55,27 @@ func get_balanced_cards(count: int) -> Array[PhishingCard]:
 	legit_cards.shuffle()
 	
 	var result: Array[PhishingCard] = []
-	var half = count*0.5
-	
-	for i in range(min(half, phishing_cards.size())):
+	var desired_phishing: int = int(ceil(float(count) / 2.0))
+	var desired_legit: int = count - desired_phishing
+
+	var picked_phishing: int = min(desired_phishing, phishing_cards.size())
+	var picked_legit: int = min(desired_legit, legit_cards.size())
+
+	for i in range(picked_phishing):
 		result.append(phishing_cards[i])
-	for i in range(min(count - half, legit_cards.size())):
+	for i in range(picked_legit):
 		result.append(legit_cards[i])
-	
+
+	var remaining := count - result.size()
+	if remaining > 0:
+		var leftovers: Array[PhishingCard] = []
+		if phishing_cards.size() > picked_phishing:
+			leftovers.append_array(phishing_cards.slice(picked_phishing))
+		if legit_cards.size() > picked_legit:
+			leftovers.append_array(legit_cards.slice(picked_legit))
+		leftovers.shuffle()
+		for i in range(min(remaining, leftovers.size())):
+			result.append(leftovers[i])
+
 	result.shuffle()
 	return result

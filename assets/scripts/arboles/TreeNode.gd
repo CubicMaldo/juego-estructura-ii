@@ -7,11 +7,25 @@ var tipo: int
 var padre: TreeNode
 var izquierdo: TreeNode
 var derecho: TreeNode
+var app_resource: AppStats
+var challenge_completed: bool = false
+var challenge_result: bool = false
 
 
-func _init(_tipo: int, _padre: TreeNode = null):
+func _init(_tipo: int, _padre: TreeNode = null, _app_resource: AppStats = null):
 	self.tipo = _tipo
 	self.padre = _padre
+	self.app_resource = _app_resource
+
+func has_app_resource() -> bool:
+	return app_resource != null
+
+func set_challenge_result(win: bool) -> void:
+	challenge_completed = true
+	challenge_result = win
+
+func has_challenge_result() -> bool:
+	return challenge_completed
 
 func get_children() -> Array[TreeNode]:
 	var children: Array[TreeNode] = []

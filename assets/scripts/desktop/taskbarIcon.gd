@@ -15,3 +15,6 @@ func _ready():
 	offset_bottom = 32.0
 	
 	self.position = Vector2.ZERO
+
+func _clicked_twice() -> void:
+	pass

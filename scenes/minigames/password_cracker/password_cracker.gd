@@ -345,6 +345,8 @@ func _game_over():
 	var tween = create_tween()
 	tween.tween_property($Panel, "modulate", Color(1, 0.5, 0.5), 0.3)
 	tween.tween_property($Panel, "modulate", Color(1, 1, 1), 0.3)
+	if Global.has_method("report_challenge_result"):
+		Global.report_challenge_result(false)
 
 func _efecto_error_panel():
 	var tween = create_tween()
@@ -387,6 +389,8 @@ func _victoria_total():
 	tween.set_loops(3)
 	tween.tween_property(label_resultado, "modulate", Color(1, 1, 0), 0.3)
 	tween.tween_property(label_resultado, "modulate", Color(1, 1, 1), 0.3)
+	if Global.has_method("report_challenge_result"):
+		Global.report_challenge_result(true)
 
 func _mostrar_mensaje(mensaje: String, color: Color):
 	label_resultado.text = mensaje

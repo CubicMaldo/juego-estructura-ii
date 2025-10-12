@@ -9,7 +9,7 @@
 [ext_resource type="Resource" uid="uid://da4a2imuy21fd" path="res://resources/apps/CardGame.tres" id="6_blv04"]
 [ext_resource type="Resource" uid="uid://c3ex0nu2yuhy" path="res://resources/apps/PasswordCrackerApp.tres" id="7_pwdcrk"]
 [ext_resource type="Shader" uid="uid://yq5a4bhdrkm4" path="res://assets/shaders/vhs.gdshader" id="8_ihslh"]
-[ext_resource type="Script" uid="uid://v2pknxn671xc" path="res://assets/scripts/desktop/taskbarIcon.gd" id="9_77w8n"]
+[ext_resource type="Script" uid="uid://v2pknxn671xc" path="res://assets/scripts/desktop/TaskbarIcon.gd" id="9_77w8n"]
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="10_77w8n"]
 [ext_resource type="Texture2D" uid="uid://n4tx0g7o53sh" path="res://icon.svg" id="11_3iu53"]
 
@@ -146,7 +146,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.7750634, 0.7750634, 0.7750634, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+[node name="DesktopMargin" type="MarginContainer" parent="ColorRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -160,22 +160,22 @@ theme_override_constants/margin_right = 64
 theme_override_constants/margin_bottom = 64
 metadata/_edit_lock_ = true
 
-[node name="AppContainer" type="GridContainer" parent="ColorRect/MarginContainer"]
+[node name="AppContainer" type="GridContainer" parent="ColorRect/DesktopMargin"]
 layout_mode = 2
 theme_override_constants/h_separation = 32
 theme_override_constants/v_separation = 32
 columns = 2
 metadata/_edit_lock_ = true
 
-[node name="App" parent="ColorRect/MarginContainer/AppContainer" instance=ExtResource("2_06q4v")]
+[node name="App" parent="ColorRect/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 appStats = ExtResource("5_jw0rl")
 
-[node name="App2" parent="ColorRect/MarginContainer/AppContainer" instance=ExtResource("2_06q4v")]
+[node name="App2" parent="ColorRect/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 appStats = ExtResource("6_blv04")
 
-[node name="App3" parent="ColorRect/MarginContainer/AppContainer" instance=ExtResource("2_06q4v")]
+[node name="App3" parent="ColorRect/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 appStats = ExtResource("7_pwdcrk")
 

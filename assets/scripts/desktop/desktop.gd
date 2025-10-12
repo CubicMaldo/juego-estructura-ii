@@ -1,37 +1,86 @@
 extends Control
-@onready var app_desktop_container: GridContainer = $ColorRect/MarginContainer/AppContainer
+@onready var app_desktop_container: GridContainer = $ColorRect/DesktopMargin/AppContainer
 @onready var taskbar_container: Container = %TaskBar
 @export var app_panel_scene : PackedScene
 
 func _ready():
+	add_to_group("desktop_manager")
 	# Conectamos dinámicamente TODOS los iconos del contenedor
 	for icon in app_desktop_container.get_children():
 		if icon.has_signal("open_app"):
 			icon.connect("open_app", Callable(self, "_on_icon_opened").bind(icon))
 
+func open_app_from_stats(app_stats: AppStats) -> Dictionary:
+	if app_stats == null:
+		return {}
+	if app_stats.scene == null:
+		push_warning("AppStats %s no tiene escena asociada." % app_stats.app_name)
+		return {}
+	var session := _spawn_app_session(app_stats.scene, app_stats, null)
+	if session.is_empty():
+		return session
+	if not session.get("is_existing", false):
+		_animate_new_panel(session.get("panel"))
+	return session
+
 func _on_icon_opened(app_ref: PackedScene, appStats : AppStats, source_icon: Node):
-	var app_id := _get_app_id(appStats, app_ref)
+	var session := _spawn_app_session(app_ref, appStats, source_icon)
+	if session.is_empty():
+		return
+	if not session.get("is_existing", false):
+		_animate_new_panel(session.get("panel"))
+
+func _spawn_app_session(app_ref: PackedScene, app_stats: AppStats, source_icon: Node) -> Dictionary:
+	if app_ref == null:
+		return {}
+	var app_id := _get_app_id(app_stats, app_ref)
 	var existing_panel := _find_open_app_panel(app_id)
 	if existing_panel:
-		print("App '%s' ya está abierta; no se abrirá otra instancia." % appStats.app_name)
-		return
+		print("App '%s' ya está abierta; reutilizando instancia." % app_stats.app_name)
+		return {
+			"panel": existing_panel,
+			"app": _extract_app_from_panel(existing_panel),
+			"app_id": app_id,
+			"is_existing": true
+		}
 
 	var app_panel := app_panel_scene.instantiate()
 	var app_inside := app_ref.instantiate()
 
 	app_panel.set_meta("app_id", app_id)
-	app_panel._setAppStat(appStats)
-	app_panel.find_child("SubViewport").add_child(app_inside)
-	self.add_child(app_panel)
+	app_panel._setAppStat(app_stats)
+	var viewport := app_panel.find_child("SubViewport")
+	if viewport != null:
+		viewport.add_child(app_inside)
+	add_child(app_panel)
 
-	# Duplicar el icono en la barra de tareas para indicar que está abierto
-	_ensure_taskbar_icon(app_id, source_icon)
-	
-	# 🔹 Animación de aparición (tween suave tipo pop-in)
-	app_panel.scale = Vector2(0.8, 0.8)
+	if source_icon != null:
+		_ensure_taskbar_icon(app_id, source_icon)
+
+	return {
+		"panel": app_panel,
+		"app": app_inside,
+		"app_id": app_id,
+		"is_existing": false
+	}
+
+func _extract_app_from_panel(panel: Node) -> Node:
+	if panel == null:
+		return null
+	var viewport := panel.find_child("SubViewport")
+	if viewport == null:
+		return null
+	if viewport.get_child_count() == 0:
+		return null
+	return viewport.get_child(0)
+
+func _animate_new_panel(panel: Node) -> void:
+	if panel == null:
+		return
+	panel.scale = Vector2(0.8, 0.8)
 	var tween := create_tween()
 	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	tween.tween_property(app_panel, "scale", Vector2(1, 1), 0.4)
+	tween.tween_property(panel, "scale", Vector2(1, 1), 0.4)
 
 func _get_app_id(appStats: AppStats, app_ref: PackedScene) -> String:
 	if appStats and appStats.app_name != "":

@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("3_8ry13")
 scene = ExtResource("2_4rjvc")
-size = Vector2(540, 540)
+size = Vector2(600, 600)
 app_name = "Tree Map"
 icon = ExtResource("1_kpyoq")
 metadata/_custom_type_script = "uid://idvitonl6kt2"
