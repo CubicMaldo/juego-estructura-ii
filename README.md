@@ -1,92 +1,80 @@
-# Juego Estructura II
+# 🌲 **Juego Estructura II**
 
-Breve descripción
------------------
-Eres un explorador que avanza por un árbol de nodos. En cada nodo puedes enfrentarte a desafíos (minijuegos) para avanzar hasta la meta. El objetivo es alcanzar el nodo final, recolectar pistas y maximizar la puntuación.
+> 🧠 *Explora, aprende y supera desafíos en un árbol de decisiones dinámico inspirado en la lógica estructural y la ciberseguridad.*
 
-Tabla de contenidos
-------------------
-- Juego
-- Controles básicos
-- Mecánicas principales
-- Consejos rápidos
-- Problemas y soluciones
-- Soporte para jugadores
-- Para desarrolladores
-- Arquitectura resumida
-- Archivos clave
-- Configuración del proyecto
-- Contribuir
-- Licencia y contacto
+---
 
-Juego
-----
-Breve introducción al objetivo: avanzar por el árbol de nodos, completar minijuegos y alcanzar el nodo final con la mayor puntuación posible.
+## 🎮 **Descripción general**
 
-Controles básicos
------------------
-- Movimiento: flechas del teclado o botones en pantalla.
-- Seleccionar / confirmar: Enter o botón A.
-- Accede a los minijuegos al acercarte a un nodo con una app asociada.
-- Sigue las instrucciones específicas dentro de cada minijuego.
+Eres un explorador digital que avanza por un árbol de nodos interactivos.  
+Cada nodo representa una **decisión** o **reto**: algunos te ofrecen pistas, otros te enfrentan a **minijuegos**.  
+Tu objetivo es **alcanzar el nodo final (Meta)** completando los desafíos y optimizando tu recorrido.
 
-Mecánicas principales
----------------------
-- Navegación: recorres nodos en un árbol; algunos nodos quedan ocultos hasta descubrir otros.
-- Pistas: visitar un nodo de tipo "pista" otorga información y puntos.
-- Desafíos: al activar un desafío se inicia un minijuego. Ganar desbloquea el avance; perder permite reintentos.
-- Puntuación: puntos por visitar nodos y completar retos; consulta el marcador en la interfaz.
+🗺️ *Cada sesión genera un árbol único con caminos falsos, pistas ocultas y retos distintos.*
 
-Consejos rápidos
-----------------
-- Explora ramas laterales para encontrar pistas antes de intentar retos importantes.
-- Si fallas un minijuego, revisa la pista asociada y reintenta; algunos retos se vuelven más manejables tras descubrir nodos.
-- Observa el indicador de sesión del minijuego: si permanece activo, espera un momento antes de moverte.
+---
 
-Problemas comunes y soluciones
-------------------------------
-- Botones no responden: prueba con el teclado. Si funcionan, la UI puede no actualizar; reinicia la escena o espera tras completar un minijuego.
-- Recursos no cargan: verifica que la carpeta `res://resources/apps` exista y contenga `.tres`.
-- Bloqueo tras un minijuego: cierra y vuelve a abrir la escena principal.
+## 🧭 **Tabla de contenidos**
 
-Soporte y depuración rápida (jugador)
--------------------------------------
-Al reportar errores, incluye:
-- Acción realizada y nodo donde ocurrió.
-- Captura de pantalla del error (si procede).
-- Comportamiento esperado vs observado.
+- [🎮 Juego](#-juego)
+- [🎯 Controles básicos](#-controles-básicos)
+- [⚙️ Mecánicas principales](#%EF%B8%8F-mecánicas-principales)
+- [💡 Consejos rápidos](#-consejos-rápidos)
+- [👨‍💻 Para desarrolladores](#-para-desarrolladores)
+- [🏗️ Arquitectura resumida](#%EF%B8%8F-arquitectura-resumida)
+- [🗂️ Archivos clave](#%EF%B8%8F-archivos-clave)
+- [🧩 Configuración del proyecto](#-configuración-del-proyecto)
+- [🤝 Contribuir](#-contribuir)
+- [📜 Licencia y contacto](#-licencia-y-contacto)
 
-Para desarrolladores
---------------------
-(Se puede ignorar si solo quieres jugar)
+---
 
-Arquitectura resumida
----------------------
-- Orquestador: `TreeAppController` — coordina navegación, visibilidad, lanzamiento de minijuegos y puntuación.
-- Comunicación desacoplada: `EventBus` (autoload) — señales globales para UI y servicios.
-- Servicios:
-  - `ChallengeStateMachine` — administra estados de los retos.
-  - `ResourceService` — carga y cachea recursos (AppStats / AppDatabase).
-  - `ScoreSystem` — manejo de puntuación y emisión de `EventBus.score_changed`.
-- Debug: `assets/scripts/debug/NavigationDebugger.gd` imprime estado de juego (presiona F3 si está adjunto).
+## 🎮 **Juego**
 
-Archivos clave
---------------
-- `assets/scripts/Global.gd` — entrada global que instancia `TreeAppController`.
-- `assets/scripts/arboles/player_interactions/TreeAppController.gd`
-- `assets/scripts/core/EventBus.gd` — añadir como Autoload.
-- `assets/scripts/core/ChallengeStateMachine.gd`
-- `assets/scripts/core/ResourceService.gd`
-- `assets/scripts/core/ScoreSystem.gd`
+Avanza por el árbol, descubre rutas ocultas y resuelve desafíos.  
+Cada nodo puede ser un **punto de información**, una **pista** o un **minijuego** que desbloquea nuevos caminos.
 
-Configuración del proyecto
---------------------------
-- Añadir Autoload: `EventBus` → `res://assets/scripts/core/EventBus.gd`
+🎯 *La meta final solo puede alcanzarse si logras descifrar el patrón correcto del árbol.*
 
-Contribuir
-----------
-Mantén la separación de responsabilidades (servicios, orquestador, UI). Documenta nuevas señales en `EventBus` y añade pruebas para `ChallengeStateMachine` y `ScoreSystem`.
+---
 
-Licencia y contacto
--------------------
-Indica la licencia del proyecto (por ejemplo, MIT). Incluye instrucciones o datos de contacto internos si procede.
+## 🎯 **Controles básicos**
+
+| Acción | Tecla / Interfaz |
+|--------|------------------|
+| Navegar por el árbol | ⬆️⬇️⬅️➡️ o clic en los botones direccionales |
+| Confirmar / Seleccionar | `Enter` o botón A |
+| Salir del nodo actual | `Esc` |
+| Interactuar con apps | Doble clic sobre el ícono correspondiente |
+| Mover el mapa | Arrastrar con el mouse |
+| Zoom del mapa | Rueda del mouse |
+
+---
+
+## ⚙️ **Mecánicas principales**
+
+- **🌿 Navegación dinámica:** explora nodos conectados en un árbol que se expande según tus decisiones.  
+- **💬 Pistas:** nodos que ofrecen información útil o revelan parte del mapa.  
+- **🧩 Desafíos:** minijuegos de habilidad o lógica (phishing, detección de vulnerabilidades, decisiones rápidas).  
+- **🏁 Nodo meta:** el punto final del árbol, accesible solo tras superar los retos correctos.  
+- **⭐ Puntuación:** basada en eficiencia, número de errores y rutas exploradas.
+
+---
+
+## 💡 **Consejos rápidos**
+
+> ⚠️ *Cada error puede costarte una rama del árbol, pero cada pista te acerca al final.*
+
+- 🕵️ Recorre las ramas secundarias: a veces las pistas más valiosas no están en el camino principal.  
+- 🔁 Si fallas un desafío, revisa las pistas previas antes de reintentarlo.  
+- ⏳ No apresures los movimientos: planifica tu ruta.  
+- 🌟 Guarda el progreso al terminar cada minijuego.
+
+---
+
+## 👨‍💻 **Para desarrolladores**
+
+<details>
+<summary>Haz clic para expandir 👇</summary>
+
+### 📐 Arquitectura general

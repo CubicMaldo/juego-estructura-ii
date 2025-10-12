@@ -2,7 +2,7 @@ extends Node
 
 ## EventBus - Sistema centralizado de eventos
 ## Desacopla componentes del juego permitiendo comunicación mediante señales
-
+@warning_ignore_start("unused_signal")
 # Eventos de navegación
 signal player_moved(node: TreeNode)
 signal navigation_blocked(reason: String)

@@ -4,7 +4,8 @@ extends Button
 
 func _ready() -> void:
 	# Connect to game controller events
-	Global.treeMap.player_moved.connect(_on_player_moved)
+	var controller := Global.ensure_tree_map()
+	controller.player_moved.connect(_on_player_moved)
 	# Initial state
 	_update_state()
 

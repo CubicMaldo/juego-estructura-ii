@@ -70,7 +70,7 @@ func _next_app_resource(tipo: int) -> AppStats:
 func generar_arbol_controlado(semilla: int = -1) -> void:
 	if semilla == -1:
 		rng.randomize()
-		print("Semilla:", rng.seed)
+		print("[Tree] Semilla:", rng.seed)
 	else:
 		rng.seed = semilla
 	_app_index = 0

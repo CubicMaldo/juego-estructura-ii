@@ -16,17 +16,17 @@ func _init():
 ## Carga la base de datos de aplicaciones
 func load_app_database() -> AppDatabase:
 	if _app_database != null:
-		print("[ResourceService] Usando AppDatabase cacheada")
+		#print("[ResourceService] Usando AppDatabase cacheada")
 		return _app_database
 	
 	if _cache.has("database"):
-		print("[ResourceService] AppDatabase encontrada en caché")
+		#print("[ResourceService] AppDatabase encontrada en caché")
 		_app_database = _cache["database"]
 		return _app_database
 	
 	var resource := ResourceLoader.load(APP_DATABASE_PATH)
 	if resource is AppDatabase:
-		print("[ResourceService] AppDatabase cargada correctamente desde %s" % APP_DATABASE_PATH)
+		#print("[ResourceService] AppDatabase cargada correctamente desde %s" % APP_DATABASE_PATH)
 		_app_database = resource
 		_cache["database"] = resource
 		EventBus.app_database_ready.emit(resource)

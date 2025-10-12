@@ -10,13 +10,13 @@ class_name TreeLayout
 # Orientación y espaciado básico
 @export_enum("vertical", "horizontal") var orientation := "vertical"
 @export var node_spacing: float = 140.0
-@export var subtree_spacing: float = 100.0
-@export var level_spacing: float = 120.0
+@export var subtree_spacing: float = 300.0
+@export var level_spacing: float = 250.0
 
 # Tamaño de nodos
 @export_group("Tamaño de Nodos")
-@export var node_width: float = 60.0
-@export var node_height: float = 40.0
+@export var node_width: float = 64.0
+@export var node_height: float = 64.0
 @export var use_node_size_in_spacing: bool = true
 
 # Escalado y adaptación
@@ -24,7 +24,7 @@ class_name TreeLayout
 @export var vertical_scale_factor: float = 0.1
 @export var use_adaptive_vertical_spacing: bool = true
 @export var min_level_spacing: float = 80.0
-@export var max_level_spacing: float = 200.0
+@export var max_level_spacing: float = 250.0
 @export_range(0.5, 2.0) var aspect_ratio: float = 2.0
 
 # Espaciado entre hermanos

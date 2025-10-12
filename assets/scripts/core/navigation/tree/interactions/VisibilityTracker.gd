@@ -9,6 +9,21 @@ signal current_node_changed(new_node: TreeNode, old_node: TreeNode)
 var current_node: TreeNode = null
 var discovered_nodes: Dictionary = {}
 var visited_nodes: Dictionary = {}
+var debug_mode: bool = true
+
+func _ready() -> void:
+	set_process_unhandled_input(true)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not debug_mode:
+		return
+
+	if event is InputEventKey and event.pressed and not event.echo:
+		var is_f3 : bool = event.keycode == KEY_F3
+		var is_x : bool = event.keycode == KEY_X
+		if (is_f3 and Input.is_key_pressed(KEY_X)) or (is_x and Input.is_key_pressed(KEY_F3)):
+			print("[VisibilityTracker] Combo F3+X detectado (key=%s)" % event.keycode)
+			_reveal_entire_tree()
 
 func move_to_node(node: TreeNode) -> void:
 	"""Mueve al jugador a un nuevo nodo"""
@@ -78,3 +93,24 @@ func forced_discovery(node : TreeNode)->void:
 	while node.padre:
 		discover_node(node)
 		node = node.padre
+
+func _reveal_entire_tree() -> void:
+	var root := current_node
+	if root == null and discovered_nodes.size() > 0:
+		root = discovered_nodes.keys()[0]
+	if root == null:
+		print("[VisibilityTracker] No hay nodo inicial para revelar el árbol completo")
+		return
+	while root.padre != null:
+		root = root.padre
+	print("[VisibilityTracker] Revelando árbol completo desde %s" % root)
+	_reveal_recursive(root)
+
+func _reveal_recursive(node: TreeNode) -> void:
+	if node == null:
+		return
+	discover_node(node)
+	visit_node(node)
+	print("[VisibilityTracker] Nodo marcado como visible: %s" % node)
+	_reveal_recursive(node.izquierdo)
+	_reveal_recursive(node.derecho)

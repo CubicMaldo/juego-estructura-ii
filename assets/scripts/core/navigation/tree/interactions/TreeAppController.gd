@@ -39,12 +39,13 @@ func _init():
 func _ready():
 	game_launcher = GameLauncher.new()
 	add_child(game_launcher)
+	add_child(visibility)
 	if game_launcher.has_method("setup"):
 		game_launcher.setup(self)
-	print("[TreeAppController] Ready - launcher inicializado")
+	#print("[TreeAppController] Ready - launcher inicializado")
 
 func setup_game(seed_value: int = -1, app_resources: Array[AppStats] = [], app_db: AppDatabase = null) -> void:
-	print("[TreeAppController] setup_game llamado seed=%d" % seed_value)
+	#print("[TreeAppController] setup_game llamado seed=%d" % seed_value)
 	
 	if game_launcher == null:
 		game_launcher = GameLauncher.new()
@@ -59,11 +60,11 @@ func setup_game(seed_value: int = -1, app_resources: Array[AppStats] = [], app_d
 	var database_to_use: AppDatabase = app_db if app_db != null else resource_service.load_app_database()
 	
 	if database_to_use != null:
-		print("[TreeAppController] Usando AppDatabase con %d desafios/%d pistas/%d meta" % [
-			database_to_use.desafio_apps.size(), 
-			database_to_use.pista_apps.size(), 
-			database_to_use.meta_apps.size()
-		])
+		#print("[TreeAppController] Usando AppDatabase con %d desafios/%d pistas/%d meta" % [
+		#	database_to_use.desafio_apps.size(), 
+		#	database_to_use.pista_apps.size(), 
+		#	database_to_use.meta_apps.size()
+		#])
 		tree.set_app_database(database_to_use)
 		
 		if not app_resources.is_empty():
@@ -81,7 +82,7 @@ func setup_game(seed_value: int = -1, app_resources: Array[AppStats] = [], app_d
 	# Set up initial visibility
 	visibility.visit_node(tree.raiz)
 	visibility.reveal_children(tree.raiz)
-	print("[TreeAppController] Juego inicializado; nodo raíz visible")
+	#print("[TreeAppController] Juego inicializado; nodo raíz visible")
 
 func navigate_left() -> bool:
 	if not challenge_state.can_navigate():
@@ -90,7 +91,7 @@ func navigate_left() -> bool:
 		return false
 	
 	if navigator.move_left():
-		print("[TreeAppController] Navegación izquierda exitosa")
+		#print("[TreeAppController] Navegación izquierda exitosa")
 		_handle_navigation()
 		return true
 	return false
@@ -98,11 +99,11 @@ func navigate_left() -> bool:
 func navigate_right() -> bool:
 	if not challenge_state.can_navigate():
 		EventBus.navigation_blocked.emit("Challenge in progress")
-		print("[TreeAppController] Movimiento bloqueado - desafío activo")
+		#print("[TreeAppController] Movimiento bloqueado - desafío activo")
 		return false
 	
 	if navigator.move_right():
-		print("[TreeAppController] Navegación derecha exitosa")
+		#print("[TreeAppController] Navegación derecha exitosa")
 		_handle_navigation()
 		return true
 	return false
@@ -110,11 +111,11 @@ func navigate_right() -> bool:
 func navigate_up() -> bool:
 	if not challenge_state.can_navigate():
 		EventBus.navigation_blocked.emit("Challenge in progress")
-		print("[TreeAppController] Movimiento bloqueado - desafío activo")
+		#print("[TreeAppController] Movimiento bloqueado - desafío activo")
 		return false
 	
 	if navigator.move_to_parent():
-		print("[TreeAppController] Navegación hacia arriba exitosa")
+		#print("[TreeAppController] Navegación hacia arriba exitosa")
 		_handle_navigation()
 		return true
 	return false
@@ -122,19 +123,19 @@ func navigate_up() -> bool:
 func navigate_down() -> bool:
 	if not challenge_state.can_navigate():
 		EventBus.navigation_blocked.emit("Challenge in progress")
-		print("[TreeAppController] Movimiento bloqueado - desafío activo")
+		#print("[TreeAppController] Movimiento bloqueado - desafío activo")
 		return false
 	
 	if can_navigate_right():
-		print("[TreeAppController] Navegación hacia abajo -> derecha")
+		#print("[TreeAppController] Navegación hacia abajo -> derecha")
 		navigate_right()
 		return true
 	elif can_navigate_left():
-		print("[TreeAppController] Navegación hacia abajo -> izquierda")
+		#print("[TreeAppController] Navegación hacia abajo -> izquierda")
 		navigate_left()
 		return true
 	else: 
-		print("[TreeAppController] Navegación hacia abajo falló; no hay hijos")
+		#print("[TreeAppController] Navegación hacia abajo falló; no hay hijos")
 		return false
 
 func _handle_navigation() -> void:
@@ -156,7 +157,7 @@ func _handle_navigation() -> void:
 	player_moved.emit(current)
 
 func _on_player_moved(_old_node: TreeNode, new_node: TreeNode) -> void:
-	print("[TreeAppController] Player moved a %s" % [_node_type_name(new_node)])
+	print("[TreeAppController] Player moved to a %s" % [_node_type_name(new_node)])
 	visibility.move_to_node(new_node)
 	
 	if new_node.tipo == 2:
@@ -165,7 +166,7 @@ func _on_player_moved(_old_node: TreeNode, new_node: TreeNode) -> void:
 	_launch_node_app(new_node)
 
 func _launch_node_app(node: TreeNode) -> void:
-	print("[TreeAppController] Intentando lanzar app para nodo %s" % [node])
+	#print("[TreeAppController] Intentando lanzar app para nodo %s" % [node])
 	
 	if game_launcher == null:
 		push_error("[TreeAppController] GameLauncher no disponible")
@@ -186,7 +187,7 @@ func _launch_node_app(node: TreeNode) -> void:
 			challenge_started.emit(node)
 
 func _on_node_visited(node: TreeNode) -> void:
-	print("[TreeAppController] Nodo visitado: %s" % [_node_type_name(node)])
+	#print("[TreeAppController] Nodo visitado: %s" % [_node_type_name(node)])
 	
 	var points := 0
 	var reason := ""

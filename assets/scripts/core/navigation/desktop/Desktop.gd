@@ -1,5 +1,5 @@
 extends Control
-@onready var app_desktop_container: GridContainer = $ColorRect/DesktopMargin/AppContainer
+@onready var app_desktop_container: GridContainer = $DesktopMargin/AppContainer
 @onready var taskbar_container: Container = %TaskBar
 @export var app_panel_scene : PackedScene
 
@@ -36,6 +36,8 @@ func _spawn_app_session(app_ref: PackedScene, app_stats: AppStats, source_icon: 
 	var app_id := _get_app_id(app_stats, app_ref)
 	var existing_panel := _find_open_app_panel(app_id)
 	if existing_panel:
+		
+		_animate_new_panel(existing_panel)
 		print("App '%s' ya está abierta; reutilizando instancia." % app_stats.app_name)
 		return {
 			"panel": existing_panel,
@@ -43,10 +45,10 @@ func _spawn_app_session(app_ref: PackedScene, app_stats: AppStats, source_icon: 
 			"app_id": app_id,
 			"is_existing": true
 		}
-
+	
 	var app_panel := app_panel_scene.instantiate()
-	var app_inside := app_ref.instantiate()
-
+	var app_inside := app_ref.instantiate()	
+	
 	app_panel.set_meta("app_id", app_id)
 	app_panel._setAppStat(app_stats)
 	var viewport := app_panel.find_child("SubViewport")
@@ -77,10 +79,10 @@ func _extract_app_from_panel(panel: Node) -> Node:
 func _animate_new_panel(panel: Node) -> void:
 	if panel == null:
 		return
-	panel.scale = Vector2(0.8, 0.8)
+	panel.visible = true
 	var tween := create_tween()
 	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	tween.tween_property(panel, "scale", Vector2(1, 1), 0.4)
+	tween.tween_property(panel.panel, "scale", Vector2(1, 1), 0.6).from(Vector2(0,0))
 
 func _get_app_id(appStats: AppStats, app_ref: PackedScene) -> String:
 	if appStats and appStats.app_name != "":
@@ -89,7 +91,7 @@ func _get_app_id(appStats: AppStats, app_ref: PackedScene) -> String:
 		return app_ref.resource_path
 	return "unknown_app"
 
-func _find_open_app_panel(app_id: String) -> Node:
+func _find_open_app_panel(app_id: String) -> Control:
 	for child in get_children():
 		if child.has_meta("app_id") and child.get_meta("app_id") == app_id:
 			return child

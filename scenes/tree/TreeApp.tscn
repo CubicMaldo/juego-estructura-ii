@@ -1,9 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://s68a6a8aeg3c"]
 
-[ext_resource type="Script" uid="uid://cygv0ixcyc63q" path="res://assets/scripts/core/navigation/tree/interactions/TreeMapManager.gd" id="1_q32y7"]
+[ext_resource type="Script" uid="uid://cygv0ixcyc63q" path="res://assets/scripts/core/navigation/tree/interactions/TreeAppManager.gd" id="1_q32y7"]
 [ext_resource type="Shader" uid="uid://cfapckc8ogxkp" path="res://assets/shaders/moving_noise.gdshader" id="2_6l6fy"]
 [ext_resource type="Script" uid="uid://dhp345e04qi3y" path="res://assets/scripts/core/navigation/tree/interactions/ButtonPointer.gd" id="2_piajr"]
-
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_piajr"]
 content_margin_left = 12.0

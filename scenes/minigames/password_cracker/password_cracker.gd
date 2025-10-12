@@ -3,33 +3,8 @@ extends Control
 ## Minijuego de ciberseguridad: Password Cracker - Versión Mejorada
 ## El jugador debe descifrar contraseñas de diferentes niveles usando pistas y análisis
 
-# Sistema de niveles con diferentes contraseñas
-const NIVELES = [
-	{
-		"password": "SecurePass123",
-		"dificultad": "Fácil",
-		"pistas": [
-			"Secure + Pass + 123 (todo junto)",
-			"Primera letra mayúscula, 13 caracteres total"
-		]
-	},
-	{
-		"password": "Cyb3r$ecurity",
-		"dificultad": "Media",
-		"pistas": [
-			"Cyber Security (reemplaza 'e' por '3' y 's' por '$')",
-			"13 caracteres: Cyb3r$ecurity"
-		]
-	},
-	{
-		"password": "H@ck3rM1nd!2024",
-		"dificultad": "Difícil",
-		"pistas": [
-			"Hacker Mind 2024 (sustituye: a→@, e→3, i→1)",
-			"16 caracteres con símbolos @ y !"
-		]
-	}
-]
+@export var level_database : PasswordLevelDatabase
+var niveles: Array[PasswordLevelResource] = []
 
 @onready var input_password = $Panel/VBoxContainer/InputContainer/LineEdit
 @onready var label_resultado = $Panel/VBoxContainer/ResultadoLabel
@@ -61,7 +36,7 @@ var puntos: int = 0
 var tiempo_transcurrido: float = 0.0
 var analisis_disponibles: int = 2
 var password_actual: String = ""
-var pistas_actuales: Array = []
+var pistas_actuales: PackedStringArray = PackedStringArray()
 var combo_racha: int = 0
 var mejor_puntuacion: int = 0
 var intentos_totales: int = 0
@@ -69,6 +44,7 @@ var analisis_usados: int = 0
 
 func _ready():
 	label_resultado.text = ""
+	niveles = level_database.get_all_levels()
 	_cargar_nivel(nivel_actual)
 	_actualizar_intentos()
 	_actualizar_estadisticas()
@@ -97,14 +73,14 @@ func _process(delta):
 		_actualizar_tiempo()
 
 func _cargar_nivel(indice: int):
-	if indice >= NIVELES.size():
+	if indice >= niveles.size():
 		_victoria_total()
 		return
 	
-	var nivel = NIVELES[indice]
-	password_actual = nivel["password"]
-	pistas_actuales = nivel["pistas"]
-	nivel_label.text = "Nivel " + str(indice + 1) + " - " + nivel["dificultad"]
+	var nivel: PasswordLevelResource = niveles[indice]
+	password_actual = nivel.password
+	pistas_actuales = nivel.pistas
+	nivel_label.text = "Nivel " + str(indice + 1) + " - " + nivel.dificultad
 	
 	# Reiniciar valores
 	intentos_restantes = intentos_maximos
@@ -373,7 +349,10 @@ func _victoria_total():
 	var estadisticas = "\n\n📊 Estadísticas Finales:\n"
 	estadisticas += "Intentos totales: %d\n" % intentos_totales
 	estadisticas += "Análisis usados: %d\n" % analisis_usados
-	estadisticas += "Precisión: %.1f%%\n" % ((3.0 / intentos_totales) * 100.0)
+	var precision = 0.0
+	if intentos_totales > 0:
+		precision = (float(niveles.size()) / float(intentos_totales)) * 100.0
+	estadisticas += "Precisión: %.1f%%\n" % precision
 	estadisticas += "Calificación: %s" % calificacion
 	
 	label_resultado.text = "🏆 ¡TODOS LOS NIVELES COMPLETADOS! 🏆\nPuntuación Final: %d\nTiempo: %02d:%02d%s" % [puntos, int(tiempo_transcurrido / 60), int(tiempo_transcurrido) % 60, estadisticas]

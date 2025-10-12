@@ -5,9 +5,12 @@ extends Node
 
 var treeMap : TreeAppController
 
-func _ready():
-	treeMap = TreeAppController.new()
-	add_child(treeMap)
+func ensure_tree_map() -> TreeAppController:
+	## Lazily create the TreeAppController when the app is opened
+	if treeMap == null:
+		treeMap = TreeAppController.new()
+		add_child(treeMap)
+	return treeMap
 
 func report_challenge_result(win: bool) -> void:
 	if treeMap == null:

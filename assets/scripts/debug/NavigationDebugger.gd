@@ -7,12 +7,13 @@ extends Node
 ## 3. Elimina este script cuando encuentres el problema
 
 func _ready():
-	print("[NavigationDebugger] Presiona F3 para ver estado de navegación")
-	print("[NavigationDebugger] Presiona F4 para forzar actualización de UI")
+	#print("[NavigationDebugger] Presiona F3 para ver estado de navegación")
+	#print("[NavigationDebugger] Presiona F4 para forzar actualización de UI")
 	
 	# Conectar a eventos para debug
-	EventBus.navigation_ready.connect(_on_navigation_ready)
-	EventBus.challenge_completed.connect(_on_challenge_completed)
+	#EventBus.navigation_ready.connect(_on_navigation_ready)
+	#EventBus.challenge_completed.connect(_on_challenge_completed)
+	pass
 
 func _on_navigation_ready():
 	print("[NavigationDebugger] 🟢 NAVIGATION_READY evento recibido")
@@ -20,12 +21,13 @@ func _on_navigation_ready():
 func _on_challenge_completed(node, win):
 	print("[NavigationDebugger] Challenge completed: win=%s, node=%s" % [win, node])
 
-func _input(event):
-	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_F3:
-			_print_navigation_state()
-		elif event.keycode == KEY_F4:
-			_force_ui_update()
+func _input(_event):
+	#if event is InputEventKey and event.pressed:
+	#	if _event.keycode == KEY_F3:
+	#		_print_navigation_state()
+	#	elif _event.keycode == KEY_F4:
+	#		_force_ui_update()
+	pass
 
 func _force_ui_update():
 	print("[NavigationDebugger] Forzando actualización de UI...")

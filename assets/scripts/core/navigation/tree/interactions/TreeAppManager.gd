@@ -6,25 +6,31 @@ extends Control
 @onready var button_ctr: Button = %ButtonCentro
 @onready var button_der: Button = %ButtonDerecha
 
+@export var setSeed = 1905352077900814671
+
 
 var arbol_visual: Control
 
+func _enter_tree() -> void:
+	Global.ensure_tree_map()
+
 func _ready():
 	# Setup game through controller
-	Global.treeMap.setup_game()
+	var controller := Global.ensure_tree_map()
+	controller.setup_game(setSeed)
 	
 	# Connect to game events
-	Global.treeMap.player_moved.connect(_on_player_moved)
-	Global.treeMap.game_over.connect(_on_game_over)
-	Global.treeMap.challenge_started.connect(_on_challenge_started)
-	Global.treeMap.challenge_finished.connect(_on_challenge_finished)
+	controller.player_moved.connect(_on_player_moved)
+	controller.game_over.connect(_on_game_over)
+	controller.challenge_started.connect(_on_challenge_started)
+	controller.challenge_finished.connect(_on_challenge_finished)
 	
 	# Setup visual tree CON VisibilityTracker
 	arbol_visual = preload("res://scenes/tree/ArbolVisual.tscn").instantiate()
 	arbol_visual.nodo_escena = preload("res://scenes/tree/NodoVisual.tscn")
 	
 	# PASAR EL VISIBILITY TRACKER AL VISUALIZER
-	arbol_visual.mostrar_arbol(Global.treeMap.tree, Global.treeMap.visibility)
+	arbol_visual.mostrar_arbol(controller.tree, controller.visibility)
 	
 	# Conectar señal de revelación para efectos adicionales
 	if arbol_visual.has_signal("node_visual_revealed"):

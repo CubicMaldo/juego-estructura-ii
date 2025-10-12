@@ -17,7 +17,8 @@ var current_challenge_node: TreeNode = null
 var challenge_results: Dictionary = {}  # node_id -> bool
 
 func _init():
-	print("[ChallengeStateMachine] Inicializado")
+	#print("[ChallengeStateMachine] Inicializado")
+	pass
 
 ## Intenta iniciar un desafío para el nodo dado
 func start_challenge(node: TreeNode) -> bool:
@@ -29,7 +30,7 @@ func start_challenge(node: TreeNode) -> bool:
 	current_state = State.STARTING
 	current_challenge_node = node
 	
-	print("[ChallengeStateMachine] Desafío iniciado para nodo %s" % node)
+	#print("[ChallengeStateMachine] Desafío iniciado para nodo %s" % node)
 	EventBus.challenge_state_changed.emit(old_state, current_state)
 	
 	# Transición automática a ACTIVE

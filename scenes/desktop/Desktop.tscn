@@ -1,5 +1,6 @@
-[gd_scene load_steps=23 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=24 format=3 uid="uid://chrommxyoxqu4"]
 
+[ext_resource type="Script" uid="uid://c3lmfpk8rb3id" path="res://assets/scripts/Parallax.gd" id="1_3iu53"]
 [ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://assets/scripts/core/navigation/desktop/Desktop.gd" id="1_06q4v"]
 [ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
 [ext_resource type="PackedScene" uid="uid://dyre0wtdeeh7c" path="res://scenes/desktop/apps/appDesktopIcon.tscn" id="2_06q4v"]
@@ -13,6 +14,30 @@
 [ext_resource type="Script" uid="uid://v2pknxn671xc" path="res://assets/scripts/core/navigation/desktop/TaskbarIcon.gd" id="9_77w8n"]
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="10_77w8n"]
 [ext_resource type="Texture2D" uid="uid://n4tx0g7o53sh" path="res://icon.svg" id="11_3iu53"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jw0rl"]
+shader = ExtResource("8_ihslh")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.30000001425
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.050000002375
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = true
+shader_parameter/roll = false
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 0.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.05
+shader_parameter/noise_opacity = 0.4
+shader_parameter/noise_speed = 1.0
+shader_parameter/static_noise_intensity = 0.02000000095
+shader_parameter/aberration = -0.009999952975
+shader_parameter/brightness = 1.2
+shader_parameter/discolor = false
+shader_parameter/warp_amount = 0.0800000038
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.6
+shader_parameter/vignette_opacity = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ax2js"]
 shader = ExtResource("1_13veq")
@@ -103,157 +128,16 @@ shader_parameter/inset = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uktdj"]
 size = Vector2(63, 81)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jw0rl"]
-shader = ExtResource("8_ihslh")
-shader_parameter/overlay = true
-shader_parameter/scanlines_opacity = 0.4
-shader_parameter/scanlines_width = 0.25
-shader_parameter/grille_opacity = 0.0
-shader_parameter/resolution = Vector2(640, 480)
-shader_parameter/pixelate = true
-shader_parameter/roll = false
-shader_parameter/roll_speed = 8.0
-shader_parameter/roll_size = 0.0
-shader_parameter/roll_variation = 1.8
-shader_parameter/distort_intensity = 0.05
-shader_parameter/noise_opacity = 0.4
-shader_parameter/noise_speed = 1.0
-shader_parameter/static_noise_intensity = 0.02000000095
-shader_parameter/aberration = -0.009999952975
-shader_parameter/brightness = 1.4
-shader_parameter/discolor = false
-shader_parameter/warp_amount = 0.0800000038
-shader_parameter/clip_warp = false
-shader_parameter/vignette_intensity = 0.4
-shader_parameter/vignette_opacity = 0.0
-
-[node name="desktop" type="Control"]
+[node name="Control" type="Control" node_paths=PackedStringArray("parallax")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_06q4v")
-app_panel_scene = ExtResource("2_46iw5")
-
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_ax2js")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.7750634, 0.7750634, 0.7750634, 1)
-script = ExtResource("4_77w8n")
-
-[node name="DesktopMargin" type="MarginContainer" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -80.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 64
-theme_override_constants/margin_top = 64
-theme_override_constants/margin_right = 64
-theme_override_constants/margin_bottom = 64
-metadata/_edit_lock_ = true
-
-[node name="AppContainer" type="GridContainer" parent="ColorRect/DesktopMargin"]
-layout_mode = 2
-theme_override_constants/h_separation = 32
-theme_override_constants/v_separation = 32
-columns = 2
-metadata/_edit_lock_ = true
-
-[node name="App" parent="ColorRect/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-appStats = ExtResource("5_jw0rl")
-
-[node name="App2" parent="ColorRect/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-appStats = ExtResource("6_blv04")
-
-[node name="App3" parent="ColorRect/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
-layout_mode = 2
-appStats = ExtResource("7_pwdcrk")
-
-[node name="Taskbar" type="Panel" parent="."]
-material = SubResource("ShaderMaterial_rvpx8")
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -956.0
-offset_top = -85.0
-offset_right = 956.0
-offset_bottom = -5.0
-grow_horizontal = 2
-grow_vertical = 0
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_fuoj2")
-
-[node name="MargenBar" type="MarginContainer" parent="Taskbar"]
-material = SubResource("ShaderMaterial_gpmcu")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_right = 12
-metadata/_edit_lock_ = true
-
-[node name="TaskBar" type="HBoxContainer" parent="Taskbar/MargenBar"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 12
-metadata/_edit_lock_ = true
-
-[node name="App" type="Button" parent="Taskbar/MargenBar/TaskBar" node_paths=PackedStringArray("texture_node")]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/hover = SubResource("StyleBoxFlat_hpe5y")
-theme_override_styles/focus = SubResource("StyleBoxFlat_c2ok8")
-script = ExtResource("9_77w8n")
-enable_drag = false
-texture_node = NodePath("AppTexture")
-
-[node name="AppTexture" type="TextureRect" parent="Taskbar/MargenBar/TaskBar/App"]
-material = SubResource("ShaderMaterial_lswqd")
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -32.0
-offset_top = -32.0
-offset_right = 32.0
-offset_bottom = 32.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(32, 32)
-texture = ExtResource("11_3iu53")
-expand_mode = 2
-stretch_mode = 4
-
-[node name="DestroyArea" type="Area2D" parent="Taskbar/MargenBar/TaskBar/App"]
-visible = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Taskbar/MargenBar/TaskBar/App/DestroyArea"]
-position = Vector2(47.5, 48.5)
-shape = SubResource("RectangleShape2D_uktdj")
+script = ExtResource("1_3iu53")
+max_offset = Vector2(10, 10)
+parallax = NodePath("desktop")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -273,8 +157,138 @@ metadata/_edit_lock_ = true
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="CanvasLayer"]
 
-[connection signal="focus_exited" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_focus_exited"]
-[connection signal="gui_input" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_gui_input"]
-[connection signal="mouse_entered" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_mouse_exited"]
-[connection signal="pressed" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_pressed"]
+[node name="desktop" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_06q4v")
+app_panel_scene = ExtResource("2_46iw5")
+
+[node name="ColorRect" type="ColorRect" parent="desktop"]
+material = SubResource("ShaderMaterial_ax2js")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(960, 540)
+color = Color(0.7750634, 0.7750634, 0.7750634, 1)
+script = ExtResource("4_77w8n")
+
+[node name="DesktopMargin" type="MarginContainer" parent="desktop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+metadata/_edit_lock_ = true
+
+[node name="AppContainer" type="GridContainer" parent="desktop/DesktopMargin"]
+layout_mode = 2
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 32
+columns = 2
+metadata/_edit_lock_ = true
+
+[node name="App" parent="desktop/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
+layout_mode = 2
+appStats = ExtResource("5_jw0rl")
+
+[node name="App2" parent="desktop/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
+layout_mode = 2
+appStats = ExtResource("6_blv04")
+
+[node name="App3" parent="desktop/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
+layout_mode = 2
+appStats = ExtResource("7_pwdcrk")
+
+[node name="Taskbar" type="Panel" parent="desktop"]
+material = SubResource("ShaderMaterial_rvpx8")
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -956.0
+offset_top = -85.0
+offset_right = 956.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fuoj2")
+
+[node name="MargenBar" type="MarginContainer" parent="desktop/Taskbar"]
+material = SubResource("ShaderMaterial_gpmcu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+metadata/_edit_lock_ = true
+
+[node name="TaskBar" type="HBoxContainer" parent="desktop/Taskbar/MargenBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 12
+metadata/_edit_lock_ = true
+
+[node name="App" type="Button" parent="desktop/Taskbar/MargenBar/TaskBar" node_paths=PackedStringArray("texture_node")]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/hover = SubResource("StyleBoxFlat_hpe5y")
+theme_override_styles/focus = SubResource("StyleBoxFlat_c2ok8")
+script = ExtResource("9_77w8n")
+enable_drag = false
+texture_node = NodePath("AppTexture")
+
+[node name="AppTexture" type="TextureRect" parent="desktop/Taskbar/MargenBar/TaskBar/App"]
+material = SubResource("ShaderMaterial_lswqd")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 32)
+texture = ExtResource("11_3iu53")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="DestroyArea" type="Area2D" parent="desktop/Taskbar/MargenBar/TaskBar/App"]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="desktop/Taskbar/MargenBar/TaskBar/App/DestroyArea"]
+position = Vector2(47.5, 48.5)
+shape = SubResource("RectangleShape2D_uktdj")
+
+[connection signal="focus_exited" from="desktop/Taskbar/MargenBar/TaskBar/App" to="desktop/Taskbar/MargenBar/TaskBar/App" method="_on_focus_exited"]
+[connection signal="gui_input" from="desktop/Taskbar/MargenBar/TaskBar/App" to="desktop/Taskbar/MargenBar/TaskBar/App" method="_on_gui_input"]
+[connection signal="mouse_entered" from="desktop/Taskbar/MargenBar/TaskBar/App" to="desktop/Taskbar/MargenBar/TaskBar/App" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="desktop/Taskbar/MargenBar/TaskBar/App" to="desktop/Taskbar/MargenBar/TaskBar/App" method="_on_mouse_exited"]
+[connection signal="pressed" from="desktop/Taskbar/MargenBar/TaskBar/App" to="desktop/Taskbar/MargenBar/TaskBar/App" method="_on_pressed"]

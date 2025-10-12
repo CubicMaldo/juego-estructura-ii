@@ -16,6 +16,7 @@ signal game_finished(score: int, correct: int, incorrect: int)
 @export var cards_per_game: int = 10
 @export var use_balanced_cards: bool = true  # Balancear phishing vs legítimos
 @export var card_template: PackedScene  # Template de carta para instanciar
+@export var spawn_jitter: float = 20.0  # Jitter inicial para evitar colisiones con el eliminador
 
 # State
 var first_card : Card
@@ -29,6 +30,7 @@ var correct_answers: int = 0
 var incorrect_answers: int = 0
 var cards_answered: int = 0
 var _challenge_result_sent: bool = false
+var _rng := RandomNumberGenerator.new()
 
 # Tweens
 var tween: Tween
@@ -39,10 +41,12 @@ var tween_bg: Tween
 # LIFECYCLE
 # ============================================
 
+
 func _ready() -> void:
+	_rng.randomize()
 	# Orden correcto:
 	# 1. Cargar datos de la base de datos primero
-	_cards_setup()
+	await _cards_setup()
 	# 2. Configurar señales de las cartas
 	_setup_card_signals()
 	# 3. Esperar a que el viewport se inicialice correctamente
@@ -74,13 +78,11 @@ func _cache_card_properties() -> void:  # <-- RENOMBRADO Y EXPANDIDO
 	first_card_pos = first_card.position
 	first_card_scale = first_card.scale
 	last_card = _get_card_at_index(0)  # <-- CACHEAR ÚLTIMA CARTA
-	
-	print("CardStack: first_card_pos cacheada: ", first_card_pos)
-	print("CardStack: Viewport size: ", get_viewport_rect().size)
 
-func _cards_setup():
-	if card_database:
-		_load_cards_from_database()
+func _cards_setup() -> void:
+	if not card_database:
+		return
+	await _load_cards_from_database()
 
 func _get_card_count() -> int:
 	return %Cards.get_child_count()
@@ -249,17 +251,24 @@ func _load_cards_from_database() -> void:
 		return
 	
 	# Limpiar cartas existentes
-	_clear_existing_cards()
+	await _clear_existing_cards()
 	
 	# Instanciar nuevas cartas
 	print("CardStack: Instanciando %d cartas..." % card_data_list.size())
-	
+	var cardsContainer := %Cards
 	for i in range(card_data_list.size()):
 		var new_card: Card = _instantiate_card()
 		if new_card:
-			%Cards.add_child(new_card)
+			cardsContainer.add_child(new_card)
+			if spawn_jitter > 0.0:
+				var jitter := Vector2(
+					_rng.randf_range(-spawn_jitter, spawn_jitter),
+					_rng.randf_range(-spawn_jitter, spawn_jitter)
+				)
+				new_card.position += jitter
 			new_card.setup_from_data(card_data_list[i])
 			print("  - Carta %d: %s Is phishing: %s" % [i, card_data_list[i].card_title,card_data_list[i].is_phishing])
+			await get_tree().process_frame
 		else:
 			push_error("CardStack: No se pudo instanciar la carta %d" % i)
 	
@@ -307,13 +316,6 @@ func on_card_answered(is_correct: bool, card_data_param: PhishingCard) -> void:
 	
 	card_answered.emit(is_correct, card_data_param)
 	
-	print("Respuesta %s | Score: %d | Correctas: %d | Incorrectas: %d" % [
-		"✓" if is_correct else "✗",
-		current_score,
-		correct_answers,
-		incorrect_answers
-	])
-	print("Cartas respondidas: %d / %d" % [cards_answered, cards_per_game])
 	# Verificar si terminó el juego
 	if cards_answered >= cards_per_game:
 		_finish_game()
@@ -322,21 +324,11 @@ func _finish_game() -> void:
 	## Finaliza el juego y emite estadísticas
 	game_finished.emit(current_score, correct_answers, incorrect_answers)
 	
-	print("\n" + "=".repeat(50))
-	print("           🎮 JUEGO TERMINADO 🎮")
-	print("=".repeat(50))
-	print("📊 Puntaje Total: %d puntos" % current_score)
-	print("✅ Cartas Correctas: %d" % correct_answers)
-	print("❌ Cartas Falladas: %d" % incorrect_answers)
-	print("📧 Total de Cartas: %d" % cards_answered)
-	
 	var accuracy: float = 0.0
 	if cards_answered > 0:
 		accuracy = (float(correct_answers) / float(cards_answered)) * 100.0
 	print("🎯 Precisión: %.1f%%" % accuracy)
 	_report_challenge_result(accuracy >= 70.0)
-	
-	print("=".repeat(50) + "\n")
 
 func reset_game() -> void:
 	## Reinicia el juego con nuevas cartas
@@ -348,7 +340,7 @@ func reset_game() -> void:
 	
 	# Limpiar y recargar cartas
 	await _clear_existing_cards()
-	_load_cards_from_database()
+	await _load_cards_from_database()
 
 func answer_phishing() -> void:
 	## El jugador indica que la carta ES phishing
