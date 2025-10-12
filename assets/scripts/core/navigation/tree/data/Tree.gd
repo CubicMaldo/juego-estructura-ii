@@ -1,7 +1,5 @@
 class_name Arbol
 
-const appDatabase = preload("res://assets/scripts/arboles/AppDatabase.gd")
-
 ## Pure tree generation - no game state, no visibility logic
 
 var raiz: TreeNode = null

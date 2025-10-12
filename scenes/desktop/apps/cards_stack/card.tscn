@@ -2,7 +2,8 @@
 
 [ext_resource type="Shader" uid="uid://w8wjhjsa5ntp" path="res://assets/shaders/dissolve.gdshader" id="1_erbhb"]
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="1_hrtqo"]
-[ext_resource type="Script" uid="uid://b8w3wxcgq7mpk" path="res://assets/scripts/cards_stack/interactions/Card.gd" id="1_s7h5d"]
+[ext_resource type="Script" uid="uid://b8w3wxcgq7mpk" path="res://assets/scripts/core/challenges/cards_stack/interactions/Card.gd" id="1_s7h5d"]
+
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_oqx1n"]
 

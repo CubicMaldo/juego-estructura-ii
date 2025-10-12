@@ -1,10 +1,10 @@
 [gd_scene load_steps=14 format=3 uid="uid://d0mx4seqmfq4d"]
 
-[ext_resource type="Script" uid="uid://b78r2ssceaj43" path="res://assets/scripts/cards_stack/interactions/CardStack.gd" id="1_ba6y3"]
+[ext_resource type="Script" uid="uid://b78r2ssceaj43" path="res://assets/scripts/core/challenges/cards_stack/interactions/CardStack.gd" id="1_ba6y3"]
 [ext_resource type="PackedScene" uid="uid://vm7jfk3vjddq" path="res://scenes/desktop/apps/cards_stack/card.tscn" id="1_bx0j3"]
 [ext_resource type="Shader" uid="uid://cfapckc8ogxkp" path="res://assets/shaders/moving_noise.gdshader" id="2_5wunl"]
 [ext_resource type="Resource" uid="uid://devxoe3vgxys7" path="res://resources/cards/PhishingDatabase.tres" id="2_ulwbx"]
-[ext_resource type="Script" uid="uid://b5eftaf7816mp" path="res://assets/scripts/cards_stack/interactions/AnswerArea.gd" id="3_ec1ar"]
+[ext_resource type="Script" uid="uid://b5eftaf7816mp" path="res://assets/scripts/core/challenges/cards_stack/interactions/AnswerArea.gd" id="3_ec1ar"]
 [ext_resource type="Texture2D" uid="uid://n4tx0g7o53sh" path="res://icon.svg" id="4_21vi3"]
 
 [sub_resource type="Gradient" id="Gradient_21vi3"]
@@ -54,7 +54,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ba6y3")
 card_database = ExtResource("2_ulwbx")
-cards_per_game = 1
+cards_per_game = 5
 card_template = ExtResource("1_bx0j3")
 
 [node name="BG" type="ColorRect" parent="."]

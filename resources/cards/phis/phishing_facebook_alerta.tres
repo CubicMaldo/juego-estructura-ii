@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="PhishingCard" load_steps=2 format=3 uid="uid://ov1n2e0yjvf2"]
 
-[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://assets/scripts/cards_stack/PhishingCard.gd" id="1_4hrsr"]
+[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://assets/scripts/core/challenges/cards_stack/PhishingCard.gd" id="1_4hrsr"]
+
 
 [resource]
 script = ExtResource("1_4hrsr")

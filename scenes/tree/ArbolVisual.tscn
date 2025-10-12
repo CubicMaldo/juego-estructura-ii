@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://b18u3yjvlwrp5"]
 
-[ext_resource type="Script" uid="uid://duae2b8ui1ps1" path="res://assets/scripts/arboles/visual/M_TreeVisualizer.gd" id="1_f10rm"]
-[ext_resource type="Script" uid="uid://bcmietwkpm61y" path="res://assets/scripts/arboles/visual/TreeLines.gd" id="2_s14mt"]
-[ext_resource type="Script" uid="uid://douwg7h31bch4" path="res://assets/scripts/arboles/visual/TreeLayout.gd" id="3_u1lj3"]
-[ext_resource type="Script" uid="uid://6lyydr1opiq7" path="res://assets/scripts/arboles/visual/TreeCamera.gd" id="4_e2vb7"]
+[ext_resource type="Script" uid="uid://duae2b8ui1ps1" path="res://assets/scripts/core/navigation/tree/visual/M_TreeVisualizer.gd" id="1_f10rm"]
+[ext_resource type="Script" uid="uid://bcmietwkpm61y" path="res://assets/scripts/core/navigation/tree/visual/TreeLines.gd" id="2_s14mt"]
+[ext_resource type="Script" uid="uid://douwg7h31bch4" path="res://assets/scripts/core/navigation/tree/visual/TreeLayout.gd" id="3_u1lj3"]
+[ext_resource type="Script" uid="uid://6lyydr1opiq7" path="res://assets/scripts/core/navigation/tree/visual/TreeCamera.gd" id="4_e2vb7"]
 
 [node name="ArbolVisual" type="Control"]
 layout_mode = 3
@@ -15,11 +15,6 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_f10rm")
-animation_duration = null
-auto_center_on_ready = null
-fog_of_war_enabled = null
-color_undiscovered = null
-color_discovered = null
 color_visited = Color(0, 0.4666667, 1, 1)
 color_current = Color(1, 0.7166667, 0, 1)
 

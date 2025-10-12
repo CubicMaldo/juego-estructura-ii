@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="CardDatabase" load_steps=17 format=3 uid="uid://devxoe3vgxys7"]
 
-[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://assets/scripts/cards_stack/PhishingCard.gd" id="1_5oa1g"]
+[ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://assets/scripts/core/challenges/cards_stack/PhishingCard.gd" id="1_5oa1g"]
 [ext_resource type="Resource" uid="uid://c2vx8oam5pqr1" path="res://resources/cards/phis/phishing_banco_urgente.tres" id="2_1d3ww"]
-[ext_resource type="Script" uid="uid://bbohv2r1kvnr4" path="res://assets/scripts/cards_stack/CardDatabase.gd" id="2_lx5jo"]
+[ext_resource type="Script" uid="uid://bbohv2r1kvnr4" path="res://assets/scripts/core/challenges/cards_stack/CardDatabase.gd" id="2_lx5jo"]
 [ext_resource type="Resource" uid="uid://ov1n2e0yjvf2" path="res://resources/cards/phis/phishing_facebook_alerta.tres" id="3_553k5"]
 [ext_resource type="Resource" uid="uid://ch8uis87hoo4r" path="res://resources/cards/phis/phishing_inversion_cripto.tres" id="4_w1vjm"]
 [ext_resource type="Resource" uid="uid://dbu5hp6ipn06e" path="res://resources/cards/phis/phishing_linkedin_falso.tres" id="5_4gwah"]
@@ -19,5 +19,5 @@
 
 [resource]
 script = ExtResource("2_lx5jo")
-cards = Array[ExtResource("1_5oa1g")]([ExtResource("2_1d3ww"), ExtResource("3_553k5"), ExtResource("4_w1vjm"), ExtResource("5_4gwah"), ExtResource("6_7ni4p"), ExtResource("7_sh8rc"), ExtResource("8_n0r0d"), ExtResource("9_o1mm2"), ExtResource("10_ubasy"), ExtResource("11_fsy26"), ExtResource("12_a6bcy"), ExtResource("13_85epx"), ExtResource("14_rxn4a"), ExtResource("15_j4vku")])
+cards = Array[ExtResource("1_5oa1g")]([ExtResource("10_ubasy"), ExtResource("11_fsy26"), ExtResource("12_a6bcy"), ExtResource("13_85epx"), ExtResource("14_rxn4a"), ExtResource("15_j4vku"), ExtResource("2_1d3ww"), ExtResource("3_553k5"), ExtResource("4_w1vjm"), ExtResource("5_4gwah"), ExtResource("6_7ni4p"), ExtResource("7_sh8rc"), ExtResource("8_n0r0d"), ExtResource("9_o1mm2")])
 metadata/_custom_type_script = "uid://bbohv2r1kvnr4"

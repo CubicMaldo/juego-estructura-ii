@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="1_esngw"]
 [ext_resource type="Texture2D" uid="uid://cr7pw0ennxyuk" path="res://assets/textures/recyclebin.png" id="1_gt1af"]
-[ext_resource type="Script" uid="uid://6gjs30jihdp" path="res://assets/scripts/desktop/AppsDesktop.gd" id="1_uktdj"]
+[ext_resource type="Script" uid="uid://6gjs30jihdp" path="res://assets/scripts/core/navigation/desktop/AppsDesktop.gd" id="1_uktdj"]
 [ext_resource type="Texture2D" uid="uid://n4tx0g7o53sh" path="res://icon.svg" id="4_hpe5y"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpe5y"]

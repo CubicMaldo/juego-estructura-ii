@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="AppStats" load_steps=2 format=3 uid="uid://xe0xib01ijkp"]
 
-[ext_resource type="Script" uid="uid://idvitonl6kt2" path="res://assets/scripts/desktop/AppStats.gd" id="1_fwkfb"]
+[ext_resource type="Script" uid="uid://idvitonl6kt2" path="res://assets/scripts/core/navigation/desktop/AppStats.gd" id="1_fwkfb"]
+
 
 [resource]
 script = ExtResource("1_fwkfb")

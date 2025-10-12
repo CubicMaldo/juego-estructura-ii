@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://bbplcuyivtpgx"]
 
-[ext_resource type="Script" uid="uid://c6nvy17rtttou" path="res://assets/scripts/desktop/panel/Setup_panel.gd" id="1_fo47w"]
+[ext_resource type="Script" uid="uid://c6nvy17rtttou" path="res://assets/scripts/core/navigation/desktop/panel/Setup_panel.gd" id="1_fo47w"]
 [ext_resource type="Shader" uid="uid://dwj1gcianwteq" path="res://assets/shaders/blur.gdshader" id="1_uvnin"]
 [ext_resource type="Texture2D" uid="uid://cr7pw0ennxyuk" path="res://assets/textures/recyclebin.png" id="2_2tacg"]
-[ext_resource type="Script" uid="uid://csn82ipivj1ef" path="res://assets/scripts/desktop/panel/PanelDragger.gd" id="2_vs6if"]
+[ext_resource type="Script" uid="uid://csn82ipivj1ef" path="res://assets/scripts/core/navigation/desktop/panel/PanelDragger.gd" id="2_vs6if"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2tacg"]
 shader = ExtResource("1_uvnin")
