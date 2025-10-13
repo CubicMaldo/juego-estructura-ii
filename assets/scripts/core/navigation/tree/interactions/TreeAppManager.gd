@@ -6,7 +6,7 @@ extends Control
 @onready var button_ctr: Button = %ButtonCentro
 @onready var button_der: Button = %ButtonDerecha
 
-@export var setSeed = 1905352077900814671
+@export var setSeed = -1
 
 
 var arbol_visual: Control
