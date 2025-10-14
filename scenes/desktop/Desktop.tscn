@@ -13,7 +13,7 @@
 [ext_resource type="Shader" uid="uid://yq5a4bhdrkm4" path="res://assets/shaders/vhs.gdshader" id="8_ihslh"]
 [ext_resource type="Script" uid="uid://v2pknxn671xc" path="res://assets/scripts/core/navigation/desktop/TaskbarIcon.gd" id="9_77w8n"]
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="10_77w8n"]
-[ext_resource type="Texture2D" uid="uid://n4tx0g7o53sh" path="res://icon.svg" id="11_3iu53"]
+[ext_resource type="Texture2D" uid="uid://desu1g5uy1k7i" path="res://assets/textures/icons8-news-feed-96.png" id="14_3iu53"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jw0rl"]
 shader = ExtResource("8_ihslh")
@@ -276,7 +276,7 @@ offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(32, 32)
-texture = ExtResource("11_3iu53")
+texture = ExtResource("14_3iu53")
 expand_mode = 2
 stretch_mode = 4
 

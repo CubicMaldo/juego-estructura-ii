@@ -36,6 +36,11 @@ var _rng := RandomNumberGenerator.new()
 var tween: Tween
 var tween_last_card: Tween
 var tween_bg: Tween
+var tween_game_over: Tween
+var tween_shake: Tween
+
+@onready var game_over_visuals: ColorRect = $CanvasLayer/game_over
+@onready var finish_text: Label = $CanvasLayer/game_over/finish_text
 
 # ============================================
 # LIFECYCLE
@@ -313,22 +318,66 @@ func on_card_answered(is_correct: bool, card_data_param: PhishingCard) -> void:
 	else:
 		incorrect_answers += 1
 		current_score += card_data_param.points_incorrect
+		_kill_tween_if_running(tween_shake)
+		var _original_pos: Vector2 = position
+		var _shake_amount: float = 8.0
+		var _shake_duration_short: float = 0.06
+		var _shake_duration_long: float = 0.12
+		# Create a short sequential tween that moves right, then left, then back
+		tween_shake = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tween_shake.tween_property(self, "position", _original_pos + Vector2(_shake_amount, 0), _shake_duration_short)
+		tween_shake.tween_property(self, "position", _original_pos + Vector2(-_shake_amount, 0), _shake_duration_long)
+		tween_shake.tween_property(self, "position", _original_pos, _shake_duration_short)
+
 	
 	card_answered.emit(is_correct, card_data_param)
 	
 	# Verificar si terminó el juego
 	if cards_answered >= cards_per_game:
+		_game_over()
+
+func _game_over() -> void:
+	if game_over_visuals == null:
 		_finish_game()
+		return
+
+	_kill_tween_if_running(tween_game_over)
+	tween_game_over = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+
+	# Preparar color inicial (transparente) y destino (actual)
+	var target_color: Color = game_over_visuals.color
+	var start_color: Color = target_color
+	start_color.a = 0.0
+	target_color.a = 0.8
+
+	# Aplicar estado inicial
+	game_over_visuals.color = start_color
+	game_over_visuals.visible = true
+
+	# Tweenear la propiedad color para un fade-in
+	_kill_tween_if_running(tween_shake)
+	# Tweenear la propiedad color para un fade-in
+	tween_game_over.tween_property(game_over_visuals, "color", target_color, anim_duration)
+	
+	if finish_text:
+		if _get_accurracy() >= 70.0:
+			finish_text.text = "YOU WON!!!"
+		else:
+			finish_text.text = "GAME OVER"
+	# Esperar a que termine la animación, luego finalizar el juego
+	await tween_game_over.finished
 
 func _finish_game() -> void:
 	## Finaliza el juego y emite estadísticas
 	game_finished.emit(current_score, correct_answers, incorrect_answers)
-	
+	_report_challenge_result(_get_accurracy() >= 70.0)
+
+func _get_accurracy() -> float:
 	var accuracy: float = 0.0
 	if cards_answered > 0:
 		accuracy = (float(correct_answers) / float(cards_answered)) * 100.0
-	print("🎯 Precisión: %.1f%%" % accuracy)
-	_report_challenge_result(accuracy >= 70.0)
+	return accuracy
+
 
 func reset_game() -> void:
 	## Reinicia el juego con nuevas cartas
@@ -365,3 +414,7 @@ func _report_challenge_result(win: bool) -> void:
 		notifier.call(win)
 	elif Global.has_method("report_challenge_result"):
 		Global.report_challenge_result(win)
+
+
+func _on_button_pressed_finish() -> void:
+	_finish_game()

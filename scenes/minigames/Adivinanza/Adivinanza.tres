@@ -2,7 +2,6 @@
 
 [ext_resource type="FontFile" uid="uid://dsjjl72xcpw20" path="res://scenes/minigames/Super Trend.ttf" id="1_qi0of"]
 
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7m7b"]
 bg_color = Color(0.63679236, 0.52960134, 0.8680337, 1)
 

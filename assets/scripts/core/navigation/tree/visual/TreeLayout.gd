@@ -266,7 +266,7 @@ func _merge_contours(aggregate_left: Array[float], aggregate_right: Array[float]
 			aggregate_left[depth] = min(aggregate_left[depth], left_val)
 			aggregate_right[depth] = max(aggregate_right[depth], right_val)
 
-func _resolve_parent_anchor(node: TreeNode, children: Array[TreeNode], offsets: Array[Dictionary]) -> float:
+func _resolve_parent_anchor(_node: TreeNode, children: Array[TreeNode], offsets: Array[Dictionary]) -> float:
 	if offsets.is_empty():
 		return 0.0
 	if offsets.size() == 1:

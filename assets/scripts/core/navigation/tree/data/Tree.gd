@@ -33,6 +33,7 @@ func get_available_app_resources() -> Array[AppStats]:
 func set_app_database(database: AppDatabase) -> void:
 	_app_db = database
 	_app_counters = {
+		NodosJuego.INICIO: 0,
 		NodosJuego.DESAFIO: 0,
 		NodosJuego.PISTA: 0,
 		NodosJuego.FINAL: 0
@@ -47,6 +48,8 @@ func _next_app_resource(tipo: int) -> AppStats:
 	if _app_db != null:
 		var pool: Array[AppStats] = []
 		match tipo:
+			NodosJuego.INICIO:
+				pool = _app_db.inicio_apps
 			NodosJuego.DESAFIO:
 				pool = _app_db.desafio_apps
 			NodosJuego.PISTA:
@@ -101,6 +104,7 @@ func generar_arbol_controlado(semilla: int = -1) -> void:
 	
 	# 4. Colocar pistas
 	_colocar_pistas()
+	imprimir_arbol()
 
 func _agregar_ramas(i: int) -> void:
 	var camino = _obtener_nodos_preorden_sin_hojas()

@@ -418,11 +418,11 @@ func _create_visual_node(nodo: TreeNode, _position: Vector2) -> Node:
 	return nodo_visual
 
 func _configure_visual_node(nodo_visual: Node, nodo: TreeNode) -> void:
-	if nodo_visual.has_method("set_tipo"):
-		if nodo_visual.set_tipo is Callable:
-			nodo_visual.set_tipo.call_deferred(nodo.tipo)
+	if nodo_visual.has_method("set_visuals"):
+		if nodo_visual.set_visuals is Callable:
+			nodo_visual.set_visuals.call_deferred(nodo)
 		else:
-			nodo_visual.set_tipo(nodo.tipo)
+			nodo_visual.set_visuals(nodo.tipo)
 
 func _create_connections(nodo: TreeNode, positions: Dictionary, offset: Vector2) -> void:
 	var start_pos = positions[nodo] + offset

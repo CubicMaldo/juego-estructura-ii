@@ -4,35 +4,28 @@ extends  Control
 
 enum NodosJuego { INICIO = 0, DESAFIO = 1, PISTA = 2, FINAL = 3}
 var nodo: TreeNode  # Referencia al nodo lógico
-@onready var label : Label = $Label  # Si tienes un Label hijo opcional
+@onready var button: Button = $Button
 
 func _ready():
 	# Opcional: tamaño estándar y estilo base
 	size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	custom_minimum_size = Vector2(80, 40)
+	custom_minimum_size = Vector2(64, 64)
 
 # 🔹 Configura el aspecto según el tipo del nodo
-func set_tipo(tipo: int):
-	if label == null:
-		print("label no inicializado")
-		return
-	
-	match tipo:
+func set_visuals(_nodo : TreeNode):
+	match _nodo.tipo:
 		NodosJuego.INICIO:
-			label.set_text("Inicio")
 			modulate = Color(0.2, 1.0, 0.2)  # Verde
 		NodosJuego.DESAFIO:
-			label.set_text("TreeNode")
 			modulate = Color(0.8, 0.8, 0.8)
 		NodosJuego.PISTA:
-			label.set_text("Pista")
 			modulate = Color(0.2, 0.6, 1.0)  # Azul
 		NodosJuego.FINAL:
-			label.set_text("Meta")
 			modulate = Color(1.0, 0.8, 0.2)
-			
-
+	if _nodo.app_resource:
+		if _nodo.app_resource.icon:
+			button.set_button_icon(_nodo.app_resource.icon)
 
 # 🔹 Si el nodo está marcado como visto, cámbiale el estilo
 func actualizar_estado_visto():
@@ -47,3 +40,7 @@ func _pressed():
 	if nodo != null:
 		print("🟢 TreeNode presionado:", nodo.tipo)
 		# Aquí podrías emitir una señal global para saltar a ese nodo
+
+
+func _on_button_pressed() -> void:
+	pass # Replace with function body.

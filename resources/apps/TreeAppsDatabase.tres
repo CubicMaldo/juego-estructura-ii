@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AppDatabase" load_steps=6 format=3 uid="uid://8wkev4sdgkyt"]
+
+[ext_resource type="Script" uid="uid://idvitonl6kt2" path="res://assets/scripts/core/navigation/desktop/AppStats.gd" id="1_jqoia"]
+[ext_resource type="Resource" uid="uid://da4a2imuy21fd" path="res://resources/apps/CardGame.tres" id="2_ras60"]
+[ext_resource type="Resource" uid="uid://tqotvv2wuvwc" path="res://resources/apps/treeApp_IconOnly.tres" id="3_jqoia"]
+[ext_resource type="Resource" uid="uid://c3ex0nu2yuhy" path="res://resources/apps/PasswordCrackerApp.tres" id="4_3hvkl"]
+[ext_resource type="Script" uid="uid://d31mim8bqsro4" path="res://assets/scripts/core/navigation/desktop/AppDatabase.gd" id="5_2g2dn"]
+
+[resource]
+script = ExtResource("5_2g2dn")
+inicio_apps = Array[ExtResource("1_jqoia")]([ExtResource("3_jqoia")])
+desafio_apps = Array[ExtResource("1_jqoia")]([ExtResource("2_ras60")])
+pista_apps = Array[ExtResource("1_jqoia")]([ExtResource("4_3hvkl")])

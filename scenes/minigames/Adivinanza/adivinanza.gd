@@ -1,7 +1,5 @@
 extends Control
 
-
-
 const RESPUESTA_CORRECTA = "phishing"
 
 @onready var input_respuesta = $Panel/LineEdit

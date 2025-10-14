@@ -4,7 +4,7 @@ extends RefCounted
 ## Servicio para carga y gestión de recursos del juego
 ## Centraliza la lógica de carga con caché y manejo de errores
 
-const APP_DATABASE_PATH := "res://resources/apps/AppDatabase.tres"
+const APP_DATABASE_PATH := "res://resources/apps/TreeAppsDatabase.tres"
 const APPS_DIR_PATH := "res://resources/apps"
 
 var _cache: Dictionary = {}
