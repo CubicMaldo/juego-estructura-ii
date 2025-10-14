@@ -1,5 +1,5 @@
-class_name ConnectionResource
 extends Resource
+class_name ConnectionResource
 
 ## Recurso que representa una conexión de red en el minijuego Network Defender
 

@@ -79,8 +79,8 @@ func _cargar_conexion():
 	progress_bar.max_value = connections.size()
 	progress_bar.value = conexion_actual_index + 1
 	
-	# Calcular nivel basado en el progreso
-	nivel_actual = (conexion_actual_index / 5) + 1
+	# Calcular nivel basado en el progreso (división entera intencional)
+	nivel_actual = floori(conexion_actual_index / 5.0) + 1
 	nivel_label.text = "🎯 Nivel " + str(nivel_actual)
 
 func _actualizar_estadisticas():

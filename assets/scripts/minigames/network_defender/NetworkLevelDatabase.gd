@@ -1,5 +1,5 @@
-class_name NetworkLevelDatabase
 extends Resource
+class_name NetworkLevelDatabase
 
 ## Base de datos de niveles para el minijuego Network Defender
 
