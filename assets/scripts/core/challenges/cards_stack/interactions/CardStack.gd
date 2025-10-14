@@ -64,8 +64,12 @@ func _ready() -> void:
 
 func _setup_card_signals() -> void:
 	for c in %Cards.get_children():
-		c.put_back.connect(on_card_put_back.bind(c))
-		c.destroyed.connect(on_card_destroyed.bind(c))
+		var put_back_cb := on_card_put_back.bind(c)
+		if put_back_cb != null:
+			c.put_back.connect(put_back_cb)
+		var destroyed_cb := on_card_destroyed.bind(c)
+		if destroyed_cb != null:
+			c.destroyed.connect(destroyed_cb)
 		c.answered.connect(on_card_answered)
 
 func _cache_card_properties() -> void:  # <-- RENOMBRADO Y EXPANDIDO
@@ -199,8 +203,12 @@ func _animate_card_return(card: Card) -> void:
 	tween_last_card.parallel().tween_property(card, "scale", target_scale, anim_duration / 2.0)
 
 func _schedule_card_reorder(card: Card) -> void:
-	tween_last_card.tween_callback(%Cards.move_child.bind(card, 0))
-	tween_last_card.tween_callback(update_cards.bind(true))
+	var move_child_cb := %Cards.move_child.bind(card, 0)
+	if move_child_cb != null:
+		tween_last_card.tween_callback(move_child_cb)
+	var update_cb := update_cards.bind(true)
+	if update_cb != null:
+		tween_last_card.tween_callback(update_cb)
 
 func on_card_destroyed(which: Card) -> void:
 	if %Cards.has_node(which.get_path()):

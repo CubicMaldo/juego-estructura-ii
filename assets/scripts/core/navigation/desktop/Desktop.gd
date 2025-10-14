@@ -8,7 +8,9 @@ func _ready():
 	# Conectamos dinámicamente TODOS los iconos del contenedor
 	for icon in app_desktop_container.get_children():
 		if icon.has_signal("open_app"):
-			icon.connect("open_app", Callable(self, "_on_icon_opened").bind(icon))
+			var icon_cb := Callable(self, "_on_icon_opened").bind(icon)
+			if icon_cb != null:
+				icon.connect("open_app", icon_cb)
 
 func open_app_from_stats(app_stats: AppStats) -> Dictionary:
 	if app_stats == null:
@@ -183,5 +185,7 @@ func _instantiate_icon_copy(source_icon: Node) -> Node:
 func _configure_taskbar_icon_connections(task_icon: Node) -> void:
 	if task_icon == null:
 		return
-	if task_icon.has_signal("open_app") and not task_icon.is_connected("open_app", Callable(self, "_on_icon_opened")):
-		task_icon.connect("open_app", Callable(self, "_on_icon_opened").bind(task_icon))
+	if task_icon.has_signal("open_app"):
+		var task_cb := Callable(self, "_on_icon_opened").bind(task_icon)
+		if task_cb != null and not task_icon.is_connected("open_app", task_cb):
+			task_icon.connect("open_app", task_cb)

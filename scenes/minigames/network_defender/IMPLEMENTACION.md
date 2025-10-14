@@ -28,9 +28,9 @@
 ### Recursos (resources/)
 5. `resources/minigames/network_defender/network_level_database.tres`
    - 14 conexiones de ejemplo:
-     * 5 niveles fáciles
-     * 4 niveles medios
-     * 5 niveles difíciles
+	 * 5 niveles fáciles
+	 * 4 niveles medios
+	 * 5 niveles difíciles
    - Mezcla de conexiones legítimas y sospechosas
 
 6. `resources/apps/NetworkDefenderApp.tres`

@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxn9p3m5k8wxy"]
+[gd_scene load_steps=3 format=3 uid="uid://dxoap3m5k8wxy"]
 
-[ext_resource type="Script" path="res://scenes/minigames/network_defender/network_defender.gd" id="1"]
-[ext_resource type="Resource" uid="uid://network_level_db" path="res://resources/minigames/network_defender/network_level_database.tres" id="2"]
+[ext_resource type="Script" uid="uid://slylm7rd7fcq" path="res://scenes/minigames/network_defender/network_defender.gd" id="1"]
+[ext_resource type="Resource" uid="uid://dowif7wxguhw7" path="res://resources/minigames/network_defender/network_level_database.tres" id="2"]
 
 [node name="NetworkDefender" type="Control"]
 layout_mode = 3
@@ -12,18 +12,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 level_database = ExtResource("2")
+vidas_maximas = 3
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -450.0
-offset_top = -350.0
-offset_right = 450.0
-offset_bottom = 350.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -109,7 +104,6 @@ layout_mode = 2
 [node name="HintLabel" type="Label" parent="Panel/VBoxContainer/HintContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -118,7 +112,6 @@ autowrap_mode = 3
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 

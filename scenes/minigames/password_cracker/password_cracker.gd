@@ -4,7 +4,25 @@ extends Control
 ## El jugador debe descifrar contraseñas de diferentes niveles usando pistas y análisis
 
 @export var level_database : PasswordLevelDatabase
+@export_range(0, 100, 1) var max_easy_levels: int = 3
+@export_range(0, 100, 1) var max_medium_levels: int = 3
+@export_range(0, 100, 1) var max_hard_levels: int = 3
+
+const DIFFICULTY_ORDER: Array[String] = ["easy", "medium", "hard"]
+const DIFFICULTY_LABELS := {
+	"easy": "Fácil",
+	"medium": "Medio",
+	"hard": "Difícil",
+}
+
+static var _persistent_level_index: int = 0
+
 var niveles: Array[PasswordLevelResource] = []
+var active_difficulties: Array[String] = []
+var current_level_index: int = 0
+var current_difficulty: String = "easy"
+var total_levels: int = 0
+var _rng := RandomNumberGenerator.new()
 
 @onready var input_password = $Panel/VBoxContainer/InputContainer/LineEdit
 @onready var label_resultado = $Panel/VBoxContainer/ResultadoLabel
@@ -43,14 +61,14 @@ var intentos_totales: int = 0
 var analisis_usados: int = 0
 
 func _ready():
+	_rng.randomize()
 	label_resultado.text = ""
-	niveles = level_database.get_all_levels()
-	_cargar_nivel(nivel_actual)
+	btn_reiniciar.visible = false
+	if not _initialize_session():
+		return
 	_actualizar_intentos()
 	_actualizar_estadisticas()
-	_inicializar_pistas()
 	timer_juego.start()
-	btn_reiniciar.visible = false
 	_mostrar_bienvenida()
 	
 	# Conectar Enter key para enviar
@@ -80,7 +98,10 @@ func _cargar_nivel(indice: int):
 	var nivel: PasswordLevelResource = niveles[indice]
 	password_actual = nivel.password
 	pistas_actuales = nivel.pistas
-	nivel_label.text = "Nivel " + str(indice + 1) + " - " + nivel.dificultad
+	var dificultad_legible: String = nivel.dificultad
+	if dificultad_legible.is_empty():
+		dificultad_legible = DIFFICULTY_LABELS.get(current_difficulty, current_difficulty.capitalize())
+	nivel_label.text = "Nivel %d/%d · %s" % [indice + 1, niveles.size(), dificultad_legible]
 	
 	# Reiniciar valores
 	intentos_restantes = intentos_maximos
@@ -93,6 +114,8 @@ func _cargar_nivel(indice: int):
 	btn_pista.disabled = false
 	btn_analizar.disabled = false
 	btn_analizar.text = "🔍 Analizar (" + str(analisis_disponibles) + ")"
+	similitud_label.text = "Similitud: --"
+	progreso_bar.value = 0.0
 	
 	# Limpiar pistas anteriores
 	for child in pistas_container.get_children():
@@ -105,6 +128,7 @@ func _cargar_nivel(indice: int):
 func _inicializar_pistas():
 	# Crear labels para cada pista (ocultas inicialmente)
 	for i in range(pistas_actuales.size()):
+		print("xx")
 		var pista_label = Label.new()
 		pista_label.text = "🔒 Pista bloqueada"
 		pista_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
@@ -301,8 +325,7 @@ func _password_incorrecta():
 		_efecto_error_panel()
 
 func _game_over():
-	game_over = true
-	timer_juego.stop()
+	_finalize_game(false)
 	
 	var estadisticas = "\n\n📊 Estadísticas:\n"
 	estadisticas += "Intentos totales: %d\n" % intentos_totales
@@ -311,18 +334,11 @@ func _game_over():
 	
 	label_resultado.text = "🔒 BLOQUEADO - Sin vidas\nLa contraseña era: " + password_actual + estadisticas
 	label_resultado.add_theme_color_override("font_color", Color(1, 0, 0))
-	btn_enviar.disabled = true
-	btn_pista.disabled = true
-	btn_analizar.disabled = true
-	input_password.editable = false
-	btn_reiniciar.visible = true
 	
 	# Efecto de pantalla roja
 	var tween = create_tween()
 	tween.tween_property($Panel, "modulate", Color(1, 0.5, 0.5), 0.3)
 	tween.tween_property($Panel, "modulate", Color(1, 1, 1), 0.3)
-	if Global.has_method("report_challenge_result"):
-		Global.report_challenge_result(false)
 
 func _efecto_error_panel():
 	var tween = create_tween()
@@ -330,8 +346,7 @@ func _efecto_error_panel():
 	tween.tween_property($Panel, "modulate", Color(1, 1, 1), 0.1)
 
 func _victoria_total():
-	game_over = true
-	timer_juego.stop()
+	_finalize_game(true)
 	
 	if puntos > mejor_puntuacion:
 		mejor_puntuacion = puntos
@@ -357,19 +372,12 @@ func _victoria_total():
 	
 	label_resultado.text = "🏆 ¡TODOS LOS NIVELES COMPLETADOS! 🏆\nPuntuación Final: %d\nTiempo: %02d:%02d%s" % [puntos, int(tiempo_transcurrido / 60), int(tiempo_transcurrido) % 60, estadisticas]
 	label_resultado.add_theme_color_override("font_color", Color(1, 0.84, 0))
-	btn_enviar.disabled = true
-	btn_pista.disabled = true
-	btn_analizar.disabled = true
-	input_password.editable = false
-	btn_reiniciar.visible = true
 	
 	# Animación de victoria
 	var tween = create_tween()
 	tween.set_loops(3)
 	tween.tween_property(label_resultado, "modulate", Color(1, 1, 0), 0.3)
 	tween.tween_property(label_resultado, "modulate", Color(1, 1, 1), 0.3)
-	if Global.has_method("report_challenge_result"):
-		Global.report_challenge_result(true)
 
 func _mostrar_mensaje(mensaje: String, color: Color):
 	label_resultado.text = mensaje
@@ -393,7 +401,7 @@ func _on_btn_pista_pressed() -> void:
 	pistas_reveladas += 1
 	
 	# Penalización: reducir puntos por usar pista
-	puntos = max(0, puntos - 25)
+	puntos -= 25
 	_actualizar_estadisticas()
 	_mostrar_mensaje("⚠️ Pista revelada (-25 puntos)", Color(1, 0.8, 0))
 	
@@ -403,7 +411,6 @@ func _on_btn_pista_pressed() -> void:
 
 func _on_btn_reiniciar_pressed() -> void:
 	# Reiniciar todo el juego
-	nivel_actual = 0
 	puntos = 0
 	tiempo_transcurrido = 0.0
 	game_over = false
@@ -413,7 +420,9 @@ func _on_btn_reiniciar_pressed() -> void:
 	btn_reiniciar.visible = false
 	$Panel.modulate = Color(1, 1, 1)
 	label_resultado.scale = Vector2(1, 1)
-	_cargar_nivel(nivel_actual)
+	if not _initialize_session():
+		return
+	_actualizar_intentos()
 	_actualizar_estadisticas()
 	timer_juego.start()
 	_mostrar_bienvenida()
@@ -422,3 +431,109 @@ func _on_timer_timeout() -> void:
 	if not game_over:
 		label_resultado.text = ""
 		label_resultado.remove_theme_color_override("font_color")
+
+
+func _initialize_session() -> bool:
+	if level_database == null:
+		push_error("Password Cracker: No se asignó una base de niveles")
+		return false
+	active_difficulties = _collect_active_difficulties()
+	total_levels = active_difficulties.size()
+	if total_levels == 0:
+		push_error("Password Cracker: No hay niveles disponibles con las configuraciones actuales")
+		return false
+	if _persistent_level_index >= total_levels:
+		_persistent_level_index = 0
+	current_level_index = _persistent_level_index
+	current_difficulty = active_difficulties[current_level_index]
+	niveles = _build_levels_for_current_difficulty()
+	if niveles.is_empty():
+		push_error("Password Cracker: No se encontraron niveles para la dificultad actual: %s" % current_difficulty)
+		return false
+	nivel_actual = 0
+	intentos_totales = 0
+	analisis_usados = 0
+	combo_racha = 0
+	game_over = false
+	_cargar_nivel(nivel_actual)
+	return true
+
+
+func _collect_active_difficulties() -> Array[String]:
+	var available: Array[String] = []
+	for difficulty in DIFFICULTY_ORDER:
+		var source := _get_levels_source(difficulty)
+		var max_levels := _get_max_levels_for_difficulty(difficulty)
+		if not source.is_empty() and max_levels > 0:
+			available.append(difficulty)
+	return available
+
+
+func _build_levels_for_current_difficulty() -> Array[PasswordLevelResource]:
+	var result: Array[PasswordLevelResource] = []
+	var source: Array[PasswordLevelResource] = _get_levels_source(current_difficulty)
+	var max_levels: int = _get_max_levels_for_difficulty(current_difficulty)
+	if source.is_empty() or max_levels <= 0:
+		return result
+	var shuffled: Array[PasswordLevelResource] = source.duplicate()
+	_shuffle_array_in_place(shuffled)
+	var count: int = min(max_levels, shuffled.size())
+	for i in range(count):
+		result.append(shuffled[i])
+	return result
+
+
+func _shuffle_array_in_place(arr: Array) -> void:
+	for i in range(arr.size() - 1, 0, -1):
+		var j: int = _rng.randi_range(0, i)
+		var temp = arr[i]
+		arr[i] = arr[j]
+		arr[j] = temp
+
+
+func _get_levels_source(difficulty: String) -> Array[PasswordLevelResource]:
+	match difficulty:
+		"easy":
+			return level_database.easy_levels
+		"medium":
+			return level_database.medium_levels
+		"hard":
+			return level_database.hard_levels
+		_:
+			return []
+
+
+func _get_max_levels_for_difficulty(difficulty: String) -> int:
+	match difficulty:
+		"easy":
+			return max_easy_levels
+		"medium":
+			return max_medium_levels
+		"hard":
+			return max_hard_levels
+		_:
+			return 0
+
+
+func _finalize_game(win: bool) -> void:
+	if game_over:
+		return
+	game_over = true
+	timer_juego.stop()
+	btn_enviar.disabled = true
+	btn_pista.disabled = true
+	btn_analizar.disabled = true
+	input_password.editable = false
+	btn_reiniciar.visible = true
+	if total_levels > 0:
+		_advance_level(total_levels)
+	EventBus.game_over.emit(win)
+	if Global.has_method("report_challenge_result"):
+		Global.report_challenge_result(win)
+
+
+static func _advance_level(total_levels_param: int) -> void:
+	if total_levels_param <= 0:
+		_persistent_level_index = 0
+		return
+	_persistent_level_index = (_persistent_level_index + 1) % total_levels_param
