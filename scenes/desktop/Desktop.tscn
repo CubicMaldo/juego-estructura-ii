@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=25 format=3 uid="uid://chrommxyoxqu4"]
 
 [ext_resource type="Script" uid="uid://c3lmfpk8rb3id" path="res://assets/scripts/Parallax.gd" id="1_3iu53"]
 [ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://assets/scripts/core/navigation/desktop/Desktop.gd" id="1_06q4v"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://bxrjf5byddb2h" path="res://resources/apps/TreeApp.tres" id="5_jw0rl"]
 [ext_resource type="Resource" uid="uid://da4a2imuy21fd" path="res://resources/apps/CardGame.tres" id="6_blv04"]
 [ext_resource type="Resource" uid="uid://c3ex0nu2yuhy" path="res://resources/apps/PasswordCrackerApp.tres" id="7_pwdcrk"]
+[ext_resource type="Resource" uid="uid://network_defender_app" path="res://resources/apps/NetworkDefenderApp.tres" id="7_netdef"]
 [ext_resource type="Shader" uid="uid://yq5a4bhdrkm4" path="res://assets/shaders/vhs.gdshader" id="8_ihslh"]
 [ext_resource type="Script" uid="uid://v2pknxn671xc" path="res://assets/scripts/core/navigation/desktop/TaskbarIcon.gd" id="9_77w8n"]
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="10_77w8n"]
@@ -212,6 +213,10 @@ appStats = ExtResource("6_blv04")
 [node name="App3" parent="desktop/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 appStats = ExtResource("7_pwdcrk")
+
+[node name="App4" parent="desktop/DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
+layout_mode = 2
+appStats = ExtResource("7_netdef")
 
 [node name="Taskbar" type="Panel" parent="desktop"]
 material = SubResource("ShaderMaterial_rvpx8")
