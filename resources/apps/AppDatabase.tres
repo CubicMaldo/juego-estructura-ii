@@ -1,13 +1,16 @@
-[gd_resource type="Resource" script_class="AppDatabase" load_steps=6 format=3 uid="uid://8wkev4sdgkyt"]
+[gd_resource type="Resource" script_class="AppDatabase" load_steps=9 format=3 uid="uid://8wkev4sdgkyt"]
 
 [ext_resource type="Script" uid="uid://d31mim8bqsro4" path="res://assets/scripts/core/navigation/desktop/AppDatabase.gd" id="1_mxvz6"]
 [ext_resource type="Script" uid="uid://idvitonl6kt2" path="res://assets/scripts/core/navigation/desktop/AppStats.gd" id="1_ycabs"]
 [ext_resource type="Resource" uid="uid://da4a2imuy21fd" path="res://resources/apps/CardGame.tres" id="2_4ofrj"]
 [ext_resource type="Resource" uid="uid://c3ex0nu2yuhy" path="res://resources/apps/PasswordCrackerApp.tres" id="3_cp345"]
 [ext_resource type="Resource" uid="uid://network_defender_app" path="res://resources/apps/NetworkDefenderApp.tres" id="4_netdef"]
+[ext_resource type="Resource" uid="uid://sql_injection_app" path="res://resources/apps/SQLInjectionDefenderApp.tres" id="5_sqldef"]
+[ext_resource type="Resource" uid="uid://email_phishing_app" path="res://resources/apps/EmailPhishingDetectorApp.tres" id="6_emailphish"]
+[ext_resource type="Resource" uid="uid://port_scanner_app" path="res://resources/apps/PortScannerDefenderApp.tres" id="7_portscan"]
 
 
 [resource]
 script = ExtResource("1_mxvz6")
 desafio_apps = Array[ExtResource("1_ycabs")]([ExtResource("2_4ofrj")])
-pista_apps = Array[ExtResource("1_ycabs")]([ExtResource("3_cp345"), ExtResource("4_netdef")])
+pista_apps = Array[ExtResource("1_ycabs")]([ExtResource("3_cp345"), ExtResource("4_netdef"), ExtResource("5_sqldef"), ExtResource("6_emailphish"), ExtResource("7_portscan")])
