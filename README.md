@@ -42,7 +42,7 @@ Cada nodo puede ser un **punto de información**, una **pista** o un **minijuego
 
 | Acción | Tecla / Interfaz |
 |--------|------------------|
-| Navegar por el árbol | ⬆️⬇️⬅️➡️ o clic en los botones direccionales |
+| Navegar por el árbol | clic en los botones direccionales |
 | Confirmar / Seleccionar | `Enter` o botón A |
 | Salir del nodo actual | `Esc` |
 | Interactuar con apps | Doble clic sobre el ícono correspondiente |
@@ -77,4 +77,4 @@ Cada nodo puede ser un **punto de información**, una **pista** o un **minijuego
 <details>
 <summary>Haz clic para expandir 👇</summary>
 
-### 📐 Arquitectura general
+### WIP
