@@ -20,6 +20,8 @@ Tu objetivo es **alcanzar el nodo final (Meta)** completando los desafíos y opt
 - [🎯 Controles básicos](#-controles-básicos)
 - [⚙️ Mecánicas principales](#%EF%B8%8F-mecánicas-principales)
 - [💡 Consejos rápidos](#-consejos-rápidos)
+
+- WIP--
 - [👨‍💻 Para desarrolladores](#-para-desarrolladores)
 - [🏗️ Arquitectura resumida](#%EF%B8%8F-arquitectura-resumida)
 - [🗂️ Archivos clave](#%EF%B8%8F-archivos-clave)
