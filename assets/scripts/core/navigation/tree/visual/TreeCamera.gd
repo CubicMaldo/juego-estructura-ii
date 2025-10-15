@@ -3,9 +3,9 @@ class_name TreeCamera
 extends Control
 
 # Configuración
-var zoom_min: float = 0.2
-var zoom_max: float = 3.0
-var zoom_step: float = 0.1
+var zoom_min: float = 0.1
+var zoom_max: float = 2
+var zoom_step: float = 0.05
 var zoom_smooth_speed: float = 10.0
 var pan_with_right_click: bool = true
 
@@ -36,8 +36,6 @@ func update_settings(new_zoom_min: float, new_zoom_max: float,
 	zoom_step = new_zoom_step
 	zoom_smooth_speed = new_smooth_speed
 	pan_with_right_click = use_right_click_pan
-
-# ========== API PÚBLICA ==========
 
 func handle_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

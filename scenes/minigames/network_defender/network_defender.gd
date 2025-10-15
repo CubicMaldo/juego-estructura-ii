@@ -310,7 +310,6 @@ func _finalize_game(win: bool) -> void:
 	progress_bar.value = connections.size()
 	if total_levels > 0:
 		_advance_level(total_levels)
-	EventBus.game_over.emit(win)
 	if Global.has_method("report_challenge_result"):
 		Global.report_challenge_result(win)
 

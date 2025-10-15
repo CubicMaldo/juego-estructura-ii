@@ -42,10 +42,6 @@ class_name TreeLayout
 @export_group("Balance")
 @export var balance_subtrees: bool = true
 
-# ------------------------------------------------------------
-# DATOS DE LAYOUT ALMACENADOS POR NODO
-# ------------------------------------------------------------
-
 var _layout_data: Dictionary = {}  # TreeNode -> Dictionary con datos de layout
 
 func _get_layout(node: TreeNode) -> Dictionary:

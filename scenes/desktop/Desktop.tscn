@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=21 format=3 uid="uid://chrommxyoxqu4"]
 
 [ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://assets/scripts/core/navigation/desktop/Desktop.gd" id="1_06q4v"]
 [ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
@@ -12,7 +12,6 @@
 [ext_resource type="Resource" uid="uid://c3ex0nu2yuhy" path="res://resources/apps/PasswordCrackerApp.tres" id="7_pwdcrk"]
 [ext_resource type="Resource" uid="uid://c8t7yqn5lx4p2" path="res://resources/apps/PasswordStrengthTrainerApp.tres" id="8_pwstr"]
 [ext_resource type="Script" uid="uid://bxt7yys6lsvj2" path="res://assets/scripts/core/navigation/desktop/TaskbarMenuButton.gd" id="9_77w8n"]
-[ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="10_77w8n"]
 [ext_resource type="Script" uid="uid://bxt7yys6lsvj1" path="res://scenes/desktop/retry.gd" id="16_gko5q"]
 [ext_resource type="Script" uid="uid://dojwlfdqy2cl0" path="res://scenes/desktop/gotomenu.gd" id="16_t8w61"]
 
@@ -32,6 +31,14 @@ shader_parameter/contrast = 3.355
 shader_parameter/lighting = 0.4
 shader_parameter/spin_amount = 0.0
 shader_parameter/pixel_filter = 5000.0
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_3iu53"]
+content_margin_left = 0.0
+content_margin_top = 4.0
+content_margin_right = 0.0
+content_margin_bottom = 4.0
+color = Color(0.5019608, 0.5019608, 0.5019608, 0)
+vertical = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rvpx8"]
 shader = ExtResource("3_46iw5")
@@ -119,9 +126,54 @@ theme_override_constants/v_separation = 32
 columns = 2
 metadata/_edit_lock_ = true
 
+[node name="VSeparator" type="VSeparator" parent="DesktopMargin/AppContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_3iu53")
+
+[node name="VSeparator2" type="VSeparator" parent="DesktopMargin/AppContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_3iu53")
+
+[node name="VSeparator3" type="VSeparator" parent="DesktopMargin/AppContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_3iu53")
+
+[node name="VSeparator4" type="VSeparator" parent="DesktopMargin/AppContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_3iu53")
+
 [node name="App" parent="DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
 appStats = ExtResource("5_jw0rl")
+
+[node name="VSeparator5" type="VSeparator" parent="DesktopMargin/AppContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_3iu53")
+
+[node name="VSeparator6" type="VSeparator" parent="DesktopMargin/AppContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_3iu53")
+
+[node name="VSeparator7" type="VSeparator" parent="DesktopMargin/AppContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_3iu53")
+
+[node name="VSeparator8" type="VSeparator" parent="DesktopMargin/AppContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_3iu53")
+
+[node name="VSeparator9" type="VSeparator" parent="DesktopMargin/AppContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_3iu53")
 
 [node name="App2" parent="DesktopMargin/AppContainer" instance=ExtResource("2_06q4v")]
 layout_mode = 2
