@@ -24,22 +24,22 @@ var current_difficulty: String = "easy"
 var total_levels: int = 0
 var _rng := RandomNumberGenerator.new()
 
-@onready var input_password = $Panel/VBoxContainer/InputContainer/LineEdit
-@onready var label_resultado = $Panel/VBoxContainer/ResultadoLabel
-@onready var pistas_container = $Panel/VBoxContainer/PistasContainer
-@onready var intentos_label = $Panel/VBoxContainer/HBoxContainer/IntentosLabel
-@onready var nivel_label = $Panel/VBoxContainer/TopBar/NivelLabel
-@onready var puntos_label = $Panel/VBoxContainer/TopBar/PuntosLabel
-@onready var tiempo_label = $Panel/VBoxContainer/TopBar/TiempoLabel
-@onready var similitud_label = $Panel/VBoxContainer/SimilitudContainer/SimilitudLabel
-@onready var progreso_bar = $Panel/VBoxContainer/SimilitudContainer/ProgresoBar
+@onready var input_password = $Panel/MarginContainer/VBoxContainer/InputContainer/LineEdit
+@onready var label_resultado = $Panel/MarginContainer/VBoxContainer/ResultadoLabel
+@onready var pistas_container = $Panel/MarginContainer/VBoxContainer/PistasContainer
+@onready var intentos_label = $Panel/MarginContainer/VBoxContainer/HBoxContainer/IntentosLabel
+@onready var nivel_label = $Panel/MarginContainer/VBoxContainer/TopBar/NivelLabel
+@onready var puntos_label = $Panel/MarginContainer/VBoxContainer/TopBar/PuntosLabel
+@onready var tiempo_label = $Panel/MarginContainer/VBoxContainer/TopBar/TiempoLabel
+@onready var similitud_label = $Panel/MarginContainer/VBoxContainer/SimilitudContainer/SimilitudLabel
+@onready var progreso_bar = $Panel/MarginContainer/VBoxContainer/SimilitudContainer/ProgresoBar
 @onready var timer_resultado = $Timer
 @onready var timer_juego = $TimerJuego
 @onready var timer_parpadeo = $TimerParpadeo
-@onready var btn_pista = $Panel/VBoxContainer/HBoxContainer/BtnPista
-@onready var btn_enviar = $Panel/VBoxContainer/InputContainer/BtnEnviar
-@onready var btn_analizar = $Panel/VBoxContainer/InputContainer/BtnAnalizar
-@onready var btn_reiniciar = $Panel/VBoxContainer/HBoxContainer/BtnReiniciar
+@onready var btn_pista = $Panel/MarginContainer/VBoxContainer/HBoxContainer/BtnPista
+@onready var btn_enviar = $Panel/MarginContainer/VBoxContainer/InputContainer/BtnEnviar
+@onready var btn_analizar = $Panel/MarginContainer/VBoxContainer/InputContainer/BtnAnalizar
+@onready var btn_reiniciar = $Panel/MarginContainer/VBoxContainer/HBoxContainer/BtnReiniciar
 #WIP AUDIO
 #@onready var audio_correct = $AudioCorrect
 #@onready var audio_wrong = $AudioWrong
@@ -128,7 +128,6 @@ func _cargar_nivel(indice: int):
 func _inicializar_pistas():
 	# Crear labels para cada pista (ocultas inicialmente)
 	for i in range(pistas_actuales.size()):
-		print("xx")
 		var pista_label = Label.new()
 		pista_label.text = "🔒 Pista bloqueada"
 		pista_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))

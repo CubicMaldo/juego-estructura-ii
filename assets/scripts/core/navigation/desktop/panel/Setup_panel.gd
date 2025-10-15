@@ -1,13 +1,21 @@
 extends Control
 
 @onready var panel: Panel = $Panel
+var is_maximized : bool = false
+
+var objective_size : Vector2
+var objective_pivot : Vector2
 
 func _setAppStat(appStats : AppStats):
 	$Panel/VBoxContainer/MarginContainer/HBoxContainer/TextureRect.texture = appStats.icon
 	$Panel/VBoxContainer/MarginContainer/HBoxContainer/Label.text = appStats.app_name
-	$Panel.size = appStats.size
-	$Panel.pivot_offset = appStats.size*0.5
+	
+	objective_size = appStats.size
+	objective_pivot = appStats.size * 0.5
 
+func _ready() -> void:
+	panel.size = objective_size
+	panel.pivot_offset = objective_pivot
 
 func _on_minimize_pressed() -> void:
 	
@@ -19,4 +27,17 @@ func _on_minimize_pressed() -> void:
 
 
 func _on_maximize_pressed() -> void:
-	pass # Replace with function body.
+	if not is_maximized:
+		print("maximizando")
+		panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		is_maximized = true
+	else:
+		
+		panel.set_anchors_preset(Control.PRESET_CENTER)
+		
+		panel.size = objective_size
+		panel.pivot_offset = objective_pivot
+		
+		is_maximized = false
+	
+	
