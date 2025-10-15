@@ -27,14 +27,15 @@ var email_actual_index: int = 0
 var puntos: int = 0
 var vidas: int = 3
 var emails_completados: int = 0
-var total_emails: int = 5
+var total_emails: int
+@export var max_mails : int = 5
 var tiempo_restante: float = 600.0  # 10 minutos
 var uso_pista: bool = false
 
 func _ready():
 	if email_database:
 		emails = email_database.get_shuffled_emails()
-		total_emails = min(emails.size(), 20)
+		total_emails = min(emails.size(), max_mails)
 	
 	resultado_label.hide()
 	hint_label.hide()
@@ -181,8 +182,6 @@ func victoria():
 		Global.report_challenge_result(true)
 	else:
 		print("Victoria en Email Phishing Detector - Puntos: ", puntos)
-	
-	get_tree().change_scene_to_file("res://scenes/desktop/Desktop.tscn")
 
 func game_over():
 	resultado_label.text = "💀 GAME OVER 💀\n\n"
@@ -203,8 +202,6 @@ func game_over():
 		Global.report_challenge_result(false)
 	else:
 		print("Derrota en Email Phishing Detector")
-	
-	get_tree().change_scene_to_file("res://scenes/desktop/Desktop.tscn")
 
 func ocultar_controles():
 	btn_legitimo.hide()

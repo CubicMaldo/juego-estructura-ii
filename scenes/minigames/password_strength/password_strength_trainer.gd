@@ -3,18 +3,18 @@ extends Control
 ## Minijuego educativo: Password Strength Trainer
 ## Enseña a crear contraseñas seguras con análisis en tiempo real y consejos prácticos
 
-@onready var password_input = $Panel/VBoxContainer/InputContainer/PasswordInput
-@onready var strength_bar = $Panel/VBoxContainer/StrengthContainer/StrengthBar
-@onready var strength_label = $Panel/VBoxContainer/StrengthContainer/StrengthLabel
-@onready var score_label = $Panel/VBoxContainer/TopBar/ScoreLabel
-@onready var nivel_label = $Panel/VBoxContainer/TopBar/NivelLabel
-@onready var feedback_container = $Panel/VBoxContainer/FeedbackContainer/FeedbackScroll/FeedbackList
-@onready var tips_container = $Panel/VBoxContainer/TipsContainer/TipsScroll/TipsList
-@onready var btn_check = $Panel/VBoxContainer/ButtonContainer/BtnCheck
-@onready var btn_generate = $Panel/VBoxContainer/ButtonContainer/BtnGenerate
-@onready var btn_siguiente = $Panel/VBoxContainer/ButtonContainer/BtnSiguiente
-@onready var challenge_label = $Panel/VBoxContainer/ChallengeContainer/ChallengeLabel
-@onready var resultado_label = $Panel/VBoxContainer/ResultadoContainer/ResultadoLabel
+@onready var password_input = $MarginContainer/Panel/VBoxContainer/InputContainer/PasswordInput
+@onready var strength_bar = $MarginContainer/Panel/VBoxContainer/StrengthContainer/StrengthBar
+@onready var strength_label = $MarginContainer/Panel/VBoxContainer/StrengthContainer/StrengthLabel
+@onready var score_label = $MarginContainer/Panel/VBoxContainer/TopBar/ScoreLabel
+@onready var nivel_label = $MarginContainer/Panel/VBoxContainer/TopBar/NivelLabel
+@onready var feedback_container = $MarginContainer/Panel/VBoxContainer/FeedbackContainer/FeedbackScroll/FeedbackList
+@onready var tips_container = $MarginContainer/Panel/VBoxContainer/TipsContainer/TipsScroll/TipsList
+@onready var btn_check = $MarginContainer/Panel/VBoxContainer/ButtonContainer/BtnCheck
+@onready var btn_generate = $MarginContainer/Panel/VBoxContainer/ButtonContainer/BtnGenerate
+@onready var btn_siguiente = $MarginContainer/Panel/VBoxContainer/ButtonContainer/BtnSiguiente
+@onready var challenge_label = $MarginContainer/Panel/VBoxContainer/ChallengeContainer/ChallengeLabel
+@onready var resultado_label = $MarginContainer/Panel/VBoxContainer/ResultadoContainer/ResultadoLabel
 
 var nivel_actual: int = 1
 var puntos_totales: int = 0
@@ -234,6 +234,7 @@ func mostrar_feedback(password: String, _score: int):
 	for fb in feedbacks:
 		var label = Label.new()
 		label.text = fb
+		
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD
 		feedback_container.add_child(label)
 
@@ -258,6 +259,7 @@ func mostrar_tips_generales():
 	for tip in tips:
 		var label = Label.new()
 		label.text = tip
+		label.add_theme_font_size_override("",28)
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD
 		tips_container.add_child(label)
 
@@ -409,11 +411,9 @@ func victoria():
 	btn_siguiente.hide()
 	challenge_label.hide()
 	
-	await get_tree().create_timer(5.0).timeout
+	await get_tree().create_timer(1.5).timeout
 	
 	if Global.has_method("report_challenge_result"):
 		Global.report_challenge_result(true)
 	else:
 		print("Victoria en Password Strength Trainer - Puntos: ", puntos_totales)
-	
-	get_tree().change_scene_to_file("res://scenes/desktop/Desktop.tscn")

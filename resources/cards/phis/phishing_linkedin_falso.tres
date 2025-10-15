@@ -2,14 +2,13 @@
 
 [ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://assets/scripts/core/challenges/cards_stack/PhishingCard.gd" id="1_4hrsr"]
 
-
 [resource]
 script = ExtResource("1_4hrsr")
-card_title = "💼 Tienes una nueva conexión"
 card_color = Color(0.85, 0.3, 0.3, 1)
+card_title = "💼 Tienes una nueva conexión (revisar remitente)"
+subject = "María González quiere conectar contigo — remitente: notifications@linkedin-corp.net"
 sender_name = "LinkedIn"
 sender_email = "notifications@linkedin-corp.net"
-subject = "María González quiere conectar contigo"
 email_body = "Hola,
 
 María González (Gerente de Recursos Humanos en TechCorp)
@@ -25,12 +24,11 @@ Contraseña: _______
 Si no conoces a esta persona, ignora este mensaje.
 
 Equipo de LinkedIn"
-has_attachments = false
 is_phishing = true
 difficulty = 3
 points_correct = 125
 points_incorrect = -60
-phishing_indicators = ["Dominio falso: linkedin-corp.net (real es linkedin.com)", "Solicita usuario y contraseña por email", "LinkedIn NUNCA pide contraseñas en correos", "Enlace genérico sin personalización"]
+phishing_indicators = Array[String](["Dominio falso: linkedin-corp.net (real es linkedin.com)", "Solicita usuario y contraseña por email", "LinkedIn NUNCA pide contraseñas en correos", "Enlace genérico sin personalización"])
 explanation = "¡PHISHING SOFISTICADO! Intento de robo de credenciales:
 - Dominio falso muy convincente (linkedin-corp.net vs linkedin.com)
 - LinkedIn NUNCA solicita contraseñas por email

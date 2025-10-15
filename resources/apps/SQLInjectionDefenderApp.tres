@@ -1,9 +1,8 @@
-[gd_resource type="Resource" script_class="AppStats" load_steps=4 format=3 uid="uid://sql_injection_app"]
+[gd_resource type="Resource" script_class="AppStats" load_steps=4 format=3 uid="uid://cynk267daso53"]
 
 [ext_resource type="Texture2D" uid="uid://y2vcy8l8hge0" path="res://assets/textures/icons8-flow-chart-96.png" id="1_icon"]
-[ext_resource type="PackedScene" uid="uid://sql_injection_scene" path="res://scenes/minigames/sql_injection/SQLInjectionDefender.tscn" id="2_scene"]
+[ext_resource type="PackedScene" path="res://scenes/minigames/sql_injection/SQLInjectionDefender.tscn" id="2_scene"]
 [ext_resource type="Script" uid="uid://idvitonl6kt2" path="res://assets/scripts/core/navigation/desktop/AppStats.gd" id="3_script"]
-
 
 [resource]
 script = ExtResource("3_script")

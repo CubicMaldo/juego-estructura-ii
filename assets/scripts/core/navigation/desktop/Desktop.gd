@@ -2,6 +2,7 @@ extends Control
 @onready var app_desktop_container: GridContainer = $DesktopMargin/AppContainer
 @onready var taskbar_container: Container = %TaskBar
 @export var apps_panel_scene : PackedScene
+@onready var game_over_visuals: ColorRect = $CanvasLayer/EndingScreen
 
 func _ready():
 	add_to_group("desktop_manager")
@@ -11,6 +12,7 @@ func _ready():
 			var icon_cb := Callable(self, "_on_icon_opened").bind(icon)
 			if icon_cb != null:
 				icon.connect("open_app", icon_cb)
+	EventBus.game_over.connect(_on_game_over)
 
 func open_app_from_stats(app_stats: AppStats) -> Dictionary:
 	if app_stats == null:
@@ -33,12 +35,12 @@ func _on_icon_opened(app_ref: PackedScene, appStats : AppStats, source_icon: Nod
 		_animate_new_panel(session.get("panel"))
 
 func _spawn_app_session(app_ref: PackedScene, app_stats: AppStats, source_icon: Node) -> Dictionary:
+	
 	if app_ref == null:
 		return {}
 	var app_id := _get_app_id(app_stats, app_ref)
 	var existing_panel := _find_open_app_panel(app_id)
 	if existing_panel:
-		
 		_animate_new_panel(existing_panel)
 		print("App '%s' ya está abierta; reutilizando instancia." % app_stats.app_name)
 		return {
@@ -57,7 +59,6 @@ func _spawn_app_session(app_ref: PackedScene, app_stats: AppStats, source_icon: 
 	if viewport != null:
 		viewport.add_child(app_inside)
 	add_child(app_panel)
-
 	if source_icon != null:
 		_ensure_taskbar_icon(app_id, source_icon)
 
@@ -189,3 +190,24 @@ func _configure_taskbar_icon_connections(task_icon: Node) -> void:
 		var task_cb := Callable(self, "_on_icon_opened").bind(task_icon)
 		if task_cb != null and not task_icon.is_connected("open_app", task_cb):
 			task_icon.connect("open_app", task_cb)
+var tween_game_over: Tween
+func _on_game_over(_won : bool):
+	_kill_tween_if_running(tween_game_over)
+	tween_game_over = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+
+	# Preparar color inicial (transparente) y destino (actual)
+	var target_color: Color = game_over_visuals.color
+	var start_color: Color = target_color
+	start_color.a = 0.0
+	target_color.a = 0.8
+
+	# Aplicar estado inicial
+	game_over_visuals.color = start_color
+	game_over_visuals.visible = true
+	
+	# Tweenear la propiedad color para un fade-in
+	tween_game_over.tween_property(game_over_visuals, "color", target_color, 1)
+
+func _kill_tween_if_running(tween_ref: Tween) -> void:
+	if tween_ref and tween_ref.is_running():
+		tween_ref.kill()

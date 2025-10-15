@@ -2,13 +2,12 @@
 
 [ext_resource type="Script" uid="uid://qdg33u4dk4hx" path="res://assets/scripts/core/challenges/cards_stack/PhishingCard.gd" id="1_4hrsr"]
 
-
 [resource]
 script = ExtResource("1_4hrsr")
 card_color = Color(0.9, 0.22, 0.22, 1)
 card_title = "👤 Intento de Inicio de Sesión"
 subject = "Alguien intentó acceder a tu cuenta desde un dispositivo desconocido"
-sender_name = "Facebook Security"
+sender_name = "Facebook Security Alert <security-alert@facebook.link>"
 sender_email = "security-alert@facebok-security.com"
 email_body = "Hola,
 

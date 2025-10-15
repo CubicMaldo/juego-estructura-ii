@@ -255,9 +255,10 @@ visible = false
 position = Vector2(47.5, 48.5)
 shape = SubResource("RectangleShape2D_uktdj")
 
-[node name="EndingScreen" type="ColorRect" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="EndingScreen" type="ColorRect" parent="CanvasLayer"]
 visible = false
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -269,7 +270,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.096204735, 0.09620475, 0.096204735, 1)
 
-[node name="Control2" type="Control" parent="EndingScreen"]
+[node name="Control2" type="Control" parent="CanvasLayer/EndingScreen"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -281,7 +282,7 @@ offset_bottom = -68.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="EndingScreen/Control2"]
+[node name="Label" type="Label" parent="CanvasLayer/EndingScreen/Control2"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -299,7 +300,7 @@ text = "¡Felicitaciones! Has logrado defender la red y asegurar la infraestruct
 tecnológica."
 horizontal_alignment = 1
 
-[node name="Button" type="Button" parent="EndingScreen/Control2"]
+[node name="Button" type="Button" parent="CanvasLayer/EndingScreen/Control2"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -323,4 +324,4 @@ script = ExtResource("16_gko5q")
 [connection signal="mouse_entered" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_mouse_exited"]
 [connection signal="pressed" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_pressed"]
-[connection signal="pressed" from="EndingScreen/Control2/Button" to="EndingScreen/Control2/Button" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/EndingScreen/Control2/Button" to="CanvasLayer/EndingScreen/Control2/Button" method="_on_pressed"]

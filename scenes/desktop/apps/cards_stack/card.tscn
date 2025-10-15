@@ -159,6 +159,7 @@ mouse_filter = 2
 theme_override_constants/separation = 20
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="SubViewportContainer/SubViewport/Card/MarginContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.35

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="PortScanDatabase" load_steps=20 format=3 uid="uid://port_scan_db"]
+[gd_resource type="Resource" script_class="PortScanDatabase" load_steps=21 format=3 uid="uid://b3gu5qyjtacno"]
 
-[ext_resource type="Script" path="res://assets/scripts/minigames/port_scanner/PortScanDatabase.gd" id="1"]
-[ext_resource type="Script" path="res://assets/scripts/minigames/port_scanner/PortScanResource.gd" id="2"]
+[ext_resource type="Script" uid="uid://c7pq3n8xm4kr2" path="res://assets/scripts/minigames/port_scanner/PortScanDatabase.gd" id="1"]
+[ext_resource type="Script" uid="uid://bnaxk2tp5vn8j" path="res://assets/scripts/minigames/port_scanner/PortScanResource.gd" id="2"]
 
 [sub_resource type="Resource" id="1"]
 resource_name = "TraficoLegitimo1"
@@ -13,8 +13,6 @@ scan_type = "Conexión HTTPS establecida"
 packet_count = 28
 time_span = "10 minutos"
 description = "Conexión establecida desde dispositivo interno hacia servidor web seguro. Intercambio normal de datos cifrados. Sesión TLS/SSL activa con certificado válido."
-is_malicious = false
-threat_type = ""
 explanation = "Tráfico legítimo: Conexión HTTPS normal hacia servidor web. Puerto 443 es estándar para navegación web segura."
 hint = "El puerto 443 es el puerto estándar para HTTPS. La duración y cantidad de paquetes son normales para navegación web."
 
@@ -43,8 +41,6 @@ scan_type = "Conexión MySQL persistente"
 packet_count = 142
 time_span = "30 minutos"
 description = "Servidor de aplicaciones conectado a base de datos MySQL. Consultas periódicas dentro de red interna. Pool de conexiones activo."
-is_malicious = false
-threat_type = ""
 explanation = "Tráfico legítimo: Conexión interna entre servidor de aplicaciones y base de datos MySQL. Es tráfico normal de producción."
 hint = "Conexiones internas (10.x.x.x) a bases de datos son normales. El tiempo prolongado indica sesión persistente legítima."
 
@@ -73,8 +69,6 @@ scan_type = "Petición HTTP GET"
 packet_count = 12
 time_span = "2 minutos"
 description = "Petición HTTP normal desde cliente interno. Descarga de recursos web. Headers estándar con User-Agent válido."
-is_malicious = false
-threat_type = ""
 explanation = "Tráfico legítimo: Petición HTTP GET normal. Bajo volumen de paquetes para una petición web estándar."
 hint = "Peticiones HTTP con pocos paquetes en tiempo razonable son normales. Navegación web típica."
 
@@ -103,8 +97,6 @@ scan_type = "Consulta DNS"
 packet_count = 4
 time_span = "1 segundo"
 description = "Resolución DNS desde cliente interno. Consulta tipo A para dominio legítimo. Respuesta recibida del servidor DNS corporativo."
-is_malicious = false
-threat_type = ""
 explanation = "Tráfico legítimo: Consulta DNS normal. DNS usa UDP puerto 53 y requiere pocos paquetes por consulta."
 hint = "DNS es esencial para internet. Pocas consultas UDP al puerto 53 son completamente normales."
 
@@ -133,8 +125,6 @@ scan_type = "Sesión SSH autenticada"
 packet_count = 89
 time_span = "15 minutos"
 description = "Sesión SSH establecida desde administrador de sistemas. Autenticación por clave pública exitosa. Comandos administrativos ejecutándose."
-is_malicious = false
-threat_type = ""
 explanation = "Tráfico legítimo: Sesión SSH administrativa desde red interna. Autenticación válida y tiempo de sesión razonable."
 hint = "SSH desde red interna con sesión establecida es administración legítima. El tiempo y paquetes son normales."
 
@@ -163,8 +153,6 @@ scan_type = "Conexión IMAP"
 packet_count = 65
 time_span = "8 minutos"
 description = "Cliente de correo descargando mensajes vía IMAP. Autenticación exitosa. Sincronización de buzón de entrada."
-is_malicious = false
-threat_type = ""
 explanation = "Tráfico legítimo: Conexión IMAP para descargar correo electrónico. Puerto 143 es estándar para IMAP."
 hint = "IMAP (puerto 143) es protocolo legítimo de correo. Volumen y duración son típicos de sincronización de email."
 
@@ -193,8 +181,6 @@ scan_type = "Conexión PostgreSQL"
 packet_count = 98
 time_span = "20 minutos"
 description = "Aplicación web consultando base de datos PostgreSQL. Queries transaccionales normales. Pool de conexiones gestionado correctamente."
-is_malicious = false
-threat_type = ""
 explanation = "Tráfico legítimo: Conexión de aplicación a PostgreSQL. Tráfico interno de base de datos es normal en entornos productivos."
 hint = "PostgreSQL (puerto 5432) en red interna con conexiones persistentes es operación normal de aplicaciones."
 
@@ -223,8 +209,6 @@ scan_type = "Sesión POP3"
 packet_count = 45
 time_span = "5 minutos"
 description = "Cliente de correo recuperando mensajes vía POP3. Autenticación APOP exitosa. Descarga de 12 mensajes nuevos."
-is_malicious = false
-threat_type = ""
 explanation = "Tráfico legítimo: Sesión POP3 para descargar correo. Puerto 110 es protocolo estándar de email (aunque anticuado)."
 hint = "POP3 es protocolo legítimo de correo. Bajo volumen de paquetes y tiempo razonable indican uso normal."
 
@@ -253,8 +237,6 @@ scan_type = "Proxy HTTP interno"
 packet_count = 76
 time_span = "12 minutos"
 description = "Tráfico web canalizado a través de proxy interno. Filtrado de contenido activo. Logs de acceso web registrándose correctamente."
-is_malicious = false
-threat_type = ""
 explanation = "Tráfico legítimo: Proxy HTTP interno (puerto 8080). Uso corporativo normal para filtrado y monitoreo de navegación."
 hint = "Puerto 8080 es común para proxies HTTP internos. Red interna + volumen moderado = tráfico corporativo legítimo."
 

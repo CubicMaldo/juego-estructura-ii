@@ -9,7 +9,7 @@ card_title = "🎮 Notificación de Steam"
 card_color = Color(0.9, 0.25, 0.25, 1)
 sender_name = "Steam Support"
 sender_email = "support@steam-community.org"
-subject = "Tu cuenta ha sido reportada por actividad sospechosa"
+subject = "Tu cuenta ha sido reportada por actividad sospechosa, seras baneado"
 email_body = "Hola,
 
 Tu cuenta de Steam ha recibido MÚLTIPLES REPORTES por:

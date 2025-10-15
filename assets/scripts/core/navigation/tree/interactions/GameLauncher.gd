@@ -55,10 +55,45 @@ func launch_node_app(node: TreeNode) -> bool:
 		print("[GameLauncher] La app %s ya estaba abierta; se requiere cerrar antes de reiniciar reto." % app_stats.app_name)
 		push_warning("La app %s ya está abierta; ciérrala antes de iniciar el reto." % app_stats.app_name)
 		return false
+	
 	var app_instance: Node = session_data.get("app", null)
 	var panel_instance: Node = session_data.get("panel", null)
 	if app_instance == null:
 		return false
+
+	# Asegurar que la app quede también en el taskbar aunque se lanzó desde el árbol
+	if desktop != null and desktop.has_method("_ensure_taskbar_icon"):
+		# Construir app_id igual que hace Desktop._get_app_id
+		var _app_id: String = "unknown_app"
+		if app_stats != null and app_stats.app_name != "":
+			_app_id = app_stats.app_name
+		elif app_stats != null and app_stats.scene != null:
+			_app_id = app_stats.scene.resource_path
+		# Instanciar preset de icono del proyecto y asignar appStats si aplica
+		var icon_preset_path := "res://scenes/desktop/apps/appDesktopIcon.tscn"
+		var preset: PackedScene = null
+		var icon_instance: Node = null
+		if ResourceLoader.exists(icon_preset_path):
+			preset = load(icon_preset_path)
+			if preset is PackedScene:
+				icon_instance = preset.instantiate()
+		# Si pudimos instanciar, asignar appStats si el nodo es AppButton (o usar meta como fallback)
+		if icon_instance != null and app_stats != null:
+			# AppButton (apps/AppsDesktop.gd) expone `appStats` como propiedad
+			if icon_instance is AppButton:
+				(icon_instance as AppButton).appStats = app_stats
+			else:
+				# fallback: attach as meta so Desktop/_instantiate_icon_copy can pick it up if needed
+				icon_instance.set_meta("appStats", app_stats)
+		# Pasar la instancia (o el nodo original si no hay instancia) al Desktop
+		var source_for_taskbar: Node = null
+		if icon_instance != null:
+			source_for_taskbar = icon_instance
+		elif panel_instance != null:
+			source_for_taskbar = panel_instance
+		else:
+			source_for_taskbar = app_instance
+		desktop._ensure_taskbar_icon(_app_id, source_for_taskbar)
 	var node_id: int = node.get_instance_id()
 	_active_session = {
 		"node_id": node_id,

@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_4hrsr")
-card_title = "📱 Verificación de Número"
+card_title = "📱 Verificación de Número (Requerida contraseña)"
 card_color = Color(0.92, 0.28, 0.28, 1)
 sender_name = "WhatsApp Verification"
 sender_email = "verify@whatsapp-secure.info"

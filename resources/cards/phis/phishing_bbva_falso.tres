@@ -7,9 +7,9 @@
 script = ExtResource("1_4hrsr")
 card_title = "🏦 Alerta Bancaria"
 card_color = Color(0.9, 0.2, 0.2, 1)
-sender_name = "BBVA Bancomer"
+sender_name = "BvVA Bancomer"
 sender_email = "alertas@bbva-bancomer.com.mx"
-subject = "Transacción rechazada - Verifique su cuenta"
+subject = "Transacion rechazada - Verifique su cuenta"
 email_body = "Estimado cliente,
 
 Su tarjeta de débito **** 4567 ha tenido una transacción RECHAZADA:
