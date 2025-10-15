@@ -1,7 +1,7 @@
 extends Control
 @onready var app_desktop_container: GridContainer = $DesktopMargin/AppContainer
 @onready var taskbar_container: Container = %TaskBar
-@export var app_panel_scene : PackedScene
+@export var apps_panel_scene : PackedScene
 
 func _ready():
 	add_to_group("desktop_manager")
@@ -48,7 +48,7 @@ func _spawn_app_session(app_ref: PackedScene, app_stats: AppStats, source_icon: 
 			"is_existing": true
 		}
 	
-	var app_panel := app_panel_scene.instantiate()
+	var app_panel := apps_panel_scene.instantiate()
 	var app_inside := app_ref.instantiate()	
 	
 	app_panel.set_meta("app_id", app_id)

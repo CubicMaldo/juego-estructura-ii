@@ -161,12 +161,6 @@ func destroy() -> void:
 
 	# Sacudida rápida en posición global para que siempre se note
 	var shake_tween := create_tween()
-	shake_tween.tween_property(self, "global_position", current_global_pos + Vector2(10, 0), 0.05)
-	shake_tween.tween_property(self, "global_position", current_global_pos - Vector2(10, 0), 0.05)
-	shake_tween.tween_property(self, "global_position", current_global_pos + Vector2(6, 0), 0.05)
-	shake_tween.tween_property(self, "global_position", current_global_pos - Vector2(6, 0), 0.05)
-	shake_tween.tween_property(self, "global_position", current_global_pos + Vector2(3, 0), 0.05)
-	shake_tween.tween_property(self, "global_position", current_global_pos, 0.05)
 	# Desintegración: escala + rotación + dissolve + fade final en paralelo
 	tween_destroy = create_tween().set_parallel(true)
 	tween_destroy.tween_property(self, "scale", Vector2(0.85, 0.6), 0.7).set_delay(0.05).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
@@ -187,7 +181,6 @@ func save_card() -> void:
 	# Prevenir múltiples llamadas y colisiones
 	if lock_put_back:
 		return
-	print("Card: Guardando carta...")
 	lock_put_back = true
 	disabled = true  # Desactivar botón para evitar inputs
 	set_process(false)  # Detener procesamiento
