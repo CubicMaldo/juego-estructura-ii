@@ -1,4 +1,4 @@
-# 🌲 **Juego Estructura II**
+# 🌲 **Safe TreeNet**
 
 > 🧠 *Explora, aprende y supera desafíos en un árbol de decisiones dinámico inspirado en la lógica estructural y la ciberseguridad.*
 
