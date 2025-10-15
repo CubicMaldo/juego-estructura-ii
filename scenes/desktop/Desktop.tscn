@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=26 format=3 uid="uid://chrommxyoxqu4"]
 
 [ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://assets/scripts/core/navigation/desktop/Desktop.gd" id="1_06q4v"]
 [ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
@@ -15,6 +15,7 @@
 [ext_resource type="Shader" uid="uid://cyd36u4tmx2ry" path="res://assets/shaders/fake_3d.gdshader" id="10_77w8n"]
 [ext_resource type="Texture2D" uid="uid://desu1g5uy1k7i" path="res://assets/textures/icons8-news-feed-96.png" id="14_3iu53"]
 [ext_resource type="Script" uid="uid://bxt7yys6lsvj1" path="res://scenes/desktop/retry.gd" id="16_gko5q"]
+[ext_resource type="Script" uid="uid://dojwlfdqy2cl0" path="res://scenes/desktop/gotomenu.gd" id="16_t8w61"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ax2js"]
 shader = ExtResource("1_13veq")
@@ -300,7 +301,26 @@ text = "¡Felicitaciones! Has logrado defender la red y asegurar la infraestruct
 tecnológica."
 horizontal_alignment = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/EndingScreen/Control2"]
+[node name="Juego" type="Button" parent="CanvasLayer/EndingScreen/Control2"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -216.0
+offset_right = 150.0
+offset_bottom = -152.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_lswqd")
+text = "JUGAR DE NUEVO"
+icon_alignment = 1
+script = ExtResource("16_gko5q")
+
+[node name="Menu" type="Button" parent="CanvasLayer/EndingScreen/Control2"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -315,13 +335,14 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_lswqd")
-text = "JUGAR DE NUEVO"
+text = "MENU PRINCIPAL"
 icon_alignment = 1
-script = ExtResource("16_gko5q")
+script = ExtResource("16_t8w61")
 
 [connection signal="focus_exited" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_focus_exited"]
 [connection signal="gui_input" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_gui_input"]
 [connection signal="mouse_entered" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_mouse_exited"]
 [connection signal="pressed" from="Taskbar/MargenBar/TaskBar/App" to="Taskbar/MargenBar/TaskBar/App" method="_on_pressed"]
-[connection signal="pressed" from="CanvasLayer/EndingScreen/Control2/Button" to="CanvasLayer/EndingScreen/Control2/Button" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/EndingScreen/Control2/Juego" to="CanvasLayer/EndingScreen/Control2/Juego" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/EndingScreen/Control2/Menu" to="CanvasLayer/EndingScreen/Control2/Menu" method="_on_pressed"]
