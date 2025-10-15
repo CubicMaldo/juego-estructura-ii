@@ -1,7 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://chrommxyoxqu4"]
+[gd_scene load_steps=24 format=3 uid="uid://chrommxyoxqu4"]
 
 [ext_resource type="Script" uid="uid://dxntma2y6cg4w" path="res://assets/scripts/core/navigation/desktop/Desktop.gd" id="1_06q4v"]
 [ext_resource type="Shader" uid="uid://g3alu3rvi1hs" path="res://assets/shaders/balatro.gdshader" id="1_13veq"]
+[ext_resource type="PackedScene" uid="uid://bbplcuyivtpgx" path="res://scenes/desktop/apps/appPanel.tscn" id="2_3iu53"]
 [ext_resource type="PackedScene" uid="uid://dyre0wtdeeh7c" path="res://scenes/desktop/apps/appDesktopIcon.tscn" id="2_06q4v"]
 [ext_resource type="Shader" uid="uid://dwj1gcianwteq" path="res://assets/shaders/blur.gdshader" id="3_46iw5"]
 [ext_resource type="Script" uid="uid://sq4vot24ecr1" path="res://assets/scripts/debug/NavigationDebugger.gd" id="4_77w8n"]
@@ -123,6 +124,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_06q4v")
+apps_panel_scene = ExtResource("2_3iu53")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_ax2js")

@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cj578dcva6jr3"]
+[gd_scene load_steps=5 format=3 uid="uid://cj578dcva6jr3"]
 
 [ext_resource type="Script" uid="uid://c3lmfpk8rb3id" path="res://assets/scripts/Parallax.gd" id="1_twihe"]
 [ext_resource type="Shader" uid="uid://yq5a4bhdrkm4" path="res://assets/shaders/vhs.gdshader" id="2_fonfi"]
 [ext_resource type="PackedScene" uid="uid://chrommxyoxqu4" path="res://scenes/desktop/Desktop.tscn" id="3_3pawr"]
-[ext_resource type="PackedScene" uid="uid://bbplcuyivtpgx" path="res://scenes/desktop/apps/appPanel.tscn" id="4_m0pwh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pfpuo"]
 shader = ExtResource("2_fonfi")
@@ -29,7 +28,7 @@ shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.6
 shader_parameter/vignette_opacity = 0.5
 
-[node name="GameScene" type="Control"]
+[node name="GameScene" type="Control" node_paths=PackedStringArray("parallax")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,6 +36,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_twihe")
+max_offset = Vector2(10, 10)
+parallax = NodePath("Desktop")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -58,4 +59,3 @@ metadata/_edit_lock_ = true
 
 [node name="Desktop" parent="." instance=ExtResource("3_3pawr")]
 layout_mode = 1
-apps_panel_scene = ExtResource("4_m0pwh")

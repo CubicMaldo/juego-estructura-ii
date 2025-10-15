@@ -27,7 +27,7 @@ var email_actual_index: int = 0
 var puntos: int = 0
 var vidas: int = 3
 var emails_completados: int = 0
-var total_emails: int = 20
+var total_emails: int = 5
 var tiempo_restante: float = 600.0  # 10 minutos
 var uso_pista: bool = false
 

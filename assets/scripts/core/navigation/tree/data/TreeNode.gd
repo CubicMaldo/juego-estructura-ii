@@ -4,10 +4,14 @@ class_name TreeNode
 ## Only represents tree node relationships and type
 enum NodosJuego { INICIO = 0, DESAFIO = 1, PISTA = 2, FINAL = 3}
 var tipo: int
+
 var padre: TreeNode
+
 var izquierdo: TreeNode
 var derecho: TreeNode
+
 var app_resource: AppStats
+
 var challenge_completed: bool = false
 var challenge_result: bool = false
 
