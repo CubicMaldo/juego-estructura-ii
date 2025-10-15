@@ -93,4 +93,20 @@ text = "Jugar"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "Salir"
+
+[node name="WelcomeDialog" type="AcceptDialog" parent="."]
+unique_name_in_owner = true
+title = "🎮 Aventura Cibernética"
+initial_position = 2
+size = Vector2i(600, 250)
+dialog_text = "¡Bienvenido a la Aventura Cibernética!
+
+Tu misión es recuperar el control de la red y detener el ataque.
+
+Explora el sistema, completa desafíos de ciberseguridad y demuestra tus habilidades.
+
+¡Buena suerte, agente!"
+ok_button_text = "¡Comenzar Misión!"
+dialog_autowrap = true
